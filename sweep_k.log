@@ -1,0 +1,21 @@
+loose seed 0: 486 runs, 15s
+loose seed 1: 972 runs, 29s
+loose seed 2: 1458 runs, 43s
+loose seed 3: 1944 runs, 58s
+loose seed 4: 2430 runs, 74s
+loose seed 5: 2916 runs, 90s
+loose seed 6: 3402 runs, 105s
+loose seed 7: 3888 runs, 121s
+loose seed 8: 4374 runs, 136s
+loose seed 9: 4860 runs, 152s
+tight seed 0: 5346 runs, 162s
+tight seed 1: 5832 runs, 172s
+tight seed 2: 6318 runs, 182s
+tight seed 3: 6804 runs, 191s
+tight seed 4: 7290 runs, 202s
+tight seed 5: 7776 runs, 212s
+tight seed 6: 8262 runs, 222s
+tight seed 7: 8748 runs, 231s
+tight seed 8: 9234 runs, 241s
+tight seed 9: 9720 runs, 251s
+9720 runs, all invariants held. Written to vmgm_results/sweep_k.csv

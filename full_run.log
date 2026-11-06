@@ -1,0 +1,55 @@
+E1: 10/100 jobs, 960 rows, 8s
+E1: 20/100 jobs, 1920 rows, 12s
+E1: 30/100 jobs, 2880 rows, 19s
+E1: 40/100 jobs, 3840 rows, 24s
+E1: 50/100 jobs, 4800 rows, 29s
+E1: 60/100 jobs, 5760 rows, 33s
+E1: 70/100 jobs, 6720 rows, 37s
+E1: 80/100 jobs, 7680 rows, 42s
+E1: 90/100 jobs, 8640 rows, 46s
+E1: 100/100 jobs, 9600 rows, 51s
+E1: 9600 rows, all invariants held, 51s -> vmgm_results/full/E1.csv
+E2: 10/100 jobs, 12940 rows, 166s
+E2: 20/100 jobs, 25880 rows, 259s
+E2: 30/100 jobs, 38820 rows, 422s
+E2: 40/100 jobs, 51760 rows, 522s
+E2: 50/100 jobs, 64700 rows, 636s
+E2: 60/100 jobs, 77640 rows, 728s
+E2: 70/100 jobs, 90580 rows, 806s
+E2: 80/100 jobs, 103520 rows, 933s
+E2: 90/100 jobs, 116460 rows, 1011s
+E2: 100/100 jobs, 129400 rows, 1096s
+E2: 129400 rows, all invariants held, 1097s -> vmgm_results/full/E2.csv
+E3: 10/100 jobs, 3600 rows, 37s
+E3: 20/100 jobs, 7200 rows, 57s
+E3: 30/100 jobs, 10800 rows, 92s
+E3: 40/100 jobs, 14400 rows, 116s
+E3: 50/100 jobs, 18000 rows, 140s
+E3: 60/100 jobs, 21600 rows, 155s
+E3: 70/100 jobs, 25200 rows, 172s
+E3: 80/100 jobs, 28800 rows, 191s
+E3: 90/100 jobs, 32400 rows, 208s
+E3: 100/100 jobs, 36000 rows, 223s
+E3: 36000 rows, all invariants held, 223s -> vmgm_results/full/E3.csv
+E4: 45/450 jobs, 720 rows, 211s
+E4: 90/450 jobs, 1440 rows, 318s
+E4: 135/450 jobs, 2160 rows, 366s
+E4: 180/450 jobs, 2880 rows, 500s
+E4: 225/450 jobs, 3600 rows, 627s
+E4: 270/450 jobs, 4320 rows, 646s
+E4: 315/450 jobs, 5040 rows, 727s
+E4: 360/450 jobs, 5760 rows, 907s
+E4: 405/450 jobs, 6480 rows, 917s
+E4: 450/450 jobs, 7200 rows, 924s
+E4: 7200 rows, all invariants held, 924s -> vmgm_results/full/E4.csv
+E5: 2/20 jobs, 120 rows, 40s
+E5: 4/20 jobs, 240 rows, 43s
+E5: 6/20 jobs, 360 rows, 422s
+E5: 8/20 jobs, 480 rows, 1097s
+E5: 10/20 jobs, 600 rows, 1099s
+E5: 12/20 jobs, 720 rows, 1102s
+E5: 14/20 jobs, 840 rows, 1107s
+E5: 16/20 jobs, 960 rows, 1121s
+E5: 18/20 jobs, 1080 rows, 1122s
+E5: 20/20 jobs, 1200 rows, 1123s
+E5: 1200 rows, all invariants held, 1124s -> vmgm_results/full/E5.csv
