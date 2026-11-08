@@ -182,7 +182,15 @@ def h4(d):
     adj = holm(ps)
     t['p deg (Holm)'] = [f'{v:.1e}' for v in adj[0::2]]
     t['p p (Holm)'] = [f'{v:.1e}' for v in adj[1::2]]
-    s += ['### k = 1', md_table(t), '']
+    s += ['### k = 1, pooled over N (confounded: the liar\'s degree grows with N)', md_table(t), '']
+    rows, ps = [], []
+    for (att, prot, N), g in e[e.k == 1].groupby(['attack', 'protocol', 'N']):
+        r, p = stats.spearmanr(g.liar_deg, g.extra)
+        rows.append(dict(attack=att, protocol=prot, N=N, **{'Spearman(degree, damage)': f'{r:+.2f}'}))
+        ps.append(p)
+    t = pd.DataFrame(rows)
+    t['p (Holm)'] = [f'{v:.1e}' for v in holm(ps)]
+    s += ['### k = 1, within each N (use this one)', md_table(t), '']
     m = e.groupby(['protocol', 'attack', 'N', 'p']).rho.mean().unstack().round(2).reset_index()
     s += ['### Mean rho by N and p (k = 1 and k = 25% of N pooled)', md_table(m), '']
     f = e[e.protocol == 'VMGM-hist-quar'].groupby(['N', 'k']).agg(

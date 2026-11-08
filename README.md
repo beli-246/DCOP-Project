@@ -64,6 +64,19 @@ quarantined from the same rounds. It isolates what quarantine itself costs.
 `make_instance(pref_spread=s)`: true preferences use only `s·g_max` of the scale (s = 1 is the pilot's
 instances). `exag_stretch` is the strongest undetectable exaggeration, used in E3.
 
+## Phase 4: figures and tables (`figures.py`)
+
+```bash
+python3 -m vmgm.figures vmgm_results/full
+```
+
+This writes `figures/fig1–fig5` (`.pdf` for LaTeX, `.png` for slides) and `tables/tab_guarantees.tex`
+and `tables/tab_e2_k3.tex`, all from the CSVs. `figures/CAPTIONS.md` has draft captions.
+
+Colours follow the protocol in every figure: history + quarantine = blue, MGM = orange,
+quarantine control = aqua, cap only = yellow, RP-MGM/DSA = greys. Every series also has its own
+marker and line style, so the figures survive grayscale printing.
+
 ## Checks (`invariants.check_all`)
 
 | Check | Applies to | Result it tests |

@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{What is proven and what is only measured. Every V-MGM run was checked automatically against R1, R2 and R4--R6 wherever they apply (123,720 runs, no violation).}
+\label{tab:guarantees}
+\begin{tabular}{llll}
+\toprule
+Property & Applies to & Status & Evidence (E1--E5) \\
+\midrule
+Honest posts never flagged & any check & Proven (R1, R2) & 0 false flags \\
+Contradictory histories flagged & history check & Proven (R2) & blockers, churners: 100\% flagged, $k\le 6$ \\
+Consistent lies undetectable & any public check & Proven (R3) & consistent liars: 0\% flagged \\
+Direct student cost $< g_{max}$ per exam & history + quarantine & Proven (R4) & max 0.99$\,g_{max}$ (58,440 runs) \\
+ & history + cap only & Not guaranteed & max 144$\,g_{max}$ \\
+Run finishes & history + quarantine & Proven (R5, new) & 100\% of 58,440 runs \\
+ & cap only / one-post & Not guaranteed & 75\% finished \\
+$F_{final}\le F_{start}+2g_{max}|E_L|$ & history + quarantine & Proven (R6, new) & held in every run \\
+Total cost vs honest MGM ($\rho$) & any & Measured only (R7) & 1.10, 1.21, 1.33, 1.71 for $k=1,2,3,6$ \\
+\bottomrule
+\end{tabular}
+\end{table}
