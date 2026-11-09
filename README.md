@@ -13,6 +13,7 @@ and bounds the final cost relative to the start.
 
 ```
 .
+├── PROJECT_CONTEXT.md     handoff note: decisions, results, open to-dos (start here)
 ├── vmgm/                  Python package: simulator, attacks, checks, experiments, analysis, figures
 │   ├── README.md          details: files, commands, invariants, attacks, open decisions
 │   └── tests/             unit tests (stdlib unittest)
