@@ -12,7 +12,7 @@ Every run with an audit goes through invariants.check_all, so any violation of a
 result stops the experiment. Quarantine-control runs are exempt (honest departments are
 quarantined on purpose, which no result covers).
 
-Usage (from the FAI folder):
+Usage (from the repository root):
     python3 -m vmgm.experiments E2 --seeds 50 --workers 7
     python3 -m vmgm.experiments all --seeds 50
     python3 -m vmgm.experiments all --seeds 2 --out vmgm_results/smoke     (quick smoke test)

@@ -1,4 +1,4 @@
-"""Unit tests. Run from the FAI folder:  python3 -m unittest discover -s vmgm/tests -t . -v"""
+"""Unit tests. Run from the repository root:  python3 -m unittest discover -s vmgm/tests -t . -v"""
 import random
 import unittest
 

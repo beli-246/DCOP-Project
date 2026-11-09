@@ -3,7 +3,7 @@
 Every run goes through check_all, so the sweep stops with an InvariantError if any proven
 property fails. Results go to a CSV, one row per run.
 
-Usage (from the FAI folder):
+Usage (from the repository root):
     python3 -m vmgm.sweep OUT.csv N_SEEDS [k1,k2,...]
 """
 import csv

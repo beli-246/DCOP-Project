@@ -1,6 +1,6 @@
 """Statistics and summary tables for E1-E5, one section per hypothesis (H1-H4, H2 split a-d).
 
-Usage (from the FAI folder):
+Usage (from the repository root):
     python3 -m vmgm.analysis vmgm_results/full
 Writes vmgm_results/full/summary.md and prints it.
 

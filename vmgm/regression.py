@@ -1,6 +1,6 @@
 """Regression: the new package must reproduce the pilot's saved results exactly.
 
-Usage (from the FAI folder):
+Usage (from the repository root):
     python3 -m vmgm.regression DCOP_prelim_code_results 30
 The second argument is how many seeds per family to check (pilot has 30).
 CP-SAT fields are not compared (ortools is optional).

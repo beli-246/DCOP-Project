@@ -1,8 +1,9 @@
 """Phase 4: paper figures (PDF + PNG) and LaTeX tables, generated from the E1-E5 CSVs.
 
-Usage (from the FAI folder):
-    python3 -m vmgm.figures vmgm_results/full
-Writes <dir>/figures/*.pdf|png and <dir>/tables/*.tex.
+Usage (from the repository root):
+    python3 -m vmgm.figures vmgm_results/full paper
+Reads <csv_dir>/E1-E5.csv and writes <out_dir>/figures/*.pdf|png and <out_dir>/tables/*.tex.
+<out_dir> defaults to <csv_dir>; pass `paper` so LaTeX picks the files up directly.
 
 Every number in a figure or table comes from the CSVs, so re-running the experiments
 re-generates everything. Figures are static, light-mode, print-oriented.
@@ -333,8 +334,9 @@ def tables(d, e1, e2, e3, e4, e5):
                 'tab:e2')
 
 
-def main(d):
+def main(d, out=None):
     e1, e2, e3, e4, e5 = (pd.read_csv(os.path.join(d, f'E{i}.csv')) for i in range(1, 6))
+    d = out or d
     fig_guarantees(d, e2)
     fig_quarantine(d, e2)
     fig_h1(d, e1)
@@ -345,4 +347,5 @@ def main(d):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else 'vmgm_results/full')
+    main(sys.argv[1] if len(sys.argv) > 1 else 'vmgm_results/full',
+         sys.argv[2] if len(sys.argv) > 2 else None)
