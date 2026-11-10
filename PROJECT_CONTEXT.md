@@ -172,7 +172,7 @@ families, random and greedy starts. **Every proven check held in every run.**
 | H1: lying hurts MGM more than RP-MGM / DSA | E1 | **Partly supported.** Block and churn: ρ higher by 3.6 and 1.0 (p < 1e-32). Selfish inflation (T2): no measurable harm. |
 | H2a: blockers and churners flagged | E2 | **Supported.** 100% at k = 1, 2, 3, 6. |
 | H2b: every run finishes | E2, E5 | **Supported** for history + quarantine (100%). Others 53–86% under attack, and they stay stuck at 1000 rounds too. |
-| H2c: direct damage < g_max | E2 | **Supported.** Worst 0.96·g_max over 16,000 runs; 0 false flags. |
+| H2c: direct damage < g_max | E2 | **Supported.** Worst 0.96·g_max over 16,000 E2 runs; 0.99·g_max over all 58,440 history + quarantine runs in E1–E5 (worst in E3; this is the paper's number). 0 false flags. |
 | H2d: total damage | E2 | **Measured.** History + quarantine ρ = 1.10, 1.21, 1.33, 1.71 for k = 1, 2, 3, 6. Quarantine alone (control) = 1.06 → 1.33, so it causes most of the cost. Honest departments lose ≤ ~14 burden units beyond quarantine. |
 | H3: undetectable lying pays, more as κ grows | E3 | **Supported** for `exag_stretch`: profit ≈ 0 at κ ≤ 0.6, +16 to +114 at κ = 4.5, rising with κ. The pilot's clipped T1b liar often loses. |
 | H4: damage grows with neighbours and overlap | E4 | **Supported only for blocking under plain MGM:** within each N, Spearman +0.73 to +0.88 with liar degree. Churn: the pooled correlation was confounded by N (within N it is +0.29, −0.43, −0.51). Sabotage: no effect. Under V-MGM damage stays near zero. At N = 48 with 12 liars, every run still finished. |

@@ -277,7 +277,7 @@ def write_table(d, name, header, rows, colspec, caption, label):
              rf'\begin{{tabular}}{{{colspec}}}', r'\toprule', ' & '.join(header) + r' \\', r'\midrule']
     lines += [' & '.join(r) + r' \\' for r in rows]
     lines += [r'\bottomrule', r'\end{tabular}', r'\end{table}']
-    open(os.path.join(d, 'tables', f'{name}.tex'), 'w').write('\n'.join(lines) + '\n')
+    open(os.path.join(d, 'tables', f'{name}.tex'), 'w', encoding='utf-8').write('\n'.join(lines) + '\n')
 
 
 def tables(d, e1, e2, e3, e4, e5):

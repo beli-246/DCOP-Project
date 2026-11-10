@@ -47,7 +47,7 @@ Every experiment now reports the three quantities separately (Figure 1):
 
 | Quantity | Status | Result (history check + quarantine) |
 |---|---|---|
-| Direct damage per exam | proven (Result 4) | largest 0.99·g_max over 58,440 runs; cap-only reaches 144·g_max |
+| Direct damage per exam | proven (Result 4) | largest 0.99·g_max over all 58,440 runs in E1–E5 (0.96·g_max in E2); cap-only reaches 144·g_max |
 | Termination | proven (Result 5) | 100% of runs finished |
 | Total cost vs honest MGM, ρ | measured only (Result 7) | 1.10 / 1.21 / 1.33 / 1.71 for k = 1 / 2 / 3 / 6 |
 

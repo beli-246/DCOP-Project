@@ -107,7 +107,18 @@ def h2(d):
     s += ['### H2c: direct damage (Result 4)',
           f'Largest student cost added by one liar exam\'s own moves: **{c.dmg_exam_max.max():.3f} · g_max** '
           f'over {len(c)} runs (bound: < 1). False flags in all V-MGM runs: '
-          f'**{int(e[e.protocol.str.startswith("VMGM")].false_flags.sum())}**.', '']
+          f'**{int(e[e.protocol.str.startswith("VMGM")].false_flags.sum())}**.']
+    # Same quantity over every history+quarantine run in E1-E5 (the number in tab_guarantees).
+    parts = [pd.read_csv(os.path.join(d, f'E{i}.csv')) for i in range(1, 6)
+             if os.path.exists(os.path.join(d, f'E{i}.csv'))]
+    hq_all = pd.concat([x[x.protocol == 'VMGM-hist-quar'].assign(exp=f'E{i}')
+                        for i, x in enumerate(parts, 1)])
+    worst = hq_all.loc[hq_all.dmg_exam_max.idxmax()] if len(hq_all) else None
+    if worst is not None:
+        s += [f'Over all {len(hq_all):,} history + quarantine runs in E1-E5: '
+              f'**{hq_all.dmg_exam_max.max():.3f} · g_max** (worst run in {worst.exp}). '
+              'This is the number in the paper\'s Table 2.']
+    s += ['']
     # H2d total damage, with quarantine control
     rows = []
     for k, g in e[e.k > 0].groupby('k'):
@@ -216,7 +227,9 @@ def main(d):
         except FileNotFoundError as err:
             out += [f'_(skipped: {err.filename} not found)_', '']
     text = '\n'.join(out)
-    open(os.path.join(d, 'summary.md'), 'w').write(text)
+    open(os.path.join(d, 'summary.md'), 'w', encoding='utf-8').write(text)
+    if hasattr(sys.stdout, 'reconfigure'):          # Windows consoles default to cp1252
+        sys.stdout.reconfigure(errors='replace')
     print(text)
 
 

@@ -74,6 +74,7 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 
 ### H2c: direct damage (Result 4)
 Largest student cost added by one liar exam's own moves: **0.960 · g_max** over 16000 runs (bound: < 1). False flags in all V-MGM runs: **0**.
+Over all 58,440 history + quarantine runs in E1-E5: **0.990 · g_max** (worst run in E3). This is the number in the paper's Table 2.
 
 ### H2d: total damage, rho (all attacks pooled) and the quarantine control
 `control-quar`: everyone honest, the flagged liars' departments quarantined at the same rounds. It measures what quarantine itself costs.
@@ -151,7 +152,7 @@ Liar profit = drop in the liar's own objective J vs honest play (positive = lyin
 ## H4 (E4): damage grows with the liar's neighbours and with overlap p
 Different N and p are different instances, so Spearman correlation is used instead of paired tests. Damage = extra cost over honest MGM, per liar.
 
-### k = 1
+### k = 1, pooled over N (confounded: the liar's degree grows with N)
 | attack | protocol | Spearman(degree, damage) | Spearman(p, damage) | p deg (Holm) | p p (Holm) |
 |---|---|---|---|---|---|
 | block | MGM | 0.93 | 0.39 | 5.1e-199 | 7.5e-17 |
@@ -162,6 +163,34 @@ Different N and p are different instances, so Spearman correlation is used inste
 | sabotage | VMGM-hist-quar | -0.10 | 0.03 | 2.3e-01 | 1.0e+00 |
 | sabotage_consistent | MGM | -0.08 | 0.00 | 4.9e-01 | 1.0e+00 |
 | sabotage_consistent | VMGM-hist-quar | -0.08 | 0.00 | 4.9e-01 | 1.0e+00 |
+
+### k = 1, within each N (use this one)
+| attack | protocol | N | Spearman(degree, damage) | p (Holm) |
+|---|---|---|---|---|
+| block | MGM | 12 | +0.73 | 1.6e-24 |
+| block | MGM | 24 | +0.86 | 1.2e-44 |
+| block | MGM | 48 | +0.88 | 7.1e-49 |
+| block | VMGM-hist-quar | 12 | -0.30 | 3.2e-03 |
+| block | VMGM-hist-quar | 24 | -0.26 | 1.7e-02 |
+| block | VMGM-hist-quar | 48 | -0.38 | 3.8e-05 |
+| churn | MGM | 12 | +0.29 | 4.8e-03 |
+| churn | MGM | 24 | -0.43 | 6.9e-07 |
+| churn | MGM | 48 | -0.51 | 8.7e-10 |
+| churn | VMGM-hist-quar | 12 | -0.13 | 1.0e+00 |
+| churn | VMGM-hist-quar | 24 | -0.21 | 1.3e-01 |
+| churn | VMGM-hist-quar | 48 | -0.17 | 5.2e-01 |
+| sabotage | MGM | 12 | +0.10 | 1.0e+00 |
+| sabotage | MGM | 24 | +0.16 | 7.6e-01 |
+| sabotage | MGM | 48 | -0.07 | 1.0e+00 |
+| sabotage | VMGM-hist-quar | 12 | -0.13 | 1.0e+00 |
+| sabotage | VMGM-hist-quar | 24 | +0.06 | 1.0e+00 |
+| sabotage | VMGM-hist-quar | 48 | -0.08 | 1.0e+00 |
+| sabotage_consistent | MGM | 12 | -0.12 | 1.0e+00 |
+| sabotage_consistent | MGM | 24 | +0.07 | 1.0e+00 |
+| sabotage_consistent | MGM | 48 | -0.07 | 1.0e+00 |
+| sabotage_consistent | VMGM-hist-quar | 12 | -0.12 | 1.0e+00 |
+| sabotage_consistent | VMGM-hist-quar | 24 | +0.07 | 1.0e+00 |
+| sabotage_consistent | VMGM-hist-quar | 48 | -0.07 | 1.0e+00 |
 
 ### Mean rho by N and p (k = 1 and k = 25% of N pooled)
 | protocol | attack | N | 0.02 | 0.04 | 0.08 |
