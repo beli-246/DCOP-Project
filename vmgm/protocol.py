@@ -96,6 +96,9 @@ def run(inst, x0, types, lam, protocol, max_rounds=300, seed=0, switch_round=20,
             v = 0 if e is None else V(inst, x, e, a)
             vals[i] = v
             viol = (claim > 0) if e is None else (claim - v > gmax or claim - v < -gmax)
+            # Claims must be whole numbers: honest claims always are (V and g are integers), and integer
+            # claims keep the potential Phi an integer, which bounds the number of rounds (Result 5).
+            viol = viol or not float(claim).is_integer()
             if e is not None and not viol:
                 ok, new = board.check(e, x[e], a, claim - v, gmax)
                 if protocol['audit'] == 'hist' and not ok:
