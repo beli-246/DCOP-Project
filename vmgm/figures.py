@@ -76,7 +76,9 @@ def line(ax, xs, ms, hs, key, **kw):
 def save(fig, d, name):
     os.makedirs(os.path.join(d, 'figures'), exist_ok=True)
     for ext in ('pdf', 'png'):
-        fig.savefig(os.path.join(d, 'figures', f'{name}.{ext}'), dpi=200)
+        # no creation date in the PDF, so regenerating gives byte-identical files
+        meta = {'CreationDate': None} if ext == 'pdf' else None
+        fig.savefig(os.path.join(d, 'figures', f'{name}.{ext}'), dpi=200, metadata=meta)
     plt.close(fig)
 
 
