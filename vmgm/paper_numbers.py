@@ -155,6 +155,13 @@ def numbers(d):
     say('Result 6', 'runs with liars ending above the starting cost',
         f'{int((lr.F > lr.F0).sum())} of {len(lr):,}; at most {pct(((lr.F - lr.F0) / allowed).max(), 1)} of the bound')
 
+    head('Round bound (Result 5 with integer claims)')
+    # rounds <= Phi_start + 1 <= F_start + |E_L| * g_max + 1 (the per-run Phi_start version is checked in every run)
+    rb = pd.concat([e[e.protocol == HQ].assign(gm=e['gmax'] if 'gmax' in e else 50) for e in (e1, e2, e3, e4, e5)])
+    rb = rb.assign(bound=rb.F0 + 4 * rb.k * rb.gm + 1)
+    say('Result 5', 'history + quarantine: largest number of rounds, and largest rounds / (F_start + |E_L| g_max + 1)',
+        f'{int(rb.rounds.max())} rounds; {pct((rb.rounds / rb.bound).max(), 1)} of the bound')
+
     head('H1 (RQ1, Table 4, Figure 3)')
     a1 = e1[e1.k > 0]
     for other in ('RP-MGM', 'DSA'):

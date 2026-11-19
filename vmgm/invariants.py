@@ -5,6 +5,7 @@ Which checks apply depends on the protocol:
   * direct_damage         - audit == 'hist' (Result 4, unflagged part); with quarantine
                             also over the whole run.
   * potential_decreases   - hist + quarantine (proposed Result 5, termination).
+  * round bound           - hist + quarantine: rounds <= Phi_start + 1 (Result 5 with integer claims).
   * global_bound          - hist + quarantine (proposed Result 6:
                             F_final <= F_start + 2 * gmax * (number of liar exams)).
   * finished              - hist + quarantine (follows from Result 5; a failure here with the
@@ -125,7 +126,12 @@ def check_all(inst, res, types, protocol):
         if protocol['response'] == 'quarantine':
             if tot >= 1.0:
                 raise InvariantError(f'Result 4 (quarantine) violated: direct damage {tot:.3f} * gmax per exam')
-            potential_decreases(inst, res, types)
+            series = potential_decreases(inst, res, types)
+            # Round bound: with integer claims Phi is an integer that falls by >= 1 in every round with a
+            # move, so rounds <= Phi_start + 1 (the last round is the one in which nothing can move).
+            out['round_bound'] = series[0] + 1
+            if res.rounds > out['round_bound'] + EPS:
+                raise InvariantError(f'round bound violated: {res.rounds} rounds > Phi_start + 1 = {out["round_bound"]}')
             out['F_final'], out['F_bound'] = global_bound(inst, res, types)
             if res.capped:
                 raise InvariantError(f'hist+quarantine run did not finish in {res.rounds} rounds '
