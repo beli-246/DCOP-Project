@@ -147,7 +147,7 @@ def _result(x, r, flagged, flag_round, capped, x0, trace, flag_scores, board):
                      trace=trace, flag_scores=flag_scores, end_scores=copy.deepcopy(board.scores))
 
 
-DSA_ATTACKS = ('honest', 'exag_naive', 'exag_consistent', 'sabotage')
+DSA_ATTACKS = ('honest', 'exag_naive', 'exag_consistent', 'sabotage', 'churn')
 
 
 def run_dsa(inst, x0, types, lam, q=0.6, max_rounds=300, seed=0):

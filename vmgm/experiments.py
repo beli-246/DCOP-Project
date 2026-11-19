@@ -78,7 +78,7 @@ def one(inst, x0, sd, types, pname, ref, lam=LAM, max_rounds=300, check=True, **
 
 # ------------------------------------------------------------------ E1
 E1_PROTOCOLS = ['MGM', 'RP-MGM', 'DSA', 'VMGM-hist-quar']
-E1_ATTACKS = ['hijack', 'maxbound', 'block', 'churn']
+E1_ATTACKS = ['hijack', 'maxbound', 'block', 'churn', 'sabotage']
 
 
 def job_E1(family, sd):
