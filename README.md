@@ -86,7 +86,7 @@ All commands run from the repository root. Python 3.10+.
 
 ```bash
 pip install -r requirements.txt
-python -m unittest discover -s vmgm/tests -t . -v      # 19 unit tests, about 4 minutes
+python -m unittest discover -s vmgm/tests -t . -v      # all unit tests, about 3-4 minutes
 ```
 
 The result files are already in [vmgm_results/full/](vmgm_results/full/). To regenerate everything:
