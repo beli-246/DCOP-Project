@@ -74,6 +74,17 @@ python3 -m vmgm.figures vmgm_results/full paper
 This writes `paper/figures/fig1–fig5` (`.pdf` for LaTeX, `.png` for the README) and `paper/tables/tab_guarantees.tex`
 and `paper/tables/tab_e2_k3.tex`, all from the CSVs.
 
+## CP-SAT reference and demo (`cpsat.py`, `demo.py`)
+
+```bash
+python3 -m vmgm.cpsat vmgm_results/full --time-loose 60 --time-tight 300 --workers 8   # -> cpsat.csv
+python3 -m vmgm.demo                                                                  # one churner, round by round
+```
+
+`cpsat.py` computes the best timetable centrally from everyone's true preferences (a reference no
+distributed algorithm can reach). Pair costs come from `model.pc`, and every solution is checked to have
+`F_cost` equal to the solver's objective. `demo.py` runs the real engine on one small instance.
+
 ## Every number in the report (`paper_numbers.py`)
 
 ```bash

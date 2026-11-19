@@ -205,8 +205,11 @@ Other findings:
 1. **Record mode: decided.** The code records claims when posted, and the report now describes exactly
    that (Result 2, Algorithm 1). Switching to `'executed'` would change 3 runs and need a re-run.
 2. **Check the proofs** of Results 5–6 in the draft line by line (second person). Optionally strengthen the Result 7 example.
-3. **CP-SAT reference values and the pyDCOP agreement check** were not done. The report says so in
-   Limitations and marks them "not fulfilled" in the Contribution section (`% TODO(team)` there).
+3. **CP-SAT reference values: done** (`vmgm/cpsat.py`, `vmgm_results/full/cpsat.csv`). All 50 loose
+   instances are solved to proven optimality; honest MGM ends 34% above the best timetable. Tight
+   instances (300 s limit) give a timetable and a lower bound. **Demo: done** (`python -m vmgm.demo`).
+   **pyDCOP agreement check: not done**; the report says so in Limitations. The Contribution section is
+   left for the team to word (`% TODO(team)` there).
 4. **Figures:** all five are in the Results section (the report limit is 8 pages); the appendix is gone.
 5. **Paper, still to do:** each member confirms their own Contribution row; resolve the remaining
    `% TODO(team)` lines; second-person check of the proofs. Done in the draft:

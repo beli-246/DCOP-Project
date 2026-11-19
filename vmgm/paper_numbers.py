@@ -216,6 +216,36 @@ def numbers(d):
         mg, vq = g[g.protocol == 'MGM'].extra.mean(), g[g.protocol == HQ].extra.mean()
         say('RQ4', f'{a}, k=1: mean extra cost MGM / history + quarantine / reduction',
             f'{mg:.0f} / {vq:.0f} / {pct(1 - vq / mg)}')
+
+    head('CP-SAT reference: distance from the best timetable (Setup, Results RQ2, Limitations)')
+    path = os.path.join(d, 'cpsat.csv')
+    if not os.path.exists(path):
+        out.append('_(skipped: cpsat.csv not found; run python -m vmgm.cpsat)_')
+    else:
+        cp = pd.read_csv(path)
+        for fam, g in cp.groupby('family'):
+            fe = g[g.status != 'OPTIMAL']
+            say('Setup', f'{fam}: instances solved to proven optimality',
+                f'{int((g.status == "OPTIMAL").sum())} of {len(g)} (limit {g.time_limit.max():.0f} s)'
+                + (f'; gap of the others median {pct(fe.gap.median(), 1)}, largest {pct(fe.gap.max(), 1)}'
+                   if len(fe) else ''))
+        # F / F_best <= F / optimum <= F / F_bound, reported as % above the best timetable
+        j = e2.merge(cp[['family', 'seed', 'F_best', 'F_bound']], on=['family', 'seed'])
+        j = j.assign(lo=j.F / j.F_best - 1, hi=j.F / j.F_bound - 1)
+        hon = j[(j.k == 0) & (j.protocol == 'MGM')]
+        for (fam, start), g in hon.groupby(['family', 'start']):
+            say('RQ2', f'honest MGM above the best timetable, {fam}, {start} start',
+                f'{pct(g.lo.mean())}' + ('' if (g.lo == g.hi).all() else f' to {pct(g.hi.mean())}'))
+        hl = hon[hon.family == 'loose']
+        say('RQ2', 'honest MGM above the best timetable, loose, both starts', pct(hl.lo.mean()))
+        at = j[(j.k > 0) & j.protocol.isin(['MGM', HQ])]
+        for p in ('MGM', HQ):
+            g = at[(at.protocol == p) & (at.family == 'loose')]
+            say('RQ2', f'{p} under attack above the best timetable, loose, by k',
+                ', '.join(f'k={k}: {pct(v)}' for k, v in g.groupby('k').lo.mean().items()))
+            g = at[at.protocol == p]
+            say('RQ2', f'{p} under attack above the best timetable, both families, by k (range)',
+                ', '.join(f'k={k}: {pct(gg.lo.mean())}-{pct(gg.hi.mean())}' for k, gg in g.groupby('k')))
     return '\n'.join(['# Numbers used in the paper', f'Source: `{d}`'] + out) + '\n'
 
 

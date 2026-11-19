@@ -55,7 +55,26 @@ Blocking damage grows with the liar's neighbours under MGM; V-MGM removes almost
 
 ![Figure 5](paper/figures/fig5_h4_neighbours.png)
 
-Unit tests and the number check (screenshots of the actual output):
+## Demo: one churning department
+
+```bash
+python -m vmgm.demo            # add --plot docs/screenshots/demo_cost.png to redraw the plot
+```
+
+Six departments; department 0 *churns*: every round it moves an exam to the slot with the best public
+gain and claims the most the one-post check allows. Each post alone is within the rules, so the
+one-post check never catches it. Under plain MGM it moves the same exam back and forth for all 300
+rounds and the run never finishes. Under V-MGM its second post contradicts its first (the board's
+score for slot 0 would have to be both 0 and -100), so it is flagged in round 2, quarantined, and the
+other departments finish the timetable in 17 rounds, close to what they reach when nobody lies.
+
+![demo cost per round](docs/screenshots/demo_cost.png)
+
+![demo output](docs/screenshots/demo.png)
+
+## Tests and the number check
+
+Screenshots of the actual output:
 
 | `python -m unittest ...` | `python -m vmgm.paper_numbers ...` (excerpt) |
 |---|---|
@@ -78,7 +97,8 @@ The result files are already in [vmgm_results/full/](vmgm_results/full/). To reg
 | 2. Statistics for every hypothesis | `python -m vmgm.analysis vmgm_results/full` | `vmgm_results/full/summary.md` | seconds |
 | 3. Every number quoted in the paper | `python -m vmgm.paper_numbers vmgm_results/full` | `vmgm_results/full/paper_numbers.md` | seconds |
 | 4. Figures 1–5, Tables 2 and 5 of the paper | `python -m vmgm.figures vmgm_results/full paper` | `paper/figures/`, `paper/tables/` | under a minute |
-| 5. Compile the report | `cd paper && tectonic DCOP_v4.tex` (or upload `paper/` to Overleaf) | `paper/DCOP_v4.pdf` | about a minute |
+| 5. CP-SAT reference values (best timetable, computed centrally) | `python -m vmgm.cpsat vmgm_results/full --time-loose 60 --time-tight 300 --workers 8` | `vmgm_results/full/cpsat.csv` | about 4 h (tight instances) |
+| 6. Compile the report | `cd paper && tectonic DCOP_v4.tex` (or upload `paper/` to Overleaf) | `paper/DCOP_v4.pdf` | about a minute |
 
 Where each part of the report comes from:
 
@@ -112,8 +132,10 @@ Where each part of the report comes from:
 │   ├── analysis.py                statistics -> summary.md
 │   ├── paper_numbers.py           every number in the paper -> paper_numbers.md
 │   ├── figures.py                 figures and LaTeX tables
+│   ├── cpsat.py                   CP-SAT reference: the best timetable, for context
+│   ├── demo.py                    one churner under MGM and V-MGM, round by round
 │   └── tests/                     unit tests
-├── vmgm_results/full/             E1–E5.csv, summary.md, paper_numbers.md, full_run.log
+├── vmgm_results/full/             E1–E5.csv, cpsat.csv, summary.md, paper_numbers.md, run logs
 ├── docs/screenshots/              screenshots used in this README
 └── PROJECT_CONTEXT.md             team handoff note: decisions and status
 ```

@@ -128,3 +128,17 @@ Source: `vmgm_results/full`
 - **RQ4** | sabotage_consistent, MGM: Spearman(liar degree, extra cost) within N: N=12: -0.12, N=24: +0.07, N=48: -0.07
 - **RQ4** | sabotage_consistent: reduction by history + quarantine, k=1 and N/4 pooled: 0%
 - **RQ4** | sabotage_consistent, k=1: mean extra cost MGM / history + quarantine / reduction: 94 / 94 / 0%
+
+## CP-SAT reference: distance from the best timetable (Setup, Results RQ2, Limitations)
+
+- **Setup** | loose: instances solved to proven optimality: 50 of 50 (limit 60 s)
+- **Setup** | tight: instances solved to proven optimality: 2 of 19 (limit 300 s); gap of the others median 22.1%, largest 35.0%
+- **RQ2** | honest MGM above the best timetable, loose, greedy start: 33%
+- **RQ2** | honest MGM above the best timetable, loose, random start: 36%
+- **RQ2** | honest MGM above the best timetable, tight, greedy start: 52% to 91%
+- **RQ2** | honest MGM above the best timetable, tight, random start: 58% to 99%
+- **RQ2** | honest MGM above the best timetable, loose, both starts: 34%
+- **RQ2** | MGM under attack above the best timetable, loose, by k: k=1: 214%, k=2: 222%, k=3: 234%, k=6: 292%
+- **RQ2** | MGM under attack above the best timetable, both families, by k (range): k=1: 191%-207%, k=2: 197%-213%, k=3: 207%-223%, k=6: 253%-270%
+- **RQ2** | VMGM-hist-quar under attack above the best timetable, loose, by k: k=1: 59%, k=2: 84%, k=3: 112%, k=6: 196%
+- **RQ2** | VMGM-hist-quar under attack above the best timetable, both families, by k (range): k=1: 59%-70%, k=2: 78%-90%, k=3: 99%-111%, k=6: 165%-178%
