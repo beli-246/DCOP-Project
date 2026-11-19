@@ -54,7 +54,7 @@ for each across E1–E5:
 
 | Quantity | Status | Result (history check + quarantine) |
 |---|---|---|
-| Direct damage per exam | proven (Result 4) | largest 0.99·g_max over all 58,440 runs in E1–E5 (0.96·g_max in E2); cap-only reaches 144·g_max |
+| Direct damage per exam | proven (Result 4) | largest 0.99·g_max over all 58,440 runs in E1–E5 (0.96·g_max in E2); cap-only reaches 144·g_max (458 in the 1000-round runs of E5) |
 | Termination | proven (Result 5) | 100% of runs finished |
 | Total cost vs honest MGM, ρ | measured only (Result 7) | 1.10 / 1.21 / 1.33 / 1.71 for k = 1 / 2 / 3 / 6 |
 
@@ -83,9 +83,10 @@ the potential of Result 5 falls in every round. 123,720 V-MGM runs, no violation
 ## Other changes
 
 * **H1** now holds for malicious attacks only: selfish inflation does no measurable harm to MGM.
-* **H3:** the original design could not show anything, because generated preferences filled the whole
-  scale. We now vary how much of the scale true preferences use. The strongest undetectable liar's
-  profit rises with κ in all 18 settings.
+* **H3:** the original undetectable liar (T1b) multiplied its true costs by λ and clipped them at g_max,
+  and often lost. We added the strongest undetectable liar (T1c, preferences stretched from each exam's
+  lowest cost) and also vary how much of the scale true preferences use. T1c's profit rises with κ in all
+  18 settings.
 * **H4:** the liar's number of neighbours grows with N, so we now compare within each N. Blocking damage
   grows with neighbours under MGM; churn has no consistent trend.
 * **Collusion** stays out of scope. The checks and Results 2–6 work one department at a time, so the

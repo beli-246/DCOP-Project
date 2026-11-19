@@ -72,7 +72,7 @@
 \maketitle
 \vspace{-2.2em}
 \begin{abstract}
-In MGM, a standard distributed algorithm, the department that \emph{announces} the biggest improvement moves first, so a liar can grab turns or stop progress. In exam timetabling, the clash and back-to-back part of each improvement can be recomputed by anyone from public data; only the preference part is private, and it lies on a fixed scale $0$ to $\gmax$. Checking one announcement at a time misses repeated small lies; checking a department's history of claims catches every contradiction; lies that never contradict themselves cannot be caught from public data. With the history check and quarantine of caught departments we prove three \emph{separate} guarantees: the student cost a liar's own moves add is below $\gmax$ per exam; the run always finishes; and the final cost exceeds the starting cost by at most $2\gmax$ per dishonest exam. No bound relative to honest MGM's result is possible, so that ratio is measured. In 183{,}400 simulated runs with up to 6 of 12 departments dishonest, the history check flagged every blocker, 99.8--100\% of churners and no honest department, every run finished, and the final cost was $1.10$--$1.71$ times honest MGM's, about half of the excess being the price of quarantine.
+In MGM, a standard distributed algorithm, the department that \emph{announces} the biggest improvement moves first, so a liar can grab turns or stop progress. In exam timetabling, the clash and back-to-back part of each improvement can be recomputed by anyone from public data; only the preference part is private, and it lies on a fixed scale $0$ to $\gmax$. Checking one announcement at a time misses repeated small lies; checking a department's history of claims catches every contradiction; lies that never contradict themselves cannot be caught from public data. With the history check and quarantine of caught departments we prove three \emph{separate} guarantees: the student cost a liar's own moves add is below $\gmax$ per exam; the run always finishes; and the final cost exceeds the starting cost by at most $2\gmax$ per dishonest exam. No bound relative to honest MGM's result is possible, so that ratio is measured. In 183{,}400 simulated runs with up to 6 of 12 departments dishonest, the history check flagged every blocker, 99.5--100\% of churners and no honest department, every history + quarantine run finished, and the final cost was $1.10$--$1.71$ times honest MGM's, about half of the excess being the price of quarantine.
 \end{abstract}
 
 %=====================================================================
@@ -156,7 +156,7 @@ T2a/b & Inflate (selfish): huge / in scale & $U_i+10^6$ / $V+\gmax$ & yes / neve
 T3a/b & Block / churn (malicious) & $10^6$ always / best-$V$ move, claim $V+\gmax$ & yes / never & yes / if incons. \\
 T4 & Sabotage (malicious) & harmful move ($-\gmax<V<0$), claim $V+\gmax$ & never & if incons. \\
 T5 & Consistent sabotage (malicious) & most harmful move that keeps its history consistent, largest consistent claim & never & never \\
-T6 & Delayed contradiction & T5 for 20 rounds, then T3a & from round 20 & from round 20 \\
+T6 & Delayed contradiction & T5 in rounds 1--19, then T3a & from round 20 & from round 20 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -231,7 +231,7 @@ An honest move lowers $\Phi$ by its true gain $\Delta>0$. A move by an unflagged
 With the history check and quarantine, $F_{\text{final}}\le F_{\text{start}}+2\,\gmax\,|E_L|$.
 \emph{Proof.} By the proof of Result~\ref{res:term}, $\Phi_{\text{final}}\le\Phi_{\text{start}}$. Since $0\le\tilde G_j,G_j\le|E_j|\gmax$: $F_{\text{final}}\le\Phi_{\text{final}}+G_L\le\Phi_{\text{start}}+|E_L|\gmax\le F_{\text{start}}+2|E_L|\gmax$. $\square$
 \end{result}
-Honest MGM satisfies $F_{\text{final}}\le F_{\text{start}}$, so liars can make the result worse than the starting timetable only by a fixed amount. This is a worst-case bound and loose in practice: in our runs with liars the final cost was above the start in only 124 of 58{,}240 runs, by at most 20\% of the allowed amount. Neither Result~\ref{res:term} nor~\ref{res:global} holds with cap only or the one-post check, where a flagged department can churn forever; the experiments show it does.
+Honest MGM satisfies $F_{\text{final}}\le F_{\text{start}}$, so liars can make the result worse than the starting timetable only by a fixed amount. This is a worst-case bound and loose in practice: in our runs with liars the final cost was above the start in only 124 of 58{,}240 runs, by at most 20.5\% of the allowed amount. Neither Result~\ref{res:term} nor~\ref{res:global} holds with cap only or the one-post check, where a flagged department can churn forever; the experiments show it does.
 
 \begin{result}[No bound relative to honest MGM]
 \label{res:neg}
@@ -243,9 +243,9 @@ In this example the extra cost is the liar's own preference cost. We do not have
 
 \subsection{Experimental setup}
 \label{sec:setup}
-\textbf{Instances} (randomly generated): $N=12$ departments with 4 exams each; each pair of exams shares students with probability $p$, with $n_{ef}$ uniform in $\{5,\dots,40\}$; $W_h=10$, $W_s=2$, $\gmax=50$, $\lambda=3$, preferences uniform on the scale. \emph{Loose} family ($S=10$, $p=0.08$) and \emph{tight} family ($S=6$, $p=0.14$); random or greedy starting timetables; seeds 100--149. \Cref{tab:grid} lists the five experiments. \textbf{Algorithms:} honest MGM (reference), RP-MGM, DSA, and V-MGM with the one-post or history check and cap only or quarantine. DSA posts no gains, so the gain attacks of E1 have nothing to act on: its rows are honest DSA. \textbf{Control:} everyone honest, with the departments that V-MGM flagged quarantined from the same rounds; this isolates what quarantine itself costs.
+\textbf{Instances} (randomly generated): $N=12$ departments with 4 exams each, two slots per day; each pair of exams shares students with probability $p$, with $n_{ef}$ uniform in $\{5,\dots,40\}$; $W_h=10$, $W_s=2$, $\gmax=50$, $\lambda=3$, preferences uniform on the scale. \emph{Loose} family ($S=10$, $p=0.08$) and \emph{tight} family ($S=6$, $p=0.14$); random or greedy starting timetables; seeds 100--149. \Cref{tab:grid} lists the five experiments. \textbf{Algorithms:} honest MGM (reference), RP-MGM, DSA, and V-MGM with the one-post or history check and cap only or quarantine. DSA posts no gains, so the gain attacks of E1 have nothing to act on: its rows are honest DSA. \textbf{Control:} everyone honest, with the departments that V-MGM flagged quarantined from the same rounds; this isolates what quarantine itself costs.
 
-\textbf{Metrics} (same instance, start and seed), kept apart as in \Cref{tab:guarantees}. \emph{Direct damage}: per liar exam, the sum of $-V$ over its executed moves (the quantity of Result~\ref{res:bound}), in units of $\gmax$, largest over exams. \emph{Total damage}: $\rho$ and the extra cost $F-F_{\text{honest MGM}}$. \emph{Honest loss} $L$ and \emph{liar profit}: the rise in the honest departments' total burden, and the drop in a liar's own $J_i$, against everyone honest under the same protocol. \emph{Finished}: no positive priority left within 300 rounds (a freeze of plain MGM, with positive priorities but no possible move, counts as not finished). \emph{Detection}: share of liars flagged; \emph{false flags}: honest departments flagged. \textbf{Statistics:} paired runs, 95\% confidence intervals (t-based), Wilcoxon signed-rank tests with Holm correction within each hypothesis; Spearman correlations where runs cannot be paired.
+\textbf{Metrics} (same instance, start and seed), kept apart as in \Cref{tab:guarantees}. \emph{Direct damage}: per liar exam, the sum of $-V$ over its executed moves (the quantity of Result~\ref{res:bound}), in units of $\gmax$, largest over exams. \emph{Total damage}: $\rho$ and the extra cost $F-F_{\text{honest MGM}}$. \emph{Honest loss} $L$ and \emph{liar profit}: the rise in the honest departments' total burden, and the drop in a liar's own $J_i$, against everyone honest under the same protocol. \emph{Finished}: no positive priority left within 300 rounds (a freeze of plain MGM, with positive priorities but no possible move, counts as not finished). \emph{Detection}: share of liars flagged; \emph{false flags}: honest departments flagged. \textbf{Statistics:} paired runs, 95\% confidence intervals (t-based), Wilcoxon signed-rank tests with Holm correction over each set of tests reported together; Spearman correlations where runs cannot be paired.
 
 \textbf{Verification and reproducibility.} Every V-MGM run is checked automatically against the proven results (\Cref{tab:guarantees}), including that $\Phi$ of Result~\ref{res:term} falls every round; a violation would stop the experiment, and none occurred. Unit tests check the worked example and that V-MGM equals MGM when everyone is honest. The repository holds the code, the result files, and a script that prints every number in this paper (\texttt{python -m vmgm.paper\_numbers}).
 
@@ -280,9 +280,9 @@ E5 & rounds & MGM, RP-MGM, one-post+cap, hist.+cap, hist.+quar. & T3a, T3b, T4 &
 \toprule
 & Hypothesis & Experiment & Proven wrong if & Outcome \\
 \midrule
-H1 & Lying about gains (T2, T3) harms MGM more than RP-MGM and DSA & E1 & MGM $-$ RP-MGM interval includes 0 & \textbf{Partly}: yes for T3 ($+3.5$ to $+3.6$, $+0.9$ to $+1.1$; $p<10^{-32}$); no for T2 \\
+H1 & Lying about gains (T2, T3) harms MGM more than RP-MGM and DSA & E1 & MGM $-$ RP-MGM interval includes 0 & \textbf{Partly}: yes for T3 ($\rho$ $+3.5$ to $+3.6$, $+0.9$ to $+1.1$; $p<10^{-32}$); no for T2 \\
 H2a & History check flags all blockers and churners & E2 & detection $<95\%$ & \textbf{Holds}: blockers 100\%, churners 99.8--100\% \\
-H2b & With quarantine, every run finishes & E2, E5 & a run does not finish & \textbf{Holds}: 100\% (others 55--77\%) \\
+H2b & With quarantine, every run finishes & E2, E5 & a run does not finish & \textbf{Holds}: 100\% (others 55--77\% in E2, 12--48\% in E5) \\
 H2c & Direct damage $<\gmax$ per exam & all & any exam reaches $\gmax$ & \textbf{Holds}: max $0.99\,\gmax$ \\
 H2d & Total damage stays small as $k$ grows & E2 + control & --- (measured) & $\rho=1.10\to1.71$ for $k=1\to6$; quarantine alone $1.06\to1.33$ \\
 H3 & Undetectable lying still pays, more as $\kappa$ grows & E3 & profit interval includes 0 at every $\kappa$, or no rise & \textbf{Holds} for the stretched liar (T1c): rises with $\kappa$ in all 18 settings \\
@@ -293,7 +293,7 @@ H4 & Damage grows with the liar's neighbours and overlap $p$ & E4 & no positive 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.74\textwidth]{figures/fig1_guarantees.pdf}
+\includegraphics[width=0.7\textwidth]{figures/fig1_guarantees.pdf}
 \caption{The three guarantees, kept apart (E2, $k$ dishonest departments out of 12). (a) Direct damage, proven: the student cost added by a liar exam's own moves under history check + quarantine never reaches the bound of Result~\ref{res:bound} (largest $0.96\,\gmax$ in E2, $0.99\,\gmax$ over all experiments); with cap only it reaches $144\,\gmax$. (b) Total damage, measured: final cost relative to honest MGM grows with $k$; quarantining the same departments when nobody lies (control) accounts for about half of the excess (61\% at $k=1$, 46\% at $k=6$). (c) Termination: history check + quarantine finishes every run (Result~\ref{res:term}); MGM, RP-MGM and cap only do not, and a 1000-round limit does not help (E5). Error bars: 95\% CIs.}
 \label{fig:guar}
 \end{figure}
@@ -302,7 +302,7 @@ H4 & Damage grows with the liar's neighbours and overlap $p$ & E4 & no positive 
 
 \input{tables/tab_e2_k3}
 
-\textbf{Quarantine vs cap only (\Cref{tab:e2}, \Cref{fig:quar}).} For selfish attacks (T1a, T2a), cap only already gives $\rho=1.00$, while quarantine costs $0.11$ at $k=1$ rising to $0.66$ at $k=6$. Against churn and mixed attacks, cap only gives $\rho\approx2.2$--$2.3$ at $k=3$ and no run finishes; against sabotage, $\rho=1.68$ with 24\% finished. Quarantine is needed there, and only it carries Results~\ref{res:term}--\ref{res:global}; a graded response (cap for oversized claims, quarantine for contradictions) is future work.
+\textbf{Quarantine vs cap only (\Cref{tab:e2}, \Cref{fig:guar}b).} For selfish attacks (T1a, T2a), cap only already gives $\rho=1.00$, while quarantine costs $0.11$ at $k=1$ rising to $0.66$ at $k=6$. Against churn and mixed attacks, cap only gives $\rho\approx2.2$--$2.3$ at $k=3$ and fewer than 1\% of runs finish; against sabotage, $\rho=1.68$ with 24\% finished. Quarantine is needed there, and only it carries Results~\ref{res:term}--\ref{res:global}; a graded response (cap for oversized claims, quarantine for contradictions) is future work.
 
 \begin{figure}[!t]
 \centering
@@ -318,22 +318,22 @@ H4 & Damage grows with the liar's neighbours and overlap $p$ & E4 & no positive 
 \end{minipage}
 \end{figure}
 
-\textbf{Lying vs algorithms (RQ1, \Cref{fig:h1}).} Blocking and churning raise MGM's cost over RP-MGM by $3.5$--$3.6$ and $0.9$--$1.1$ (for $k=1$--$3$; Holm $p<10^{-32}$), and blocking makes MGM $4.6$ times worse than honest play, against $1.2$ under V-MGM. Selfish inflation (T2) does no measurable harm (differences $-0.03$ to $-0.01$), so H1 holds for malicious attacks only. RP-MGM and DSA ignore claims and so are not hurt by them, but they cannot name the liar, and RP-MGM never finishes under churn.
+\textbf{Lying vs algorithms (RQ1, \Cref{fig:h1}).} Blocking and churning raise MGM's $\rho$ above RP-MGM's by $3.5$--$3.6$ and $0.9$--$1.1$ (for $k=1$--$3$; Holm $p<10^{-32}$), and blocking makes MGM $4.6$ times worse than honest play, against $1.2$ under V-MGM. Selfish inflation (T2) does no measurable harm (differences $-0.03$ to $-0.01$), so H1 holds for malicious attacks only. RP-MGM and DSA do not use claims to choose who moves, so blocking cannot freeze them ($\rho=1.01$); but churn still raises RP-MGM's $\rho$ to $1.26$ and almost never lets it finish (4 of 600 runs in E1, none in E2), and neither can name the liar.
 
-\textbf{Undetectable lying (RQ3, \Cref{fig:h3}).} No public check can flag a department that plays truthfully for stretched preferences (T1c, Result~\ref{res:undet}), and none of the E3 liars was flagged. The stretched liar's profit is small or negative for $\kappa\le0.56$ ($-10$ to $+2$) and rises with $\kappa$ in all 18 settings ($k=1$ and $3$; Spearman $+0.09$ to $+0.57$, Holm $p<0.05$), up to $+114$ at $\kappa=4.5$. This only works when true preferences leave room on the scale: the review version's T1b liar, which clips $\lambda g$ at $\gmax$, rises in 7 of 9 settings and, when preferences fill the scale and $\lambda\ge3$, loses.
+\textbf{Undetectable lying (RQ3, \Cref{fig:h3}).} No public check can flag a department that plays truthfully for stretched preferences (T1c, Result~\ref{res:undet}), and none of the E3 liars was flagged. The stretched liar's profit is small or negative for $\kappa\le0.56$ ($-10$ to $+2$ at $k=1$; $-15$ to $+2.5$ at $k=3$) and rises with $\kappa$ in all 18 settings ($k=1$ and $3$; Spearman $+0.09$ to $+0.57$, Holm $p<0.05$), up to $+114$ at $\kappa=4.5$ ($+122$ at $k=3$). How the liar exaggerates matters: the review version's T1b liar, which multiplies its true costs by $\lambda$ and clips them at $\gmax$, rises in only 7 of 9 settings and, when preferences fill the scale and $\lambda\ge3$, loses.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.56\textwidth]{figures/fig4_h3_undetectable.pdf}
-\caption{Profit of an undetectable liar (E3, $k=1$, T1c). It rises with $\kappa=\gmax/(W_s\bar n)$; true preferences that fill less of the scale leave more room to exaggerate.}
+\includegraphics[width=0.54\textwidth]{figures/fig4_h3_undetectable.pdf}
+\caption{Profit of an undetectable liar (E3, $k=1$, T1c). It rises with $\kappa=\gmax/(W_s\bar n)$ for every preference spread and $\lambda$.}
 \label{fig:h3}
 \end{figure}
 
-\textbf{Problem size and neighbours (RQ4, \Cref{fig:h4}).} Because a liar's number of neighbours grows with $N$, we compare within each $N$. Under MGM, blocking damage grows with the liar's neighbours at every $N$ (Spearman $+0.73$ to $+0.88$); churn has no consistent trend ($+0.29$ at $N=12$, negative at $N=24,48$), and sabotage none. V-MGM removes 99\% of the blocking and 94\% of the churn damage, but only 44\% of plain sabotage and none of consistent sabotage (T5), as Result~\ref{res:undet} predicts. With $N=48$ and 12 dishonest departments, all 600 runs finished.
+\textbf{Problem size and neighbours (RQ4, \Cref{fig:h4}).} Because a liar's number of neighbours grows with $N$, we compare within each $N$. Under MGM, blocking damage grows with the liar's neighbours at every $N$ (Spearman $+0.73$ to $+0.88$); churn has no consistent trend ($+0.29$ at $N=12$, negative at $N=24,48$), and sabotage none. With one liar, V-MGM removes 99\% of the blocking and 94\% of the churn damage, but only 44\% of plain sabotage and none of consistent sabotage (T5), as Result~\ref{res:undet} predicts (98\%, 82\%, 14\% and 0\% with $k=1$ and $\lceil N/4\rceil$ pooled). With $N=48$ and 12 dishonest departments, all 600 runs finished.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.55\textwidth]{figures/fig5_h4_neighbours.pdf}
+\includegraphics[width=0.5\textwidth]{figures/fig5_h4_neighbours.pdf}
 \caption{Damage against the liar's number of neighbours, separately for each $N$ (E4, $k=1$). Under MGM blocking damage grows with degree at every $N$; churn has no consistent trend. V-MGM removes almost all of both.}
 \label{fig:h4}
 \end{figure}

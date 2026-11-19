@@ -5,16 +5,16 @@
 \label{tab:guarantees}
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X}
 \toprule
-Property & Applies to & Status & Evidence (E1--E5) \\
+Property & Applies to & Status & Evidence (E2 unless stated) \\
 \midrule
 Honest posts never flagged & any check & Proven (R1, R2) & 0 false flags \\
 Contradictory histories flagged & history check & Proven (R2) & blockers 100\%, churners 99.9\% flagged, $k\le 6$ \\
 Consistent lies undetectable & any public check & Proven (R3) & consistent liars: 0\% flagged \\
-Direct student cost $< g_{max}$ per exam & history + quarantine & Proven (R4) & max 0.99$\,g_{max}$ (58,440 runs) \\
- & history + cap only & Not guaranteed & max 144$\,g_{max}$ \\
-Run finishes & history + quarantine & Proven (R5, new) & 100\% of 58,440 runs \\
- & cap only / one-post & Not guaranteed & 75\% finished \\
-$F_{final}\le F_{start}+2g_{max}|E_L|$ & history + quarantine & Proven (R6, new) & held in all 58,240 runs; above start in 124, by $\le$20\% of the bound \\
+Direct student cost $< g_{max}$ per exam & history + quarantine & Proven (R4) & max 0.99$\,g_{max}$ (all 58,440 runs, E1--E5) \\
+ & history + cap only & Not guaranteed & max 144$\,g_{max}$ (458 in E5, 1000 rounds) \\
+Run finishes & history + quarantine & Proven (R5, new) & 100\% of all 58,440 runs, E1--E5 \\
+ & cap only / one-post & Not guaranteed & 75\% finished (E5: 46\%) \\
+$F_{final}\le F_{start}+2g_{max}|E_L|$ & history + quarantine & Proven (R6, new) & held in all 58,240 runs with liars, E1--E5; above start in 124, by $\le$20.5\% of the bound \\
 Total cost vs honest MGM ($\rho$) & any & Measured only (R7) & 1.10, 1.21, 1.33, 1.71 for $k=1,2,3,6$ \\
 \bottomrule
 \end{tabularx}

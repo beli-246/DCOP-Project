@@ -279,6 +279,8 @@ def tables(d, e1, e2, e3, e4, e5):
     rho_k = {k: hq[hq.k == k].rho.mean() for k in sorted(hq.k.unique())}
     oth_fin = att[att.protocol.isin(['VMGM-hist-cap', 'VMGM-move-cap', 'VMGM-move-quar'])].finished.mean()
     cap_dmg = att[att.protocol == 'VMGM-hist-cap'].dmg_exam_max.max()
+    cap_dmg_e5 = e5[e5.protocol == 'VMGM-hist-cap'].dmg_exam_max.max()
+    oth_fin_e5 = e5[e5.protocol.isin(['VMGM-hist-cap', 'VMGM-move-cap'])].finished.mean()
     n_checked = sum(int(e.protocol.str.startswith('VMGM').sum()) for e in (e1, e2, e3, e4, e5))
     # Result 6 slack: runs that ended above the start, and how much of the allowed 2*gmax*|E_L| they used
     liar_runs = pd.concat([e[(e.protocol == 'VMGM-hist-quar') & (e.k > 0)].assign(
@@ -294,16 +296,19 @@ def tables(d, e1, e2, e3, e4, e5):
         ['Consistent lies undetectable', 'any public check', 'Proven (R3)',
          f'consistent liars: {pct(max(det("exag_consistent"), det("sabotage_consistent")))} flagged'],
         ['Direct student cost $< g_{max}$ per exam', 'history + quarantine', 'Proven (R4)',
-         f'max {hq_all.dmg_exam_max.max():.2f}$\\,g_{{max}}$ ({len(hq_all):,} runs)'],
-        ['', 'history + cap only', 'Not guaranteed', f'max {cap_dmg:.0f}$\\,g_{{max}}$'],
-        ['Run finishes', 'history + quarantine', 'Proven (R5, new)', f'{pct(hq_all.finished.mean())} of {len(hq_all):,} runs'],
-        ['', 'cap only / one-post', 'Not guaranteed', f'{pct(oth_fin)} finished'],
+         f'max {hq_all.dmg_exam_max.max():.2f}$\\,g_{{max}}$ (all {len(hq_all):,} runs, E1--E5)'],
+        ['', 'history + cap only', 'Not guaranteed',
+         f'max {cap_dmg:.0f}$\\,g_{{max}}$ ({cap_dmg_e5:.0f} in E5, 1000 rounds)'],
+        ['Run finishes', 'history + quarantine', 'Proven (R5, new)',
+         f'{pct(hq_all.finished.mean())} of all {len(hq_all):,} runs, E1--E5'],
+        ['', 'cap only / one-post', 'Not guaranteed', f'{pct(oth_fin)} finished (E5: {pct(oth_fin_e5)})'],
         ['$F_{final}\\le F_{start}+2g_{max}|E_L|$', 'history + quarantine', 'Proven (R6, new)',
-         f'held in all {len(liar_runs):,} runs; above start in {above}, by $\\le${used:.0%} of the bound'],
+         f'held in all {len(liar_runs):,} runs with liars, E1--E5; above start in {above}, by '
+         f'$\\le${100 * used:.1f}% of the bound'],
         ['Total cost vs honest MGM ($\\rho$)', 'any', 'Measured only (R7)',
          ', '.join(f'{v:.2f}' for v in rho_k.values()) + f' for $k={",".join(map(str, rho_k))}$'],
     ]
-    write_table(d, 'tab_guarantees', ['Property', 'Applies to', 'Status', 'Evidence (E1--E5)'],
+    write_table(d, 'tab_guarantees', ['Property', 'Applies to', 'Status', 'Evidence (E2 unless stated)'],
                 [[tex_escape(c) if '$' not in c else c.replace('%', r'\%') for c in r] for r in rows],
                 r'>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}'
                 r'>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X',

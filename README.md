@@ -32,9 +32,9 @@ against the proven results, with no violation.
 
 | | Result |
 |---|---|
-| Detection, up to 6 of 12 departments dishonest | every blocker and 99.8–100% of churners flagged; **no honest department ever flagged** |
+| Detection, up to 6 of 12 departments dishonest | every blocker and 99.5–100% of churners flagged; **no honest department ever flagged** |
 | Termination | history check + quarantine: **100%** of runs finished; MGM 55%, cap-only and one-post check 75% |
-| Direct damage (proven < 1·g_max per exam) | largest **0.99·g_max** over 58,440 runs; cap-only reaches 144·g_max |
+| Direct damage (proven < 1·g_max per exam) | largest **0.99·g_max** over 58,440 runs; cap-only reaches 144·g_max (458 in the 1000-round runs) |
 | Total cost vs honest MGM (measured) | ρ = 1.10 / 1.21 / 1.33 / 1.71 for k = 1 / 2 / 3 / 6, against 1.91–2.28 for MGM; about half of the excess is the cost of quarantine itself |
 | Blocking attack | MGM 4.6× worse than honest play, V-MGM 1.2× |
 | Undetectable lying | pays more as preferences grow relative to student costs (up to +114 at κ = 4.5) |

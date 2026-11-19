@@ -228,8 +228,9 @@ Other findings:
 * **The liar's number of neighbours grows with N,** so pooled correlations with degree are confounded. Compare within each N (Figure 5, `summary.md`).
 * **Instance density doesn't change with N.** With p fixed, about 73% of department pairs are neighbours
   regardless of N, so E4 varies p to get variation in the liar's degree.
-* **Uniform preferences fill the whole scale,** leaving no room for undetectable exaggeration. That is
-  why E3 uses `pref_spread` < 1.
+* **How the liar exaggerates matters more than preference spread.** T1b (λ·g clipped at g_max) often
+  loses when preferences fill the scale; T1c (stretched from each exam's lowest cost) profits at every
+  spread. E3 still varies `pref_spread` to show this.
 * **The global bound (Result 6) is loose from a random start,** because F_start is large. It is
   informative from the greedy start.
 * **Quarantine-control runs are exempt from the checks,** because they quarantine honest departments on
