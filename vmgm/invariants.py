@@ -4,7 +4,8 @@ Which checks apply depends on the protocol:
   * no_false_flags        - any protocol with an audit (Result 1 / Result 2).
   * direct_damage         - audit == 'hist' (Result 4, unflagged part); with quarantine
                             also over the whole run.
-  * potential_decreases   - hist + quarantine (proposed Result 5, termination).
+  * potential_decreases   - hist + quarantine (Result 5, termination); hist + soft quarantine
+                            (Result 8: flagged liars stay in Phi with their frozen preferences).
   * round bound           - hist + quarantine: rounds <= Phi_start + 1 (Result 5 with integer claims).
   * global_bound          - hist + quarantine (proposed Result 6:
                             F_final <= F_start + 2 * gmax * (number of liar exams)).
@@ -58,13 +59,18 @@ def direct_damage(inst, res, liars):
     return max(unfl.values()) / gmax, max(tot.values()) / gmax
 
 
-def potential_series(inst, res, types):
+def potential_series(inst, res, types, soft=False):
     """Phi_t = H + G_honest + sum over liars unflagged after round t of g~_j(x_t).
 
     g~_j is fixed once per liar: from its history scores at flag time (or at the end if never
     flagged), so it explains every claim it made while unflagged.
+
+    soft=True (soft quarantine, Result 8): flagged liars stay in Phi with g~_j, which is gmax on slots
+    they never claimed about (exactly the frozen preferences their priority uses), so Phi is one
+    function of the timetable for the whole run.
     """
     g = inst['g']
+    gmax = inst['gmax']
     liars = [i for i, t in enumerate(types) if t != 'honest']
     honest_exams = [e for i, t in enumerate(types) if t == 'honest' for e in inst['exams'][i]]
     gt = {}
@@ -77,12 +83,15 @@ def potential_series(inst, res, types):
     def phi(x, flagged_now):
         val = H_cost(inst, x) + sum(g[e][x[e]] for e in honest_exams)
         for j in liars:
-            if j in flagged_now:
+            if j in flagged_now and not soft:
                 continue
             for e in inst['exams'][j]:
-                if x[e] not in gt[j][e]:
+                if x[e] in gt[j][e]:
+                    val += gt[j][e][x[e]]
+                elif soft and j in flagged_now:
+                    val += gmax                     # never claimed about: frozen preference gmax
+                else:
                     raise InvariantError(f'unflagged liar {j}: exam {e} in slot {x[e]} with no history score')
-                val += gt[j][e][x[e]]
         return val
 
     x = list(res.x0)
@@ -95,8 +104,8 @@ def potential_series(inst, res, types):
     return series
 
 
-def potential_decreases(inst, res, types):
-    s = potential_series(inst, res, types)
+def potential_decreases(inst, res, types, soft=False):
+    s = potential_series(inst, res, types, soft=soft)
     for t in range(1, len(s)):
         if not s[t] < s[t - 1] - EPS:
             raise InvariantError(f'potential did not decrease in round {t}: {s[t-1]} -> {s[t]}')
@@ -123,10 +132,12 @@ def check_all(inst, res, types, protocol):
         out['dmg_unflagged'], out['dmg_total'] = unfl, tot
         if unfl >= 1.0:
             raise InvariantError(f'Result 4 violated: unflagged direct damage {unfl:.3f} * gmax per exam')
-        if protocol['response'] == 'quarantine':
+        if protocol['response'] in ('quarantine', 'soft'):
+            soft = protocol['response'] == 'soft'
             if tot >= 1.0:
-                raise InvariantError(f'Result 4 (quarantine) violated: direct damage {tot:.3f} * gmax per exam')
-            series = potential_decreases(inst, res, types)
+                raise InvariantError(f'Result {"8" if soft else "4"} ({protocol["response"]}) violated: '
+                                     f'direct damage {tot:.3f} * gmax per exam')
+            series = potential_decreases(inst, res, types, soft=soft)
             # Round bound: with integer claims Phi is an integer that falls by >= 1 in every round with a
             # move, so rounds <= Phi_start + 1 (the last round is the one in which nothing can move).
             out['round_bound'] = series[0] + 1

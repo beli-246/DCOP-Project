@@ -118,22 +118,24 @@ def job_E2(family, sd):
                 lp = liar_adjacency(inst, liars)
                 for aname, att in E2_ATTACKS.items():
                     types = make_types(inst, liars, att)
-                    hq = None
+                    flagged_runs = {}
                     for p in E2_PROTOCOLS:
                         m, res = one(inst, x0, sd, types, p, ref)
-                        if p == 'VMGM-hist-quar':
-                            hq = res
+                        if p in ('VMGM-hist-quar', 'VMGM-hist-soft'):
+                            flagged_runs[p] = res
                         rows.append(dict(base, k=k, placement=pl, liar_pairs=lp, attack=aname, protocol=p, **m))
-                    # quarantine control: everyone honest, the flagged liars quarantined at the same rounds
-                    forced = {i: r for i, r in hq.flag_round.items() if i in liars}
-                    honest = ['honest'] * inst['N']
-                    m, cres = one(inst, x0, sd, honest, 'VMGM-hist-quar', ref, check=False, forced_quarantine=forced)
-                    m['liar_profit'] = float('nan')
-                    m['honest_loss'] = sum(M.burden(inst, cres.x, i) - M.burden(inst, ref['VMGM-hist-quar'], i)
-                                           for i in range(inst['N']) if i not in liars)
-                    m['n_forced'] = len(forced)
-                    rows.append(dict(base, k=k, placement=pl, liar_pairs=lp, attack=aname,
-                                     protocol='control-quar', **m))
+                    # quarantine controls: everyone honest, the departments the liars were flagged in quarantined
+                    # (hard, resp. soft) from the same rounds; isolates what each response itself costs
+                    for prot, ctl_name in (('VMGM-hist-quar', 'control-quar'), ('VMGM-hist-soft', 'control-soft')):
+                        forced = {i: r for i, r in flagged_runs[prot].flag_round.items() if i in liars}
+                        honest = ['honest'] * inst['N']
+                        m, cres = one(inst, x0, sd, honest, prot, ref, check=False, forced_quarantine=forced)
+                        m['liar_profit'] = float('nan')
+                        m['honest_loss'] = sum(M.burden(inst, cres.x, i) - M.burden(inst, ref[prot], i)
+                                               for i in range(inst['N']) if i not in liars)
+                        m['n_forced'] = len(forced)
+                        rows.append(dict(base, k=k, placement=pl, liar_pairs=lp, attack=aname,
+                                         protocol=ctl_name, **m))
     return rows
 
 

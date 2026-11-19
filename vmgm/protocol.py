@@ -22,8 +22,19 @@ PROTOCOLS = {
     'VMGM-move-quar': dict(priority='gain', audit='move', response='quarantine'),
     'VMGM-hist-cap':  dict(priority='gain', audit='hist', response='cap'),
     'VMGM-hist-quar': dict(priority='gain', audit='hist', response='quarantine'),
+    'VMGM-hist-soft': dict(priority='gain', audit='hist', response='soft'),
     'RP-MGM':         dict(priority='random', audit='none', response='cap'),
 }
+
+
+def frozen_preferences(scores_by_exam, gmax):
+    """Soft quarantine: each exam's preference implied by its consistent history, frozen when flagged.
+    Slot s with a score: score(s) - min score (in [0, gmax]); slots never claimed about: gmax (the worst)."""
+    out = {}
+    for e, sc in scores_by_exam.items():
+        lo = min(sc.values())
+        out[e] = {s: v - lo for s, v in sc.items()}
+    return out
 
 
 class Board:
@@ -69,9 +80,14 @@ def run(inst, x0, types, lam, protocol, max_rounds=300, seed=0, switch_round=20,
     """Run one protocol. types[i] is 'honest' or an attack name.
 
     forced_quarantine: {dept: round} for the quarantine control experiment. From that round on
-    the department is treated as quarantined (priority capped at V) although it was never flagged.
-    Used with all-honest types to measure the cost of quarantine itself. Forced departments are
-    not added to `flagged`, and the invariant checks do not apply to such runs.
+    the department is treated as quarantined (priority capped at V, or the soft-quarantine priority
+    with response 'soft') although it was never flagged. Used with all-honest types to measure the
+    cost of quarantine itself. Forced departments are not added to `flagged`, and the invariant
+    checks do not apply to such runs.
+
+    Responses to a flagged department: 'cap' (keep the capped priority min(claim, V + gmax)),
+    'quarantine' (min(claim, V): only moves that lower the student cost), 'soft' (min(claim,
+    V + g~(from) - g~(to)) with g~ its preferences frozen at flag time, see frozen_preferences).
     """
     rng = random.Random(seed)
     x = list(x0)
@@ -80,6 +96,7 @@ def run(inst, x0, types, lam, protocol, max_rounds=300, seed=0, switch_round=20,
     forced = forced_quarantine or {}
     board = Board(x0)
     flagged, flag_round, flag_scores = set(), {}, {}
+    soft_g = {}                          # dept -> {exam: {slot: frozen preference}} (response 'soft')
     trace = []
 
     def flag(i, r):
@@ -87,6 +104,7 @@ def run(inst, x0, types, lam, protocol, max_rounds=300, seed=0, switch_round=20,
             flagged.add(i)
             flag_round[i] = r
             flag_scores[i] = {e: dict(board.scores[e]) for e in inst['exams'][i]}
+            soft_g[i] = frozen_preferences(flag_scores[i], gmax)
 
     for r in range(1, max_rounds + 1):
         ann = {i: announce(inst, x, i, types[i], lam, board=board, rnd=r, switch_round=switch_round)
@@ -114,10 +132,15 @@ def run(inst, x0, types, lam, protocol, max_rounds=300, seed=0, switch_round=20,
             if viol:
                 flag(i, r)
             quarantined = i in flagged or (i in forced and r >= forced[i])
+            if quarantined and i not in soft_g:          # forced (control): freeze from the board now
+                soft_g[i] = frozen_preferences({ex: dict(board.scores[ex]) for ex in inst['exams'][i]}, gmax)
             if e is None:
                 eff[i] = 0
             elif quarantined and protocol['response'] == 'quarantine':
                 eff[i] = min(claim, v)
+            elif quarantined and protocol['response'] == 'soft':
+                g = soft_g[i][e]
+                eff[i] = min(claim, v + g.get(x[e], gmax) - g.get(a, gmax))
             else:
                 eff[i] = min(claim, v + gmax)
         if protocol['priority'] == 'gain':
