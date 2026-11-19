@@ -50,14 +50,14 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 | attack | 1 | 2 | 3 | 6 |
 |---|---|---|---|---|
 | block | 1.0 | 1.0 | 1.0 | 1.0 |
-| churn | 1.0 | 1.0 | 1.0 | 1.0 |
-| delayed | 0.8 | 0.81 | 0.81 | 0.86 |
+| churn | 1.0 | 1.0 | 0.9992 | 0.9983 |
+| delayed | 0.805 | 0.81 | 0.81 | 0.865 |
 | exag_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
-| exag_naive | 0.88 | 0.88 | 0.87 | 0.87 |
-| hijack | 0.98 | 0.98 | 0.97 | 0.97 |
-| maxbound | 0.33 | 0.33 | 0.32 | 0.31 |
-| mixed | 1.0 | 1.0 | 0.67 | 0.67 |
-| sabotage | 0.78 | 0.74 | 0.75 | 0.75 |
+| exag_naive | 0.875 | 0.8775 | 0.8725 | 0.8654 |
+| hijack | 0.98 | 0.9762 | 0.9683 | 0.9654 |
+| maxbound | 0.33 | 0.3288 | 0.3183 | 0.3112 |
+| mixed | 1.0 | 1.0 | 0.6667 | 0.6662 |
+| sabotage | 0.785 | 0.745 | 0.7508 | 0.7492 |
 | sabotage_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
 
 ### H2b: fraction of runs that finished within 300 rounds
@@ -114,7 +114,7 @@ Honest departments' loss: lying + quarantine vs quarantine alone (positive = lyi
 | 3 | 0.011 ± 0.009 | 1.0e+00 | 2000 |
 | 6 | 0.020 ± 0.015 | 1.0e+00 | 2000 |
 
-### Record mode: posted vs executed claims give the same final cost in **100.0%** of runs.
+### Record mode: posted vs executed claims give the same final cost in **16,197 of 16,200** runs (3 differ).
 
 ## H3 (E3): undetectable lying still pays, more as kappa grows
 Liar profit = drop in the liar's own objective J vs honest play (positive = lying pays). No liar was flagged in any E3 run. H3 is proven wrong if the profit interval includes 0 at every kappa, or profit does not rise with kappa.

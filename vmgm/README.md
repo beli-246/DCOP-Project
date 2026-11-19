@@ -3,7 +3,8 @@
 Cleaned-up version of the pilot (`DCOP_prelim_code_results/prelim.py`). It reproduces the pilot's
 numbers exactly and adds automatic checks of every proven result. The pilot folder is untouched.
 
-Needs only Python 3 + numpy. CP-SAT (ortools) and pyDCOP are not used here yet.
+The simulator needs only Python 3 + numpy (pandas, scipy, matplotlib for the analysis and figures).
+CP-SAT (ortools) and pyDCOP are not used; the report says so.
 
 ## Files
 
@@ -70,8 +71,17 @@ instances). `exag_stretch` is the strongest undetectable exaggeration, used in E
 python3 -m vmgm.figures vmgm_results/full paper
 ```
 
-This writes `paper/figures/fig1–fig5` (`.pdf` for LaTeX, `.png` for slides) and `paper/tables/tab_guarantees.tex`
+This writes `paper/figures/fig1–fig5` (`.pdf` for LaTeX, `.png` for the README) and `paper/tables/tab_guarantees.tex`
 and `paper/tables/tab_e2_k3.tex`, all from the CSVs.
+
+## Every number in the report (`paper_numbers.py`)
+
+```bash
+python3 -m vmgm.paper_numbers vmgm_results/full
+```
+
+Prints every number quoted in the report text, each labelled with where it is used, and writes
+`vmgm_results/full/paper_numbers.md`. Definitions match `analysis.py` and `figures.py`.
 
 Colours follow the protocol in every figure: history + quarantine = blue, MGM = orange,
 quarantine control = aqua, cap only = yellow, RP-MGM/DSA = greys. Every series also has its own
@@ -99,21 +109,21 @@ The potential check is not vacuous: it fails on plain MGM, the one-post check an
 * `delayed`: `sabotage_consistent` until round `switch_round` (default 20), then blocks, so it gets
   flagged at exactly that round. Measures damage done before detection.
 
-## Decision the team must make: when is a claim recorded?
+## When is a claim recorded? (decided: when posted)
 
-In the pilot, the history check records every consistent claim when it is posted, even if that
-department does not win the round. The proposal says scores are updated "after each move".
-`protocol['record']` selects either:
+The history check records every consistent claim when it is posted, even if that department does not
+win the round. `protocol['record']` selects either:
 
-* `'posted'` (default, pilot behaviour, reproduces Table 3): stricter, catches contradictions in
-  claims about moves that never ran.
-* `'executed'`: matches the proposal's wording.
+* `'posted'` (default, used for every result in the report): stricter, catches contradictions in
+  claims about moves that never ran. The report (Result 2, Algorithm 1) describes this.
+* `'executed'`: only claims whose move runs are recorded. E2 runs it as `VMGM-hist-quar-exec`; it gives
+  the same final cost in 16,197 of 16,200 runs.
 
-All checks pass under both. Pick one and make the text and the code say the same thing.
+All checks pass under both.
 
 ## Known limits
 
 * The global bound is loose from a random start (F_start is large); it is informative from the greedy start.
 * `check_prop4.py` in the pilot folder duplicated the run loop by hand. It is replaced by
   `invariants.direct_damage`, which reads the real trace.
-* CP-SAT reference values and pyDCOP agreement are not reproduced here yet.
+* CP-SAT reference values and the pyDCOP agreement check from the project review were not done.

@@ -1,0 +1,208 @@
+"""Every number quoted in the paper text, recomputed from the E1-E5 CSVs.
+
+Usage (from the repository root):
+    python -m vmgm.paper_numbers vmgm_results/full
+Prints the numbers and writes <dir>/paper_numbers.md. Each line names the place in
+paper/DCOP_v4.tex where the number is used. Tables 2 and 5 and the figures are generated
+separately by `python -m vmgm.figures vmgm_results/full paper`; the statistics with full
+detail are in summary.md (`python -m vmgm.analysis vmgm_results/full`).
+
+Definitions follow analysis.py and figures.py: "attacked runs" are E2 rows with k > 0,
+"history + quarantine" is protocol VMGM-hist-quar, rho = F / F(honest MGM, same start).
+"""
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+from .analysis import PAIR, holm, paired
+
+CAP_ONE_POST = ['VMGM-hist-cap', 'VMGM-move-cap', 'VMGM-move-quar']
+HQ = 'VMGM-hist-quar'
+
+
+def load(d):
+    return [pd.read_csv(os.path.join(d, f'E{i}.csv')) for i in range(1, 6)]
+
+
+def pct(v, nd=0):
+    return f'{100 * v:.{nd}f}%'
+
+
+def numbers(d):
+    e1, e2, e3, e4, e5 = load(d)
+    out = []
+
+    def say(where, what, value):
+        out.append(f'- **{where}** | {what}: {value}')
+
+    def head(t):
+        out.append(f'\n## {t}\n')
+
+    att = e2[e2.k > 0]
+    hq = att[att.protocol == HQ]
+
+    head('Run counts (Experimental setup, Table 2 caption, Table 3)')
+    for i, e in enumerate((e1, e2, e3, e4, e5), 1):
+        say('setup', f'E{i} rows', f'{len(e):,}')
+    say('setup', 'total rows', f'{sum(map(len, (e1, e2, e3, e4, e5))):,}')
+    say('Table 2', 'V-MGM runs checked automatically',
+        f'{sum(int(e.protocol.str.startswith("VMGM").sum()) for e in (e1, e2, e3, e4, e5)):,}')
+    hq_all = pd.concat([e[e.protocol == HQ] for e in (e1, e2, e3, e4, e5)])
+    say('Table 2', 'history + quarantine runs (all experiments)', f'{len(hq_all):,}')
+    say('setup', 'instances per family (E1-E3)', e2.seed.nunique())
+    say('setup', 'instances per family (E5)', e5.seed.nunique())
+    say('setup', 'instances per (N, p) (E4)', e4.seed.nunique())
+
+    head('Detection and false flags (abstract, Results RQ2, Table 4 H2a)')
+    for a in ('block', 'churn', 'delayed', 'mixed', 'sabotage', 'maxbound'):
+        by_k = hq[hq.attack == a].groupby('k').det_rate.mean()
+        say('RQ2', f'{a}: share of liars flagged by k', ', '.join(f'k={k}: {pct(v, 1)}' for k, v in by_k.items()))
+    ch = hq[hq.attack == 'churn']
+    miss = ch[ch.det_rate < 1]
+    say('RQ2', 'churn runs with an unflagged churner', f'{len(miss)} of {len(ch):,} '
+        f'(those runs ended after {int(miss.rounds.min())}-{int(miss.rounds.max())} rounds)')
+    dl = hq[hq.attack == 'delayed']
+    say('RQ2', 'delayed (all k): runs with an unflagged delayed liar that ended before round 20',
+        f'{int(((dl.det_rate < 1) & (dl.rounds < 20)).sum())} of {int((dl.det_rate < 1).sum())}')
+    vm = e2[e2.protocol.str.startswith('VMGM')]
+    say('RQ2', 'false flags in all V-MGM runs of E2', int(vm.false_flags.sum()))
+
+    head('Termination (abstract, RQ2, Table 4 H2b, E5)')
+    for p in ('MGM', 'RP-MGM', HQ):
+        say('RQ2', f'{p}: attacked runs finished', pct(att[att.protocol == p].finished.mean()))
+    co = att[att.protocol.isin(CAP_ONE_POST)]
+    by_k = co.groupby('k').finished.mean()
+    say('RQ2', 'cap-only and one-post: attacked runs finished',
+        f'{pct(co.finished.mean())} (by k: {", ".join(pct(v) for v in by_k)})')
+    say('Table 4 H2b', 'range of the pooled finish rate over MGM, RP-MGM, cap-only, one-post',
+        f'{pct(att[att.protocol == "MGM"].finished.mean())}-{pct(att[att.protocol == "RP-MGM"].finished.mean())}')
+    say('RQ2', 'history + quarantine finished (all experiments)', pct(hq_all.finished.mean(), 1))
+    w = e5.pivot_table(index=['family', 'seed', 'start', 'k', 'attack', 'protocol'], columns='max_rounds',
+                       values='finished')
+    say('RQ2/E5', 'runs whose finished status changes from 300 to 1000 rounds', int((w[300] != w[1000]).sum()))
+    say('RQ1', 'RP-MGM under churn, attacked runs finished (E2)',
+        pct(att[(att.protocol == 'RP-MGM') & (att.attack == 'churn')].finished.mean()))
+    big = e4[(e4.protocol == HQ) & (e4.N == 48) & (e4.k == 12)]
+    say('RQ4', 'N=48, k=12, history + quarantine finished', f'{pct(big.finished.mean())} of {len(big)} runs')
+
+    head('Direct damage (Result 4, Table 4 H2c, Figure 1a)')
+    say('RQ2', 'largest per-exam direct damage, E2 history + quarantine',
+        f'{hq.dmg_exam_max.max():.2f} g_max over {len(hq):,} runs')
+    say('RQ2', 'largest per-exam direct damage, all history + quarantine',
+        f'{hq_all.dmg_exam_max.max():.2f} g_max over {len(hq_all):,} runs')
+    say('Figure 1a', 'largest per-exam direct damage, cap only',
+        f'{att[att.protocol == "VMGM-hist-cap"].dmg_exam_max.max():.0f} g_max')
+
+    head('Total damage (abstract, RQ2, Table 4 H2d, Figure 1b)')
+    rows = []
+    for k, g in att.groupby('k'):
+        r = {p: g[g.protocol == p].rho.mean() for p in ('MGM', HQ, 'control-quar', 'VMGM-hist-cap', 'RP-MGM')}
+        r['k'] = k
+        rows.append(r)
+    for r in rows:
+        share = (r['control-quar'] - 1) / (r[HQ] - 1)
+        say('RQ2', f'k={r["k"]}: rho MGM / hist+quar / control / share of hist+quar excess also in control',
+            f'{r["MGM"]:.2f} / {r[HQ]:.2f} / {r["control-quar"]:.2f} / {pct(share)}')
+    t = paired(att[att.protocol.isin([HQ, 'control-quar'])], PAIR + ['placement', 'attack'], HQ, 'control-quar',
+               'honest_loss', ['k'])
+    for _, r in t.iterrows():
+        say('RQ2', f'k={int(r.k)}: honest loss, hist+quar minus control', f'{r.mean_diff:.1f} +/- {r.ci:.1f}')
+    ctl = att[att.protocol == 'control-quar']
+    for k, g in ctl.groupby('k'):
+        say('Figure 2', f'k={k}: control, honest departments\' share of the extra cost',
+            pct(g.honest_loss.mean() / g.extra.mean()))
+
+    head('Quarantine vs cap only (Results)')
+    for k, g in att.groupby('k'):
+        sel = g[g.attack.isin(['hijack', 'exag_naive'])]
+        q, c = sel[sel.protocol == HQ].rho.mean(), sel[sel.protocol == 'VMGM-hist-cap'].rho.mean()
+        say('Results', f'k={k}: selfish attacks (T1a, T2a) rho cap-only / quarantine / cost of quarantine',
+            f'{c:.2f} / {q:.2f} / {q - c:.2f}')
+    k3 = att[att.k == 3]
+    for a in ('churn', 'mixed', 'sabotage'):
+        g = k3[(k3.attack == a) & (k3.protocol == 'VMGM-hist-cap')]
+        say('Results', f'k=3, {a}: cap-only rho / finished', f'{g.rho.mean():.2f} / {pct(g.finished.mean())}')
+
+    head('Placement and record mode (RQ2, Result 2 footnote)')
+    t = paired(hq[hq.k > 1].assign(protocol=hq[hq.k > 1].placement), PAIR + ['k', 'attack'], 'adjacent',
+               'spread', 'rho', ['k'])
+    say('RQ2', 'adjacent minus spread rho, smallest Holm p', f'{t.p_holm.min():.2f}')
+    w = att[att.protocol.isin([HQ, 'VMGM-hist-quar-exec'])].pivot_table(
+        index=PAIR + ['k', 'placement', 'attack'], columns='protocol', values='F')
+    diff = (w[HQ] - w['VMGM-hist-quar-exec']).abs() > 1e-9
+    say('Result 2', 'attacked runs where recording executed instead of posted claims changes F',
+        f'{int(diff.sum())} of {len(diff):,}')
+
+    head('Result 6 slack (Result 6, Table 2)')
+    lr = pd.concat([e[(e.protocol == HQ) & (e.k > 0)].assign(gm=e['gmax'] if 'gmax' in e else 50)
+                    for e in (e1, e2, e3, e4, e5)])
+    allowed = 2 * lr.gm * 4 * lr.k
+    say('Result 6', 'runs with liars ending above the starting cost',
+        f'{int((lr.F > lr.F0).sum())} of {len(lr):,}; at most {pct(((lr.F - lr.F0) / allowed).max())} of the bound')
+
+    head('H1 (RQ1, Table 4, Figure 3)')
+    a1 = e1[e1.k > 0]
+    for other in ('RP-MGM', 'DSA'):
+        t = paired(a1, PAIR, 'MGM', other, 'rho', ['attack', 'k'])
+        for att_name, g in t.groupby('attack'):
+            say('RQ1', f'MGM minus {other}, {att_name}, k=1..3',
+                f'{g.mean_diff.min():+.2f} to {g.mean_diff.max():+.2f} (largest Holm p {g.p_holm.max():.1e})')
+    for a in ('block', 'churn'):
+        g = a1[a1.attack == a]
+        say('RQ1', f'{a}: mean rho MGM / history + quarantine',
+            f'{g[g.protocol == "MGM"].rho.mean():.2f} / {g[g.protocol == HQ].rho.mean():.2f}')
+
+    head('H3 (RQ3, Table 4, Figure 4)')
+    say('RQ3', 'E3 liars flagged', int(e3.detected.sum()))
+    for k in (1, 3):
+        rows, ps = [], []
+        for (a, s, lam), g in e3[e3.k == k].groupby(['attack', 'spread', 'lam']):
+            r, p = stats.spearmanr(g.kappa, g.liar_profit)
+            rows.append((a, s, lam, r))
+            ps.append(p)
+        adj = holm(ps)
+        for a in ('exag_stretch', 'exag_consistent'):
+            sel = [(r, q) for (aa, _, _, r), q in zip(rows, adj) if aa == a]
+            n_up = sum(1 for r, q in sel if r > 0 and q < 0.05)
+            say('RQ3', f'k={k}, {a}: settings where profit rises with kappa (Holm p<0.05)',
+                f'{n_up} of {len(sel)} (Spearman {min(r for r, _ in sel):+.2f} to {max(r for r, _ in sel):+.2f})')
+    st = e3[(e3.k == 1) & (e3.attack == 'exag_stretch')]
+    m = st.groupby(['spread', 'lam', 'gmax']).liar_profit.mean()
+    low = m[m.index.get_level_values('gmax') <= 25]
+    say('RQ3', 'stretched liar, k=1, mean profit for g_max <= 25 (kappa <= 0.56)',
+        f'{low.min():+.1f} to {low.max():+.1f}')
+    top = m[m.index.get_level_values('gmax') == 200]
+    say('RQ3', 'stretched liar, k=1, mean profit at g_max=200 (kappa 4.5)', f'{top.min():+.1f} to {top.max():+.1f}')
+    t1b = e3[(e3.attack == 'exag_consistent') & (e3.spread == 1.0)].groupby(['k', 'lam']).liar_profit.mean()
+    say('RQ3', 'clipped liar (T1b), preferences fill the scale: mean profit by (k, lambda)',
+        ', '.join(f'k={k}, lam={lam}: {v:+.1f}' for (k, lam), v in t1b.items()))
+    say('RQ3', 'kappa for g_max = 10, 25, 50, 100, 200',
+        ', '.join(f'{v:.2f}' for v in e3.groupby('gmax').kappa.mean()))
+
+    head('H4 (RQ4, Table 4, Figure 5)')
+    k1 = e4[e4.k == 1]
+    for a in ('block', 'churn', 'sabotage', 'sabotage_consistent'):
+        rs = []
+        for N, g in k1[(k1.attack == a) & (k1.protocol == 'MGM')].groupby('N'):
+            rs.append(f'N={N}: {stats.spearmanr(g.liar_deg, g.extra)[0]:+.2f}')
+        say('RQ4', f'{a}, MGM: Spearman(liar degree, extra cost) within N', ', '.join(rs))
+        g = k1[k1.attack == a]
+        mg, vq = g[g.protocol == 'MGM'].extra.mean(), g[g.protocol == HQ].extra.mean()
+        say('RQ4', f'{a}: mean extra cost MGM / history + quarantine / reduction',
+            f'{mg:.0f} / {vq:.0f} / {pct(1 - vq / mg)}')
+    return '\n'.join(['# Numbers used in the paper', f'Source: `{d}`'] + out) + '\n'
+
+
+def main(d):
+    text = numbers(d)
+    open(os.path.join(d, 'paper_numbers.md'), 'w', encoding='utf-8').write(text)
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(errors='replace')
+    print(text)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1] if len(sys.argv) > 1 else 'vmgm_results/full')

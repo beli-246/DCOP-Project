@@ -1,14 +1,14 @@
 \begin{table}[t]
 \centering
 \small
-\caption{Final cost relative to honest MGM ($\rho$, mean) with $k=3$ dishonest departments (E2, 50 instances $\times$ 2 families $\times$ 2 starts $\times$ 2 placements). $\dagger$: fewer than 95\% of runs finished. ``Quar.\ only quarantines honest departments at the rounds the liars were flagged. Flagged: liars caught by history + quarantine.}
+\caption{Final cost relative to honest MGM ($\rho$, mean) with $k=3$ dishonest departments (E2, 50 instances $\times$ 2 families $\times$ 2 starts $\times$ 2 placements). $\dagger$: fewer than 95\% of runs finished. ``Quar.\ only'': nobody lies, and the departments that were liars are quarantined from the rounds they were flagged. Flagged: share of liars caught by history + quarantine (mixed: the third liar is a consistent saboteur, which no check can catch).}
 \label{tab:e2}
 \begin{tabular}{lrrrrrr}
 \toprule
 Attack & MGM & RP-MGM & Hist.+cap & Hist.+quar. & Quar. only & Flagged \\
 \midrule
 Block (T3a) & 4.43$^\dagger$ & 1.01 & 1.00 & 1.34 & 1.33 & 100\% \\
-Churn (T3b) & 2.31$^\dagger$ & 1.36$^\dagger$ & 2.31$^\dagger$ & 1.36 & 1.29 & 100\% \\
+Churn (T3b) & 2.31$^\dagger$ & 1.36$^\dagger$ & 2.31$^\dagger$ & 1.36 & 1.29 & 99.9\% \\
 Mixed attacks & 4.55$^\dagger$ & 1.30$^\dagger$ & 2.20$^\dagger$ & 1.39 & 1.21 & 67\% \\
 Delayed contradiction (new) & 1.49$^\dagger$ & 1.02 & 1.01 & 1.35 & 1.10 & 81\% \\
 Sabotage (T4) & 1.68$^\dagger$ & 1.74$^\dagger$ & 1.68$^\dagger$ & 1.57 & 1.06 & 75\% \\

@@ -140,28 +140,8 @@ def fig_guarantees(d, e2):
 
 # ------------------------------------------------------------------ figure 2: cost of quarantine
 def fig_quarantine(d, e2):
-    fig, axs = plt.subplots(1, 2, figsize=(FULL_W, 2.6), gridspec_kw=dict(width_ratios=[1.5, 1], wspace=0.55))
-    k3 = e2[e2.k == 3]
-    attacks = ['block', 'churn', 'mixed', 'delayed', 'sabotage', 'hijack', 'exag_naive', 'maxbound',
-               'sabotage_consistent', 'exag_consistent']
-    ax = axs[0]
-    prots = ['VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar']
-    off = dict(zip(prots, (-0.22, 0, 0.22)))
-    for p in prots:
-        r = [ci(k3[(k3.protocol == p) & (k3.attack == a)].rho) for a in attacks]
-        st = STYLE[p]
-        y = np.arange(len(attacks)) + off[p]
-        ax.errorbar([m for m, _ in r], y, xerr=[h for _, h in r], fmt=st['marker'], color=st['color'],
-                    markeredgecolor=SURFACE, markeredgewidth=0.6, capsize=1.5, elinewidth=1, label=st['label'])
-    ax.set_yticks(np.arange(len(attacks)))
-    ax.set_yticklabels([ATTACK_LABEL[a] for a in attacks])
-    ax.invert_yaxis()
-    ax.axvline(1, color=MUTED, lw=0.8)
-    ax.set_xlabel('Final cost / honest MGM (ρ), k = 3')
-    ax.set_title('(a) Quarantine vs cap only, by attack')
-    ax.grid(axis='y', visible=False)
-
-    ax = axs[1]
+    """Who pays for quarantine. (The per-attack rho at k = 3 is in Table tab_e2_k3, so it is not repeated here.)"""
+    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 2.3))
     att = e2[e2.k > 0]
     ks = sorted(att.k.unique())
     for p in ('VMGM-hist-quar', 'control-quar'):
@@ -171,15 +151,14 @@ def fig_quarantine(d, e2):
     ax.set_xticks(ks)
     ax.set_xlabel('Dishonest departments k')
     ax.set_ylabel('Honest departments\' extra burden')
-    ax.set_title('(b) Who pays: honest departments')
-    h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=3, bbox_to_anchor=(0.5, -0.04))
+    ax.set_title('Who pays: honest departments')
+    ax.legend(loc='upper left', fontsize=7)
     save(fig, d, 'fig2_quarantine_cost')
 
 
 # ------------------------------------------------------------------ figure 3: H1
 def fig_h1(d, e1):
-    fig, ax = plt.subplots(figsize=(FULL_W * 0.55, 2.2))
+    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 2.3))
     attacks = ['block', 'churn', 'hijack', 'maxbound']
     prots = ['MGM', 'RP-MGM', 'DSA', 'VMGM-hist-quar']
     off = dict(zip(prots, (-0.27, -0.09, 0.09, 0.27)))
@@ -194,7 +173,7 @@ def fig_h1(d, e1):
     ax.invert_yaxis()
     ax.axvline(1, color=MUTED, lw=0.8)
     ax.set_xlabel('Final cost / honest MGM (ρ), k = 1–3 pooled')
-    ax.set_title('Lying about gains hurts MGM only for malicious attacks')
+    ax.set_title('Final cost by attack (E1)')
     ax.grid(axis='y', visible=False)
     ax.legend(loc='lower right', fontsize=7)
     save(fig, d, 'fig3_h1_algorithms')
@@ -261,7 +240,7 @@ def fig_h4(d, e4):
                 ax.set_ylabel('Extra cost over\nhonest MGM')
     h, l = axs[0, 0].get_legend_handles_labels()
     fig.legend(h, l, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 0.0))
-    fig.suptitle('Within each N, blocking damage grows with the liar\'s neighbours under MGM; churn does not',
+    fig.suptitle('Within each N, blocking damage grows with the liar\'s neighbours under MGM; churn has no consistent trend',
                  x=0.06, ha='left', y=0.99, fontsize=8.5, fontweight='bold')
     save(fig, d, 'fig5_h4_neighbours')
 
@@ -273,11 +252,20 @@ def tex_escape(s):
 
 def write_table(d, name, header, rows, colspec, caption, label):
     os.makedirs(os.path.join(d, 'tables'), exist_ok=True)
+    # a colspec with an X column becomes a full-width tabularx (needs \usepackage{tabularx} in the paper)
+    env, width = ('tabularx', r'{\linewidth}') if 'X' in colspec else ('tabular', '')
     lines = [r'\begin{table}[t]', r'\centering', r'\small', rf'\caption{{{caption}}}', rf'\label{{{label}}}',
-             rf'\begin{{tabular}}{{{colspec}}}', r'\toprule', ' & '.join(header) + r' \\', r'\midrule']
+             rf'\begin{{{env}}}{width}{{{colspec}}}', r'\toprule', ' & '.join(header) + r' \\', r'\midrule']
     lines += [' & '.join(r) + r' \\' for r in rows]
-    lines += [r'\bottomrule', r'\end{tabular}', r'\end{table}']
+    lines += [r'\bottomrule', rf'\end{{{env}}}', r'\end{table}']
     open(os.path.join(d, 'tables', f'{name}.tex'), 'w', encoding='utf-8').write('\n'.join(lines) + '\n')
+
+
+def pct(v):
+    """Percent that never rounds up to 100% or down to 0% (0.998 -> '99.8%')."""
+    if 0.995 <= v < 1 or 0 < v < 0.005:
+        return f'{v:.1%}'
+    return f'{v:.0%}'
 
 
 def tables(d, e1, e2, e3, e4, e5):
@@ -290,26 +278,36 @@ def tables(d, e1, e2, e3, e4, e5):
     oth_fin = att[att.protocol.isin(['VMGM-hist-cap', 'VMGM-move-cap', 'VMGM-move-quar'])].finished.mean()
     cap_dmg = att[att.protocol == 'VMGM-hist-cap'].dmg_exam_max.max()
     n_checked = sum(int(e.protocol.str.startswith('VMGM').sum()) for e in (e1, e2, e3, e4, e5))
+    # Result 6 slack: runs that ended above the start, and how much of the allowed 2*gmax*|E_L| they used
+    liar_runs = pd.concat([e[(e.protocol == 'VMGM-hist-quar') & (e.k > 0)].assign(
+        gm=e['gmax'] if 'gmax' in e else 50) for e in (e1, e2, e3, e4, e5)])
+    allowed = 2 * liar_runs.gm * 4 * liar_runs.k
+    above = int((liar_runs.F > liar_runs.F0).sum())
+    used = ((liar_runs.F - liar_runs.F0) / allowed).max()
 
     rows = [
         ['Honest posts never flagged', 'any check', 'Proven (R1, R2)', f'{int(vm.false_flags.sum())} false flags'],
         ['Contradictory histories flagged', 'history check', 'Proven (R2)',
-         f'blockers, churners: {min(det("block"), det("churn")):.0%} flagged, $k\\le 6$'],
+         f'blockers {pct(det("block"))}, churners {pct(det("churn"))} flagged, $k\\le 6$'],
         ['Consistent lies undetectable', 'any public check', 'Proven (R3)',
-         f'consistent liars: {max(det("exag_consistent"), det("sabotage_consistent")):.0%} flagged'],
+         f'consistent liars: {pct(max(det("exag_consistent"), det("sabotage_consistent")))} flagged'],
         ['Direct student cost $< g_{max}$ per exam', 'history + quarantine', 'Proven (R4)',
          f'max {hq_all.dmg_exam_max.max():.2f}$\\,g_{{max}}$ ({len(hq_all):,} runs)'],
         ['', 'history + cap only', 'Not guaranteed', f'max {cap_dmg:.0f}$\\,g_{{max}}$'],
-        ['Run finishes', 'history + quarantine', 'Proven (R5, new)', f'{hq_all.finished.mean():.0%} of {len(hq_all):,} runs'],
-        ['', 'cap only / one-post', 'Not guaranteed', f'{oth_fin:.0%} finished'],
-        ['$F_{final}\\le F_{start}+2g_{max}|E_L|$', 'history + quarantine', 'Proven (R6, new)', 'held in every run'],
+        ['Run finishes', 'history + quarantine', 'Proven (R5, new)', f'{pct(hq_all.finished.mean())} of {len(hq_all):,} runs'],
+        ['', 'cap only / one-post', 'Not guaranteed', f'{pct(oth_fin)} finished'],
+        ['$F_{final}\\le F_{start}+2g_{max}|E_L|$', 'history + quarantine', 'Proven (R6, new)',
+         f'held in all {len(liar_runs):,} runs; above start in {above}, by $\\le${used:.0%} of the bound'],
         ['Total cost vs honest MGM ($\\rho$)', 'any', 'Measured only (R7)',
          ', '.join(f'{v:.2f}' for v in rho_k.values()) + f' for $k={",".join(map(str, rho_k))}$'],
     ]
     write_table(d, 'tab_guarantees', ['Property', 'Applies to', 'Status', 'Evidence (E1--E5)'],
-                [[tex_escape(c) if '$' not in c else c.replace('%', r'\%') for c in r] for r in rows], 'llll',
-                f'What is proven and what is only measured. Every V-MGM run was checked automatically against '
-                f'R1, R2 and R4--R6 wherever they apply ({n_checked:,} runs, no violation).', 'tab:guarantees')
+                [[tex_escape(c) if '$' not in c else c.replace('%', r'\%') for c in r] for r in rows],
+                r'>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}'
+                r'>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X',
+                f'What is proven and what is only measured. All {n_checked:,} V-MGM runs were checked automatically, '
+                f'with no violation: no honest department flagged (R1, R2), the per-exam bound (R4), the potential of '
+                f'R5 falling every round, and the bound of R6, wherever they apply.', 'tab:guarantees')
 
     # main E2 table at k = 3
     k3 = e2[e2.k == 3]
@@ -323,14 +321,16 @@ def tables(d, e1, e2, e3, e4, e5):
             g = k3[(k3.protocol == p) & (k3.attack == a)]
             m = f'{g.rho.mean():.2f}'
             r.append(m + (r'$^\dagger$' if g.finished.mean() < 0.95 else ''))
-        r.append(f'{k3[(k3.protocol == "VMGM-hist-quar") & (k3.attack == a)].det_rate.mean():.0%}'.replace('%', r'\%'))
+        r.append(pct(k3[(k3.protocol == "VMGM-hist-quar") & (k3.attack == a)].det_rate.mean()).replace('%', r'\%'))
         rows.append(r)
     write_table(d, 'tab_e2_k3', ['Attack', 'MGM', 'RP-MGM', 'Hist.+cap', 'Hist.+quar.', 'Quar. only', 'Flagged'],
                 rows, 'lrrrrrr',
                 r'Final cost relative to honest MGM ($\rho$, mean) with $k=3$ dishonest departments '
                 r'(E2, 50 instances $\times$ 2 families $\times$ 2 starts $\times$ 2 placements). '
-                r'$\dagger$: fewer than 95\% of runs finished. ``Quar.\ only'' quarantines honest departments at '
-                r'the rounds the liars were flagged. Flagged: liars caught by history + quarantine.',
+                r"$\dagger$: fewer than 95\% of runs finished. ``Quar.\ only'': nobody lies, and the departments "
+                r'that were liars are quarantined from the rounds they were flagged. Flagged: share of liars caught '
+                r'by history + quarantine (mixed: the third liar is a consistent saboteur, which no check can '
+                r'catch).',
                 'tab:e2')
 
 
