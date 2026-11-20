@@ -1,0 +1,1448 @@
+name: loose_114
+objective: min
+
+domains:
+  slots:
+    values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+variables:
+  x_0:
+    domain: slots
+    initial_value: 8
+  x_1:
+    domain: slots
+    initial_value: 4
+  x_2:
+    domain: slots
+    initial_value: 7
+  x_3:
+    domain: slots
+    initial_value: 7
+  x_4:
+    domain: slots
+    initial_value: 9
+  x_5:
+    domain: slots
+    initial_value: 9
+  x_6:
+    domain: slots
+    initial_value: 8
+  x_7:
+    domain: slots
+    initial_value: 6
+  x_8:
+    domain: slots
+    initial_value: 0
+  x_9:
+    domain: slots
+    initial_value: 3
+  x_10:
+    domain: slots
+    initial_value: 6
+  x_11:
+    domain: slots
+    initial_value: 6
+  x_12:
+    domain: slots
+    initial_value: 5
+  x_13:
+    domain: slots
+    initial_value: 5
+  x_14:
+    domain: slots
+    initial_value: 4
+  x_15:
+    domain: slots
+    initial_value: 6
+  x_16:
+    domain: slots
+    initial_value: 9
+  x_17:
+    domain: slots
+    initial_value: 2
+  x_18:
+    domain: slots
+    initial_value: 4
+  x_19:
+    domain: slots
+    initial_value: 4
+  x_20:
+    domain: slots
+    initial_value: 6
+  x_21:
+    domain: slots
+    initial_value: 7
+  x_22:
+    domain: slots
+    initial_value: 7
+  x_23:
+    domain: slots
+    initial_value: 0
+  x_24:
+    domain: slots
+    initial_value: 5
+  x_25:
+    domain: slots
+    initial_value: 7
+  x_26:
+    domain: slots
+    initial_value: 2
+  x_27:
+    domain: slots
+    initial_value: 9
+  x_28:
+    domain: slots
+    initial_value: 6
+  x_29:
+    domain: slots
+    initial_value: 2
+  x_30:
+    domain: slots
+    initial_value: 6
+  x_31:
+    domain: slots
+    initial_value: 2
+  x_32:
+    domain: slots
+    initial_value: 1
+  x_33:
+    domain: slots
+    initial_value: 7
+  x_34:
+    domain: slots
+    initial_value: 4
+  x_35:
+    domain: slots
+    initial_value: 4
+  x_36:
+    domain: slots
+    initial_value: 4
+  x_37:
+    domain: slots
+    initial_value: 3
+  x_38:
+    domain: slots
+    initial_value: 7
+  x_39:
+    domain: slots
+    initial_value: 3
+  x_40:
+    domain: slots
+    initial_value: 3
+  x_41:
+    domain: slots
+    initial_value: 4
+  x_42:
+    domain: slots
+    initial_value: 7
+  x_43:
+    domain: slots
+    initial_value: 1
+  x_44:
+    domain: slots
+    initial_value: 8
+  x_45:
+    domain: slots
+    initial_value: 6
+  x_46:
+    domain: slots
+    initial_value: 6
+  x_47:
+    domain: slots
+    initial_value: 3
+
+constraints:
+  g_0:
+    type: extensional
+    variables: x_0
+    values:
+      7: "2"
+      9: "6"
+      13: "1"
+      15: "9"
+      27: "7"
+      29: "0"
+      30: "5"
+      36: "8"
+      42: "4"
+      49: "3"
+  g_1:
+    type: extensional
+    variables: x_1
+    values:
+      4: "6"
+      24: "3"
+      26: "7"
+      28: "1"
+      34: "4"
+      36: "0 | 9"
+      38: "2"
+      43: "8"
+      50: "5"
+  g_2:
+    type: extensional
+    variables: x_2
+    values:
+      0: "0"
+      3: "1"
+      7: "9"
+      21: "4"
+      22: "7"
+      23: "2"
+      26: "6"
+      34: "5"
+      35: "8"
+      44: "3"
+  g_3:
+    type: extensional
+    variables: x_3
+    values:
+      4: "9"
+      10: "2 | 6"
+      19: "4"
+      23: "3"
+      24: "5"
+      27: "0"
+      32: "8"
+      39: "1"
+      42: "7"
+  g_4:
+    type: extensional
+    variables: x_4
+    values:
+      5: "4 | 7"
+      12: "8"
+      22: "1"
+      23: "2"
+      27: "0 | 5 | 6"
+      29: "9"
+      31: "3"
+  g_5:
+    type: extensional
+    variables: x_5
+    values:
+      5: "8"
+      8: "2"
+      12: "5"
+      13: "0"
+      22: "6"
+      23: "1"
+      25: "3"
+      26: "4"
+      28: "9"
+      29: "7"
+  g_6:
+    type: extensional
+    variables: x_6
+    values:
+      6: "6"
+      7: "9"
+      12: "0"
+      16: "1"
+      28: "8"
+      38: "2"
+      42: "4"
+      45: "3"
+      46: "7"
+      47: "5"
+  g_7:
+    type: extensional
+    variables: x_7
+    values:
+      5: "4 | 6"
+      8: "3"
+      11: "9"
+      13: "5"
+      23: "8"
+      24: "1"
+      34: "0"
+      41: "2"
+      47: "7"
+  g_8:
+    type: extensional
+    variables: x_8
+    values:
+      0: "6"
+      12: "8"
+      17: "5"
+      18: "3"
+      20: "0"
+      27: "2"
+      33: "9"
+      39: "4"
+      40: "7"
+      45: "1"
+  g_9:
+    type: extensional
+    variables: x_9
+    values:
+      7: "9"
+      20: "7"
+      27: "5"
+      30: "8"
+      31: "4"
+      36: "6"
+      40: "1"
+      42: "0"
+      44: "3"
+      46: "2"
+  g_10:
+    type: extensional
+    variables: x_10
+    values:
+      5: "2"
+      18: "0 | 3"
+      19: "6"
+      32: "5"
+      33: "8"
+      34: "1"
+      40: "4"
+      42: "7"
+      46: "9"
+  g_11:
+    type: extensional
+    variables: x_11
+    values:
+      2: "6"
+      7: "0"
+      9: "9"
+      13: "4 | 7"
+      14: "1"
+      20: "5"
+      26: "8"
+      44: "3"
+      49: "2"
+  g_12:
+    type: extensional
+    variables: x_12
+    values:
+      27: "7"
+      28: "4"
+      29: "1 | 6"
+      30: "9"
+      33: "5"
+      34: "3"
+      37: "8"
+      42: "0 | 2"
+  g_13:
+    type: extensional
+    variables: x_13
+    values:
+      0: "0"
+      8: "2"
+      11: "4"
+      21: "5"
+      32: "1"
+      33: "6"
+      40: "9"
+      43: "3"
+      44: "7"
+      47: "8"
+  g_14:
+    type: extensional
+    variables: x_14
+    values:
+      0: "6"
+      2: "0"
+      3: "1"
+      4: "5"
+      17: "8"
+      18: "3"
+      24: "2"
+      35: "9"
+      43: "7"
+      50: "4"
+  g_15:
+    type: extensional
+    variables: x_15
+    values:
+      6: "1"
+      10: "2"
+      19: "4"
+      20: "3 | 8"
+      27: "9"
+      36: "0"
+      44: "7"
+      48: "5"
+      49: "6"
+  g_16:
+    type: extensional
+    variables: x_16
+    values:
+      4: "3"
+      5: "0 | 1 | 4"
+      20: "9"
+      24: "6"
+      25: "7"
+      39: "8"
+      43: "5"
+      45: "2"
+  g_17:
+    type: extensional
+    variables: x_17
+    values:
+      5: "7"
+      11: "5 | 6"
+      24: "2"
+      25: "4"
+      26: "3"
+      30: "0"
+      31: "9"
+      43: "8"
+      44: "1"
+  g_18:
+    type: extensional
+    variables: x_18
+    values:
+      12: "5"
+      13: "7"
+      18: "4"
+      21: "8"
+      23: "6"
+      25: "2"
+      28: "0 | 9"
+      30: "3"
+      49: "1"
+  g_19:
+    type: extensional
+    variables: x_19
+    values:
+      4: "3"
+      14: "0"
+      15: "6"
+      17: "5"
+      18: "2"
+      23: "4"
+      33: "1"
+      40: "9"
+      43: "7"
+      47: "8"
+  g_20:
+    type: extensional
+    variables: x_20
+    values:
+      2: "1"
+      18: "7"
+      22: "3"
+      24: "2"
+      29: "4 | 5"
+      31: "9"
+      32: "0"
+      37: "6"
+      48: "8"
+  g_21:
+    type: extensional
+    variables: x_21
+    values:
+      4: "6"
+      5: "3"
+      12: "1"
+      19: "7"
+      30: "0"
+      36: "4 | 9"
+      37: "8"
+      44: "2"
+      48: "5"
+  g_22:
+    type: extensional
+    variables: x_22
+    values:
+      5: "5"
+      7: "3"
+      8: "4"
+      11: "0 | 7"
+      29: "8"
+      33: "6"
+      36: "2"
+      43: "9"
+      45: "1"
+  g_23:
+    type: extensional
+    variables: x_23
+    values:
+      2: "5"
+      7: "0"
+      18: "1"
+      25: "4"
+      31: "9"
+      37: "6"
+      40: "7"
+      43: "2"
+      44: "8"
+      46: "3"
+  g_24:
+    type: extensional
+    variables: x_24
+    values:
+      5: "5"
+      10: "3"
+      14: "7"
+      17: "0"
+      25: "9"
+      35: "1"
+      40: "6 | 8"
+      46: "4"
+      47: "2"
+  g_25:
+    type: extensional
+    variables: x_25
+    values:
+      3: "3"
+      5: "6"
+      9: "1"
+      16: "0"
+      24: "2"
+      25: "9"
+      40: "4 | 7"
+      42: "5 | 8"
+  g_26:
+    type: extensional
+    variables: x_26
+    values:
+      4: "6"
+      16: "3 | 7"
+      17: "8"
+      31: "1 | 4"
+      34: "0"
+      37: "2"
+      40: "9"
+      43: "5"
+  g_27:
+    type: extensional
+    variables: x_27
+    values:
+      5: "1"
+      12: "5"
+      15: "6"
+      16: "8"
+      18: "2"
+      28: "3"
+      38: "4"
+      43: "0 | 9"
+      49: "7"
+  g_28:
+    type: extensional
+    variables: x_28
+    values:
+      9: "5"
+      11: "6"
+      13: "3 | 7"
+      14: "2"
+      15: "8"
+      27: "0"
+      40: "1"
+      43: "4 | 9"
+  g_29:
+    type: extensional
+    variables: x_29
+    values:
+      3: "2"
+      9: "8"
+      11: "5"
+      19: "9"
+      23: "6"
+      24: "0"
+      27: "1"
+      30: "7"
+      35: "4"
+      42: "3"
+  g_30:
+    type: extensional
+    variables: x_30
+    values:
+      0: "8"
+      3: "5"
+      18: "9"
+      24: "2"
+      25: "4"
+      32: "7"
+      37: "1"
+      42: "0"
+      47: "6"
+      50: "3"
+  g_31:
+    type: extensional
+    variables: x_31
+    values:
+      1: "3"
+      4: "6 | 7"
+      12: "8 | 9"
+      20: "2"
+      23: "4"
+      46: "0"
+      47: "1"
+      50: "5"
+  g_32:
+    type: extensional
+    variables: x_32
+    values:
+      2: "8"
+      4: "2"
+      6: "0"
+      10: "1 | 7 | 9"
+      11: "6"
+      24: "5"
+      25: "3"
+      41: "4"
+  g_33:
+    type: extensional
+    variables: x_33
+    values:
+      2: "6"
+      7: "4"
+      11: "5"
+      14: "0"
+      17: "3"
+      32: "9"
+      34: "2"
+      38: "1 | 7"
+      45: "8"
+  g_34:
+    type: extensional
+    variables: x_34
+    values:
+      0: "1"
+      4: "5"
+      7: "0"
+      9: "8"
+      10: "7"
+      18: "3"
+      21: "2"
+      27: "9"
+      42: "4"
+      48: "6"
+  g_35:
+    type: extensional
+    variables: x_35
+    values:
+      4: "4"
+      5: "8"
+      7: "5"
+      14: "9"
+      20: "2"
+      25: "1 | 7"
+      30: "3"
+      31: "0"
+      47: "6"
+  g_36:
+    type: extensional
+    variables: x_36
+    values:
+      11: "8"
+      12: "5"
+      13: "4"
+      31: "1"
+      35: "2"
+      38: "9"
+      41: "3"
+      43: "0 | 6"
+      47: "7"
+  g_37:
+    type: extensional
+    variables: x_37
+    values:
+      2: "2"
+      6: "9"
+      14: "4"
+      24: "5"
+      27: "1"
+      30: "8"
+      36: "0 | 7"
+      46: "3"
+      47: "6"
+  g_38:
+    type: extensional
+    variables: x_38
+    values:
+      13: "0"
+      15: "1"
+      16: "4"
+      20: "8"
+      22: "6"
+      23: "2"
+      24: "7"
+      27: "9"
+      29: "3"
+      35: "5"
+  g_39:
+    type: extensional
+    variables: x_39
+    values:
+      6: "9"
+      10: "3"
+      14: "0 | 8"
+      17: "7"
+      21: "4"
+      37: "5"
+      39: "6"
+      42: "1"
+      49: "2"
+  g_40:
+    type: extensional
+    variables: x_40
+    values:
+      30: "5"
+      31: "0"
+      40: "4"
+      41: "8"
+      42: "1 | 6 | 7"
+      47: "3"
+      48: "9"
+      50: "2"
+  g_41:
+    type: extensional
+    variables: x_41
+    values:
+      5: "7"
+      12: "4"
+      13: "1"
+      14: "2"
+      17: "6 | 9"
+      22: "0"
+      27: "8"
+      42: "3"
+      45: "5"
+  g_42:
+    type: extensional
+    variables: x_42
+    values:
+      5: "2"
+      7: "0"
+      14: "8"
+      21: "6"
+      27: "1"
+      29: "5"
+      34: "3"
+      37: "4"
+      41: "7"
+      42: "9"
+  g_43:
+    type: extensional
+    variables: x_43
+    values:
+      0: "6"
+      12: "4 | 9"
+      17: "3"
+      26: "1"
+      29: "8"
+      31: "7"
+      33: "0"
+      39: "2 | 5"
+  g_44:
+    type: extensional
+    variables: x_44
+    values:
+      3: "0"
+      13: "5"
+      24: "3"
+      37: "9"
+      43: "4"
+      44: "1 | 7"
+      48: "2"
+      50: "6 | 8"
+  g_45:
+    type: extensional
+    variables: x_45
+    values:
+      5: "1"
+      8: "7"
+      9: "3"
+      18: "6"
+      19: "9"
+      33: "2"
+      35: "4"
+      43: "8"
+      45: "0"
+      49: "5"
+  g_46:
+    type: extensional
+    variables: x_46
+    values:
+      6: "7"
+      11: "8"
+      15: "5"
+      22: "1"
+      24: "6"
+      31: "4"
+      33: "9"
+      42: "3"
+      43: "0"
+      47: "2"
+  g_47:
+    type: extensional
+    variables: x_47
+    values:
+      0: "2"
+      6: "9"
+      12: "6"
+      15: "8"
+      16: "0 | 4"
+      21: "3"
+      24: "7"
+      31: "1"
+      38: "5"
+  link_23_20:
+    type: extensional
+    variables: [x_23, x_20]
+    default: 0
+    values: {}
+  n_0_10:
+    type: extensional
+    variables: [x_0, x_10]
+    default: 0
+    values:
+      56: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      280: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_0_34:
+    type: extensional
+    variables: [x_0, x_34]
+    default: 0
+    values:
+      26: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      130: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_0_45:
+    type: extensional
+    variables: [x_0, x_45]
+    default: 0
+    values:
+      64: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      320: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_10:
+    type: extensional
+    variables: [x_1, x_10]
+    default: 0
+    values:
+      26: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      130: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_11:
+    type: extensional
+    variables: [x_1, x_11]
+    default: 0
+    values:
+      74: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      370: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_13:
+    type: extensional
+    variables: [x_1, x_13]
+    default: 0
+    values:
+      72: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      360: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_14:
+    type: extensional
+    variables: [x_1, x_14]
+    default: 0
+    values:
+      50: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      250: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_24:
+    type: extensional
+    variables: [x_1, x_24]
+    default: 0
+    values:
+      28: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      140: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_1_30:
+    type: extensional
+    variables: [x_1, x_30]
+    default: 0
+    values:
+      66: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      330: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_9:
+    type: extensional
+    variables: [x_2, x_9]
+    default: 0
+    values:
+      32: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      160: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_10:
+    type: extensional
+    variables: [x_2, x_10]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_14:
+    type: extensional
+    variables: [x_2, x_14]
+    default: 0
+    values:
+      10: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      50: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_21:
+    type: extensional
+    variables: [x_2, x_21]
+    default: 0
+    values:
+      26: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      130: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_37:
+    type: extensional
+    variables: [x_2, x_37]
+    default: 0
+    values:
+      34: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      170: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_2_41:
+    type: extensional
+    variables: [x_2, x_41]
+    default: 0
+    values:
+      20: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      100: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_3_18:
+    type: extensional
+    variables: [x_3, x_18]
+    default: 0
+    values:
+      62: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      310: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_3_22:
+    type: extensional
+    variables: [x_3, x_22]
+    default: 0
+    values:
+      68: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      340: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_3_29:
+    type: extensional
+    variables: [x_3, x_29]
+    default: 0
+    values:
+      22: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      110: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_3_34:
+    type: extensional
+    variables: [x_3, x_34]
+    default: 0
+    values:
+      40: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      200: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_3_45:
+    type: extensional
+    variables: [x_3, x_45]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_4_15:
+    type: extensional
+    variables: [x_4, x_15]
+    default: 0
+    values:
+      48: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      240: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_4_18:
+    type: extensional
+    variables: [x_4, x_18]
+    default: 0
+    values:
+      54: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      270: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_4_42:
+    type: extensional
+    variables: [x_4, x_42]
+    default: 0
+    values:
+      14: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      70: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_5_7:
+    type: extensional
+    variables: [x_5, x_7]
+    default: 0
+    values:
+      52: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      260: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_5_21:
+    type: extensional
+    variables: [x_5, x_21]
+    default: 0
+    values:
+      22: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      110: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_5_29:
+    type: extensional
+    variables: [x_5, x_29]
+    default: 0
+    values:
+      76: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      380: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_5_36:
+    type: extensional
+    variables: [x_5, x_36]
+    default: 0
+    values:
+      74: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      370: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_5_45:
+    type: extensional
+    variables: [x_5, x_45]
+    default: 0
+    values:
+      78: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      390: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_6_28:
+    type: extensional
+    variables: [x_6, x_28]
+    default: 0
+    values:
+      48: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      240: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_6_34:
+    type: extensional
+    variables: [x_6, x_34]
+    default: 0
+    values:
+      32: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      160: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_6_45:
+    type: extensional
+    variables: [x_6, x_45]
+    default: 0
+    values:
+      72: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      360: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_9:
+    type: extensional
+    variables: [x_7, x_9]
+    default: 0
+    values:
+      68: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      340: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_18:
+    type: extensional
+    variables: [x_7, x_18]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_19:
+    type: extensional
+    variables: [x_7, x_19]
+    default: 0
+    values:
+      44: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      220: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_27:
+    type: extensional
+    variables: [x_7, x_27]
+    default: 0
+    values:
+      80: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      400: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_28:
+    type: extensional
+    variables: [x_7, x_28]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_38:
+    type: extensional
+    variables: [x_7, x_38]
+    default: 0
+    values:
+      70: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      350: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_7_45:
+    type: extensional
+    variables: [x_7, x_45]
+    default: 0
+    values:
+      34: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      170: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_8_12:
+    type: extensional
+    variables: [x_8, x_12]
+    default: 0
+    values:
+      48: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      240: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_8_17:
+    type: extensional
+    variables: [x_8, x_17]
+    default: 0
+    values:
+      28: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      140: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_8_32:
+    type: extensional
+    variables: [x_8, x_32]
+    default: 0
+    values:
+      34: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      170: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_8_37:
+    type: extensional
+    variables: [x_8, x_37]
+    default: 0
+    values:
+      52: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      260: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_8_40:
+    type: extensional
+    variables: [x_8, x_40]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_9_22:
+    type: extensional
+    variables: [x_9, x_22]
+    default: 0
+    values:
+      66: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      330: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_9_31:
+    type: extensional
+    variables: [x_9, x_31]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_9_36:
+    type: extensional
+    variables: [x_9, x_36]
+    default: 0
+    values:
+      52: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      260: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_10_26:
+    type: extensional
+    variables: [x_10, x_26]
+    default: 0
+    values:
+      80: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      400: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_10_29:
+    type: extensional
+    variables: [x_10, x_29]
+    default: 0
+    values:
+      30: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      150: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_10_45:
+    type: extensional
+    variables: [x_10, x_45]
+    default: 0
+    values:
+      66: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      330: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_11_22:
+    type: extensional
+    variables: [x_11, x_22]
+    default: 0
+    values:
+      68: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      340: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_11_33:
+    type: extensional
+    variables: [x_11, x_33]
+    default: 0
+    values:
+      42: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      210: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_12_20:
+    type: extensional
+    variables: [x_12, x_20]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_12_22:
+    type: extensional
+    variables: [x_12, x_22]
+    default: 0
+    values:
+      54: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      270: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_12_44:
+    type: extensional
+    variables: [x_12, x_44]
+    default: 0
+    values:
+      50: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      250: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_13_28:
+    type: extensional
+    variables: [x_13, x_28]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_13_43:
+    type: extensional
+    variables: [x_13, x_43]
+    default: 0
+    values:
+      40: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      200: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_13_45:
+    type: extensional
+    variables: [x_13, x_45]
+    default: 0
+    values:
+      16: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      80: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_14_16:
+    type: extensional
+    variables: [x_14, x_16]
+    default: 0
+    values:
+      44: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      220: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_14_18:
+    type: extensional
+    variables: [x_14, x_18]
+    default: 0
+    values:
+      36: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      180: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_14_22:
+    type: extensional
+    variables: [x_14, x_22]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_15_22:
+    type: extensional
+    variables: [x_15, x_22]
+    default: 0
+    values:
+      10: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      50: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_15_26:
+    type: extensional
+    variables: [x_15, x_26]
+    default: 0
+    values:
+      12: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      60: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_15_27:
+    type: extensional
+    variables: [x_15, x_27]
+    default: 0
+    values:
+      70: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      350: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_15_29:
+    type: extensional
+    variables: [x_15, x_29]
+    default: 0
+    values:
+      78: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      390: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_16_41:
+    type: extensional
+    variables: [x_16, x_41]
+    default: 0
+    values:
+      28: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      140: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_17_22:
+    type: extensional
+    variables: [x_17, x_22]
+    default: 0
+    values:
+      24: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      120: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_17_29:
+    type: extensional
+    variables: [x_17, x_29]
+    default: 0
+    values:
+      66: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      330: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_18_22:
+    type: extensional
+    variables: [x_18, x_22]
+    default: 0
+    values:
+      14: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      70: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_18_35:
+    type: extensional
+    variables: [x_18, x_35]
+    default: 0
+    values:
+      10: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      50: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_19_28:
+    type: extensional
+    variables: [x_19, x_28]
+    default: 0
+    values:
+      80: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      400: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_19_33:
+    type: extensional
+    variables: [x_19, x_33]
+    default: 0
+    values:
+      48: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      240: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_20_21:
+    type: extensional
+    variables: [x_20, x_21]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_22_28:
+    type: extensional
+    variables: [x_22, x_28]
+    default: 0
+    values:
+      24: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      120: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_22_30:
+    type: extensional
+    variables: [x_22, x_30]
+    default: 0
+    values:
+      70: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      350: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_22_36:
+    type: extensional
+    variables: [x_22, x_36]
+    default: 0
+    values:
+      32: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      160: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_24_26:
+    type: extensional
+    variables: [x_24, x_26]
+    default: 0
+    values:
+      74: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      370: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_24_46:
+    type: extensional
+    variables: [x_24, x_46]
+    default: 0
+    values:
+      36: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      180: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_25_29:
+    type: extensional
+    variables: [x_25, x_29]
+    default: 0
+    values:
+      52: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      260: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_26_32:
+    type: extensional
+    variables: [x_26, x_32]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_26_42:
+    type: extensional
+    variables: [x_26, x_42]
+    default: 0
+    values:
+      12: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      60: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_27_38:
+    type: extensional
+    variables: [x_27, x_38]
+    default: 0
+    values:
+      38: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      190: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_27_44:
+    type: extensional
+    variables: [x_27, x_44]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_27_46:
+    type: extensional
+    variables: [x_27, x_46]
+    default: 0
+    values:
+      78: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      390: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_28_37:
+    type: extensional
+    variables: [x_28, x_37]
+    default: 0
+    values:
+      28: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      140: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_28_40:
+    type: extensional
+    variables: [x_28, x_40]
+    default: 0
+    values:
+      52: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      260: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_28_44:
+    type: extensional
+    variables: [x_28, x_44]
+    default: 0
+    values:
+      78: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      390: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_29_45:
+    type: extensional
+    variables: [x_29, x_45]
+    default: 0
+    values:
+      58: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      290: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_30_38:
+    type: extensional
+    variables: [x_30, x_38]
+    default: 0
+    values:
+      20: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      100: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_32_40:
+    type: extensional
+    variables: [x_32, x_40]
+    default: 0
+    values:
+      30: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      150: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_33_47:
+    type: extensional
+    variables: [x_33, x_47]
+    default: 0
+    values:
+      14: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      70: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_34_39:
+    type: extensional
+    variables: [x_34, x_39]
+    default: 0
+    values:
+      42: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      210: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_35_36:
+    type: extensional
+    variables: [x_35, x_36]
+    default: 0
+    values:
+      10: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      50: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_37_40:
+    type: extensional
+    variables: [x_37, x_40]
+    default: 0
+    values:
+      30: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      150: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+  n_43_47:
+    type: extensional
+    variables: [x_43, x_47]
+    default: 0
+    values:
+      66: "0 1 | 1 0 | 2 3 | 3 2 | 4 5 | 5 4 | 6 7 | 7 6 | 8 9 | 9 8"
+      330: "0 0 | 1 1 | 2 2 | 3 3 | 4 4 | 5 5 | 6 6 | 7 7 | 8 8 | 9 9"
+
+agents: [d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11]
