@@ -68,9 +68,11 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 | VMGM-hist-cap | 0.846 | 0.729 | 0.724 | 0.715 |
 | VMGM-hist-quar | 1.0 | 1.0 | 1.0 | 1.0 |
 | VMGM-hist-quar-exec | 1.0 | 1.0 | 1.0 | 1.0 |
+| VMGM-hist-soft | 1.0 | 1.0 | 1.0 | 1.0 |
 | VMGM-move-cap | 0.846 | 0.729 | 0.724 | 0.715 |
 | VMGM-move-quar | 0.846 | 0.729 | 0.724 | 0.715 |
 | control-quar | 1.0 | 1.0 | 1.0 | 1.0 |
+| control-soft | 1.0 | 1.0 | 1.0 | 1.0 |
 
 ### H2c: direct damage (Result 4)
 Largest student cost added by one liar exam's own moves: **0.960 · g_max** over 16000 runs (bound: < 1). False flags in all V-MGM runs: **0**.
@@ -78,12 +80,12 @@ Over all 58,440 history + quarantine runs in E1-E5: **0.990 · g_max** (worst ru
 
 ### H2d: total damage, rho (all attacks pooled) and the quarantine control
 `control-quar`: everyone honest, the flagged liars' departments quarantined at the same rounds. It measures what quarantine itself costs.
-| k | MGM | VMGM-hist-cap | VMGM-hist-quar | control-quar | RP-MGM |
-|---|---|---|---|---|---|
-| 1 | 1.91 ± 0.06 | 1.17 ± 0.02 | 1.10 ± 0.00 | 1.06 ± 0.00 | 1.07 ± 0.01 |
-| 2 | 1.94 ± 0.06 | 1.32 ± 0.02 | 1.21 ± 0.01 | 1.12 ± 0.01 | 1.13 ± 0.01 |
-| 3 | 2.00 ± 0.06 | 1.38 ± 0.02 | 1.33 ± 0.01 | 1.17 ± 0.01 | 1.21 ± 0.01 |
-| 6 | 2.28 ± 0.06 | 1.57 ± 0.03 | 1.71 ± 0.03 | 1.33 ± 0.01 | 1.49 ± 0.03 |
+| k | MGM | VMGM-hist-cap | VMGM-hist-quar | control-quar | VMGM-hist-soft | control-soft | RP-MGM |
+|---|---|---|---|---|---|---|---|
+| 1 | 1.91 ± 0.06 | 1.17 ± 0.02 | 1.10 ± 0.00 | 1.06 ± 0.00 | 1.11 ± 0.00 | 1.04 ± 0.00 | 1.07 ± 0.01 |
+| 2 | 1.94 ± 0.06 | 1.32 ± 0.02 | 1.21 ± 0.01 | 1.12 ± 0.01 | 1.22 ± 0.01 | 1.09 ± 0.00 | 1.13 ± 0.01 |
+| 3 | 2.00 ± 0.06 | 1.38 ± 0.02 | 1.33 ± 0.01 | 1.17 ± 0.01 | 1.35 ± 0.01 | 1.12 ± 0.01 | 1.21 ± 0.01 |
+| 6 | 2.28 ± 0.06 | 1.57 ± 0.03 | 1.71 ± 0.03 | 1.33 ± 0.01 | 1.75 ± 0.03 | 1.24 ± 0.01 | 1.49 ± 0.03 |
 
 Honest departments' loss: lying + quarantine vs quarantine alone (positive = lying hurts honest departments beyond what quarantine costs):
 | k | hist-quar − control (honest loss) | p (Holm) | n |
@@ -93,19 +95,27 @@ Honest departments' loss: lying + quarantine vs quarantine alone (positive = lyi
 | 3 | 8.4 ± 2.3 | 4.9e-31 | 4000 |
 | 6 | 13.6 ± 2.2 | 1.4e-55 | 4000 |
 
+### Soft vs hard quarantine (Result 8): paired difference in rho (negative = soft is cheaper)
+| k | soft − hard quarantine (rho) | p (Holm) | n |
+|---|---|---|---|
+| 1 | 0.003 ± 0.001 | 3.0e-09 | 4000 |
+| 2 | 0.011 ± 0.002 | 2.7e-49 | 4000 |
+| 3 | 0.018 ± 0.002 | 4.4e-82 | 4000 |
+| 6 | 0.044 ± 0.003 | 2.9e-162 | 4000 |
+
 ### rho by attack and protocol, k = 3
-| attack | MGM | RP-MGM | VMGM-hist-cap | VMGM-hist-quar | VMGM-hist-quar-exec | VMGM-move-cap | VMGM-move-quar | control-quar |
-|---|---|---|---|---|---|---|---|---|
-| block | 4.43 | 1.01 | 1.0 | 1.34 | 1.34 | 1.0 | 1.34 | 1.33 |
-| churn | 2.31 | 1.36 | 2.31 | 1.36 | 1.36 | 2.31 | 2.31 | 1.29 |
-| delayed | 1.49 | 1.02 | 1.01 | 1.35 | 1.35 | 1.01 | 1.35 | 1.1 |
-| exag_consistent | 1.03 | 1.05 | 1.03 | 1.03 | 1.03 | 1.03 | 1.03 | 1.0 |
-| exag_naive | 0.98 | 1.01 | 1.0 | 1.33 | 1.33 | 1.0 | 1.33 | 1.33 |
-| hijack | 0.99 | 1.01 | 1.0 | 1.34 | 1.34 | 1.0 | 1.34 | 1.33 |
-| maxbound | 1.0 | 1.01 | 1.0 | 1.03 | 1.03 | 1.0 | 1.0 | 1.05 |
-| mixed | 4.55 | 1.3 | 2.2 | 1.39 | 1.39 | 2.2 | 2.29 | 1.21 |
-| sabotage | 1.68 | 1.74 | 1.68 | 1.57 | 1.57 | 1.68 | 1.68 | 1.06 |
-| sabotage_consistent | 1.55 | 1.58 | 1.55 | 1.55 | 1.55 | 1.55 | 1.55 | 1.0 |
+| attack | MGM | RP-MGM | VMGM-hist-cap | VMGM-hist-quar | VMGM-hist-quar-exec | VMGM-hist-soft | VMGM-move-cap | VMGM-move-quar | control-quar | control-soft |
+|---|---|---|---|---|---|---|---|---|---|---|
+| block | 4.43 | 1.01 | 1.0 | 1.34 | 1.34 | 1.38 | 1.0 | 1.34 | 1.33 | 1.28 |
+| churn | 2.31 | 1.36 | 2.31 | 1.36 | 1.36 | 1.37 | 2.31 | 2.31 | 1.29 | 1.17 |
+| delayed | 1.49 | 1.02 | 1.01 | 1.35 | 1.35 | 1.38 | 1.01 | 1.35 | 1.1 | 1.04 |
+| exag_consistent | 1.03 | 1.05 | 1.03 | 1.03 | 1.03 | 1.03 | 1.03 | 1.03 | 1.0 | 1.0 |
+| exag_naive | 0.98 | 1.01 | 1.0 | 1.33 | 1.33 | 1.37 | 1.0 | 1.33 | 1.33 | 1.25 |
+| hijack | 0.99 | 1.01 | 1.0 | 1.34 | 1.34 | 1.38 | 1.0 | 1.34 | 1.33 | 1.28 |
+| maxbound | 1.0 | 1.01 | 1.0 | 1.03 | 1.03 | 1.04 | 1.0 | 1.0 | 1.05 | 1.03 |
+| mixed | 4.55 | 1.3 | 2.2 | 1.39 | 1.39 | 1.43 | 2.2 | 2.29 | 1.21 | 1.16 |
+| sabotage | 1.68 | 1.74 | 1.68 | 1.57 | 1.57 | 1.57 | 1.68 | 1.68 | 1.06 | 1.03 |
+| sabotage_consistent | 1.55 | 1.58 | 1.55 | 1.55 | 1.55 | 1.55 | 1.55 | 1.55 | 1.0 | 1.0 |
 
 ### Placement (hist-quar): rho, liars adjacent − spread
 | k | adjacent − spread | p (Holm) | n |
@@ -229,6 +239,8 @@ Different N and p are different instances, so Spearman correlation is used inste
 | 24.0 | 6.0 | 1.0 | 0.74 | 0.96 |
 | 48.0 | 1.0 | 1.0 | 0.725 | 0.96 |
 | 48.0 | 12.0 | 1.0 | 0.735 | 0.96 |
+
+_(skipped: vmgm_results/full\E6.csv not found)_
 
 ## E5: is "did not finish" caused by the 300-round limit?
 Fraction finished with a 300 vs 1000 round limit. If a protocol does not finish at 300 but does at 1000, the limit was the problem; if it does not finish at either, it is genuinely stuck.
