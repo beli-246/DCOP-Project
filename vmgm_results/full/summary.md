@@ -240,7 +240,51 @@ Different N and p are different instances, so Spearman correlation is used inste
 | 48.0 | 1.0 | 1.0 | 0.725 | 0.96 |
 | 48.0 | 12.0 | 1.0 | 0.735 | 0.96 |
 
-_(skipped: vmgm_results/full\E6.csv not found)_
+## H5 (E6): coordinated liars hurt honest departments more than independent ones
+All three attacks keep every liar's history consistent, so none is ever flagged (Result 3) and V-MGM behaves like MGM; the comparison isolates coordination. Honest loss is against everyone honest under the same protocol.
+
+### MGM
+| effect | k | honest loss diff | p (Holm) | n |
+|---|---|---|---|---|
+| coordination: collude − spite | 2 | 3.6 ± 4.1 | 1.0e-01 | 400 |
+| coordination: collude − spite | 3 | 9.1 ± 5.8 | 1.3e-03 | 400 |
+| coordination: collude − spite | 6 | 27.8 ± 8.7 | 8.0e-11 | 400 |
+| targeting: spite − sabotage | 2 | 4.0 ± 4.0 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 3 | 1.9 ± 4.3 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 6 | 0.3 ± 6.4 | 7.3e-01 | 400 |
+
+### VMGM-hist-quar
+| effect | k | honest loss diff | p (Holm) | n |
+|---|---|---|---|---|
+| coordination: collude − spite | 2 | 3.6 ± 4.1 | 1.0e-01 | 400 |
+| coordination: collude − spite | 3 | 9.1 ± 5.8 | 1.3e-03 | 400 |
+| coordination: collude − spite | 6 | 27.8 ± 8.7 | 8.0e-11 | 400 |
+| targeting: spite − sabotage | 2 | 4.0 ± 4.0 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 3 | 1.9 ± 4.3 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 6 | 0.3 ± 6.4 | 7.3e-01 | 400 |
+
+### VMGM-hist-soft
+| effect | k | honest loss diff | p (Holm) | n |
+|---|---|---|---|---|
+| coordination: collude − spite | 2 | 3.6 ± 4.1 | 1.0e-01 | 400 |
+| coordination: collude − spite | 3 | 9.1 ± 5.8 | 1.3e-03 | 400 |
+| coordination: collude − spite | 6 | 27.8 ± 8.7 | 8.0e-11 | 400 |
+| targeting: spite − sabotage | 2 | 4.0 ± 4.0 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 3 | 1.9 ± 4.3 | 2.2e-02 | 400 |
+| targeting: spite − sabotage | 6 | 0.3 ± 6.4 | 7.3e-01 | 400 |
+
+### By attack and k (all protocols pooled)
+| attack | k | rho | honest_loss | det | dmg_max | finished |
+|---|---|---|---|---|---|---|
+| collude | 2 | 1.295 | 18.988 | 0.0 | 0.96 | 1.0 |
+| collude | 3 | 1.448 | 37.818 | 0.0 | 0.96 | 1.0 |
+| collude | 6 | 1.875 | 79.572 | 0.0 | 0.96 | 1.0 |
+| sabotage_consistent | 2 | 1.341 | 11.338 | 0.0 | 0.96 | 1.0 |
+| sabotage_consistent | 3 | 1.551 | 26.792 | 0.0 | 0.96 | 1.0 |
+| sabotage_consistent | 6 | 2.478 | 51.432 | 0.0 | 0.96 | 1.0 |
+| spite_consistent | 2 | 1.315 | 15.355 | 0.0 | 0.96 | 1.0 |
+| spite_consistent | 3 | 1.519 | 28.725 | 0.0 | 0.96 | 1.0 |
+| spite_consistent | 6 | 2.364 | 51.775 | 0.0 | 0.96 | 1.0 |
 
 ## E5: is "did not finish" caused by the 300-round limit?
 Fraction finished with a 300 vs 1000 round limit. If a protocol does not finish at 300 but does at 1000, the limit was the problem; if it does not finish at either, it is genuinely stuck.

@@ -15,7 +15,7 @@ The pilot attacks are copied unchanged (regression). Two attacks are new:
 Both read the public history scores from the board (assumption A2: the board and every
 announcement are public, so any department can recompute them).
 """
-from .model import HUGE, V, best_move, moves
+from .model import HUGE, V, best_move, moves, pc
 
 PILOT_ATTACKS = ['block', 'hijack', 'maxbound', 'churn', 'sabotage', 'exag_naive', 'exag_consistent']
 NEW_ATTACKS = ['sabotage_consistent', 'delayed']
@@ -63,6 +63,57 @@ def _sabotage_consistent(inst, x, i, board):
     return (best[1], best[2], best[3])
 
 
+# ------------------------------------------------------------------ collusion (T7, experiment E6)
+# Colluders share private information (preferences, who is in the coalition). Each of them computes the
+# same joint plan from the public board and that shared information, deterministically, and posts its own
+# part, so no change to the protocol is needed. The coalition is inst['coalition'] (set by the experiment).
+E6_ATTACKS = ['sabotage_consistent', 'spite_consistent', 'collude']
+
+
+def honest_harm(inst, x, e, a, coalition):
+    """Increase in the total burden of the departments outside the coalition if exam e moves to slot a.
+    The burden splits every pair cost between two departments half-half, so each pair (e, f) with f
+    outside the coalition adds half of its cost change."""
+    owner = inst['owner']
+    h = 0.0
+    for f, c in inst['adj'][e]:
+        if owner[f] in coalition:
+            continue
+        h += 0.5 * (pc(a, x[f], c) - pc(x[e], x[f], c))
+    return h
+
+
+def coalition_plan(inst, x, coalition, board):
+    """{dept: (claim, e, a)} for the coalition members that move this round, the same for every member.
+
+    Each member's candidate: the consistent move (claim = V + the largest private part that keeps its
+    history consistent, which must be positive) that most increases the honest departments' burden.
+    Members then yield to each other: in order of harm, a member posts its move only if no member already
+    picked is its neighbour (in MGM two neighbours cannot both move, so they would block each other)."""
+    gmax = inst['gmax']
+    best = {}
+    for j in sorted(coalition):
+        for e, a in moves(inst, x, j):
+            if x[e] not in board.scores[e]:
+                continue
+            rr = feasible_r_range(board.scores[e], x[e], a, gmax)
+            if rr is None:
+                continue
+            v = V(inst, x, e, a)
+            claim = v + rr[1]
+            if claim <= 0:
+                continue
+            h = honest_harm(inst, x, e, a, coalition)
+            key = (h, -v, -e, -a)
+            if h > 0 and (j not in best or key > best[j][0]):
+                best[j] = (key, (claim, e, a))
+    picked = {}
+    for j in sorted(best, key=lambda j: best[j][0], reverse=True):
+        if all(p not in inst['nbr'][j] for p in picked):
+            picked[j] = best[j][1]
+    return picked
+
+
 def announce(inst, x, i, kind, lam, board=None, rnd=0, switch_round=20):
     """Return (claim, e, a) posted by department i. kind='honest' or an attack name."""
     g, gmax = inst['g'], inst['gmax']
@@ -95,6 +146,10 @@ def announce(inst, x, i, kind, lam, board=None, rnd=0, switch_round=20):
         return (v + gmax, e, a)
     if kind == 'sabotage_consistent':
         return _sabotage_consistent(inst, x, i, board)
+    if kind == 'spite_consistent':                # T7a: independent, targets the departments it thinks honest
+        return coalition_plan(inst, x, {i}, board).get(i, (0, None, None))
+    if kind == 'collude':                         # T7: coordinated coalition (inst['coalition'])
+        return coalition_plan(inst, x, inst.get('coalition', {i}), board).get(i, (0, None, None))
     if kind == 'delayed':
         if rnd < switch_round:
             return _sabotage_consistent(inst, x, i, board)
