@@ -37,6 +37,8 @@ STYLE = {
     'VMGM-hist-cap': dict(color='#eda100', marker='D', ls='-.', label='V-MGM: history + cap only'),
     'RP-MGM': dict(color='#52514e', marker='v', ls=(0, (1, 1)), label='RP-MGM'),
     'DSA': dict(color='#a8a7a1', marker='X', ls=(0, (3, 1, 1, 1)), label='DSA'),
+    'VMGM-hist-soft': dict(color='#7b3fbf', marker='P', ls='-', label='V-MGM: history + soft quarantine'),
+    'control-soft': dict(color='#b48ee0', marker='p', ls=':', label='Soft quarantine alone (control)'),
 }
 SEQ = ['#86b6ef', '#2a78d6', '#104281']           # sequential blue, ordinal (light -> dark)
 ATTACK_LABEL = {
@@ -109,7 +111,9 @@ def fig_guarantees(d, e2):
     # (b) total damage: measured
     ax = axs[1]
     ks = sorted(att.k.unique())
-    for p in ('MGM', 'VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar'):
+    has_soft = (att.protocol == 'VMGM-hist-soft').any()
+    for p in ('MGM', 'VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar') + (
+            ('VMGM-hist-soft', 'control-soft') if has_soft else ()):
         r = [ci(att[(att.protocol == p) & (att.k == k)].rho) for k in ks]
         line(ax, ks, [m for m, _ in r], [h for _, h in r], p)
     ax.axhline(1, color=MUTED, lw=0.8)
@@ -120,7 +124,7 @@ def fig_guarantees(d, e2):
 
     # (c) termination
     ax = axs[2]
-    for p in ('MGM', 'RP-MGM', 'VMGM-hist-cap', 'VMGM-hist-quar'):
+    for p in ('MGM', 'RP-MGM', 'VMGM-hist-cap', 'VMGM-hist-quar') + (('VMGM-hist-soft',) if has_soft else ()):
         f = [att[(att.protocol == p) & (att.k == k)].finished.mean() * 100 for k in ks]
         st = STYLE[p]
         ax.plot(ks, f, color=st['color'], marker=st['marker'], ls=st['ls'], label=st['label'],
@@ -135,7 +139,8 @@ def fig_guarantees(d, e2):
     for a in axs[1:]:
         for h, l in zip(*a.get_legend_handles_labels()):
             handles[l] = h
-    order = [STYLE[p]['label'] for p in ('VMGM-hist-quar', 'VMGM-hist-cap', 'control-quar', 'MGM', 'RP-MGM')]
+    order = [STYLE[p]['label'] for p in ('VMGM-hist-quar', 'VMGM-hist-cap', 'control-quar', 'MGM', 'RP-MGM')
+             + (('VMGM-hist-soft', 'control-soft') if has_soft else ())]
     fig.legend([handles[l] for l in order], order, loc='upper center', ncol=3, bbox_to_anchor=(0.5, -0.12))
     save(fig, d, 'fig1_guarantees')
 
@@ -321,6 +326,10 @@ def tables(d, e1, e2, e3, e4, e5):
     attacks = ['block', 'churn', 'mixed', 'delayed', 'sabotage', 'hijack', 'exag_naive', 'maxbound',
                'sabotage_consistent', 'exag_consistent']
     prots = ['MGM', 'RP-MGM', 'VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar']
+    heads = ['Attack', 'MGM', 'RP-MGM', 'Hist.+cap', 'Hist.+quar.', 'Quar. only']
+    if (k3.protocol == 'VMGM-hist-soft').any():
+        prots += ['VMGM-hist-soft', 'control-soft']
+        heads += ['Hist.+soft', 'Soft only']
     rows = []
     for a in attacks:
         r = [tex_escape(ATTACK_LABEL[a])]
@@ -330,8 +339,8 @@ def tables(d, e1, e2, e3, e4, e5):
             r.append(m + (r'$^\dagger$' if g.finished.mean() < 0.95 else ''))
         r.append(pct(k3[(k3.protocol == "VMGM-hist-quar") & (k3.attack == a)].det_rate.mean()).replace('%', r'\%'))
         rows.append(r)
-    write_table(d, 'tab_e2_k3', ['Attack', 'MGM', 'RP-MGM', 'Hist.+cap', 'Hist.+quar.', 'Quar. only', 'Flagged'],
-                rows, 'lrrrrrr',
+    write_table(d, 'tab_e2_k3', heads + ['Flagged'],
+                rows, 'l' + 'r' * (len(heads)),
                 r'Final cost relative to honest MGM ($\rho$, mean) with $k=3$ dishonest departments '
                 r'(E2, 50 instances $\times$ 2 families $\times$ 2 starts $\times$ 2 placements). '
                 r"$\dagger$: fewer than 95\% of runs finished. ``Quar.\ only'': nobody lies, and the departments "

@@ -4,12 +4,12 @@ Source: `vmgm_results/full`
 ## Run counts (Experimental setup, Table 2 caption, Table 3)
 
 - **setup** | E1 rows: 9,600
-- **setup** | E2 rows: 129,400
+- **setup** | E2 rows: 161,600
 - **setup** | E3 rows: 36,000
 - **setup** | E4 rows: 7,200
 - **setup** | E5 rows: 1,200
-- **setup** | total rows: 183,400
-- **Table 2** | V-MGM runs checked automatically: 123,720
+- **setup** | total rows: 215,600
+- **Table 2** | V-MGM runs checked automatically: 139,920
 - **Table 2** | history + quarantine runs (all experiments): 58,440
 - **setup** | instances per family (E1-E3): 50
 - **setup** | instances per family (E5): 10
@@ -76,6 +76,27 @@ Source: `vmgm_results/full`
 - **Results** | k=3, mixed: cap-only rho / finished: 2.20 / 0.25%
 - **Results** | k=3, sabotage: cap-only rho / finished: 1.68 / 24.25%
 
+## Soft quarantine (Result 8, issue #14)
+
+- **Results** | k=1: rho hard / soft quarantine; control hard / control soft: 1.10 / 1.11; 1.06 / 1.04
+- **Results** | k=2: rho hard / soft quarantine; control hard / control soft: 1.21 / 1.22; 1.12 / 1.09
+- **Results** | k=3: rho hard / soft quarantine; control hard / control soft: 1.33 / 1.35; 1.17 / 1.12
+- **Results** | k=6: rho hard / soft quarantine; control hard / control soft: 1.71 / 1.75; 1.33 / 1.24
+- **Results** | k=1: soft minus hard quarantine, paired rho difference: +0.003 +/- 0.001 (Holm p 3.0e-09)
+- **Results** | k=2: soft minus hard quarantine, paired rho difference: +0.011 +/- 0.002 (Holm p 2.7e-49)
+- **Results** | k=3: soft minus hard quarantine, paired rho difference: +0.018 +/- 0.002 (Holm p 4.4e-82)
+- **Results** | k=6: soft minus hard quarantine, paired rho difference: +0.044 +/- 0.003 (Holm p 2.9e-162)
+- **Result 8** | soft quarantine: largest per-exam direct damage over the whole run, share finished, false flags: 0.96 g_max, 100.0%, 0
+- **Result 8** | soft quarantine: share of liars flagged (same detection as hard quarantine?): soft 65.8% vs hard 65.8%
+- **Results** | k=1: selfish attacks (T1a, T2a) rho cap-only / hard / soft quarantine: 1.00 / 1.11 / 1.12
+- **Results** | k=2: selfish attacks (T1a, T2a) rho cap-only / hard / soft quarantine: 1.00 / 1.23 / 1.25
+- **Results** | k=3: selfish attacks (T1a, T2a) rho cap-only / hard / soft quarantine: 1.00 / 1.34 / 1.37
+- **Results** | k=6: selfish attacks (T1a, T2a) rho cap-only / hard / soft quarantine: 1.00 / 1.66 / 1.73
+- **Results** | k=1: honest loss, soft quarantine minus its control: -1.8 +/- 2.0
+- **Results** | k=2: honest loss, soft quarantine minus its control: 4.5 +/- 2.1
+- **Results** | k=3: honest loss, soft quarantine minus its control: 10.5 +/- 2.3
+- **Results** | k=6: honest loss, soft quarantine minus its control: 15.7 +/- 2.2
+
 ## Placement and record mode (RQ2, Result 2 footnote)
 
 - **RQ2** | adjacent minus spread rho, smallest Holm p: 1.00
@@ -84,6 +105,10 @@ Source: `vmgm_results/full`
 ## Result 6 slack (Result 6, Table 2)
 
 - **Result 6** | runs with liars ending above the starting cost: 124 of 58,240; at most 20.5% of the bound
+
+## Round bound (Result 5 with integer claims)
+
+- **Result 5** | history + quarantine: largest number of rounds, and largest rounds / (F_start + |E_L| g_max + 1): 210 rounds; 33.0% of the bound
 
 ## H1 (RQ1, Table 4, Figure 3)
 
@@ -132,13 +157,13 @@ Source: `vmgm_results/full`
 ## CP-SAT reference: distance from the best timetable (Setup, Results RQ2, Limitations)
 
 - **Setup** | loose: instances solved to proven optimality: 50 of 50 (limit 60 s)
-- **Setup** | tight: instances solved to proven optimality: 2 of 19 (limit 300 s); gap of the others median 22.1%, largest 35.0%
+- **Setup** | tight: instances solved to proven optimality: 4 of 50 (limit 300 s); gap of the others median 25.1%, largest 37.8%
 - **RQ2** | honest MGM above the best timetable, loose, greedy start: 33%
 - **RQ2** | honest MGM above the best timetable, loose, random start: 36%
-- **RQ2** | honest MGM above the best timetable, tight, greedy start: 52% to 91%
-- **RQ2** | honest MGM above the best timetable, tight, random start: 58% to 99%
+- **RQ2** | honest MGM above the best timetable, tight, greedy start: 48% to 92%
+- **RQ2** | honest MGM above the best timetable, tight, random start: 58% to 106%
 - **RQ2** | honest MGM above the best timetable, loose, both starts: 34%
 - **RQ2** | MGM under attack above the best timetable, loose, by k: k=1: 214%, k=2: 222%, k=3: 234%, k=6: 292%
-- **RQ2** | MGM under attack above the best timetable, both families, by k (range): k=1: 191%-207%, k=2: 197%-213%, k=3: 207%-223%, k=6: 253%-270%
+- **RQ2** | MGM under attack above the best timetable, both families, by k (range): k=1: 170%-204%, k=2: 174%-208%, k=3: 183%-217%, k=6: 221%-258%
 - **RQ2** | VMGM-hist-quar under attack above the best timetable, loose, by k: k=1: 59%, k=2: 84%, k=3: 112%, k=6: 196%
-- **RQ2** | VMGM-hist-quar under attack above the best timetable, both families, by k (range): k=1: 59%-70%, k=2: 78%-90%, k=3: 99%-111%, k=6: 165%-178%
+- **RQ2** | VMGM-hist-quar under attack above the best timetable, both families, by k (range): k=1: 57%-80%, k=2: 72%-95%, k=3: 88%-112%, k=6: 139%-166%

@@ -138,6 +138,33 @@ def numbers(d):
         g = k3[(k3.attack == a) & (k3.protocol == 'VMGM-hist-cap')]
         say('Results', f'k=3, {a}: cap-only rho / finished', f'{g.rho.mean():.2f} / {pct(g.finished.mean(), 2)}')
 
+    if (att.protocol == 'VMGM-hist-soft').any():
+        head('Soft quarantine (Result 8, issue #14)')
+        soft = att[att.protocol == 'VMGM-hist-soft']
+        for k, g in att.groupby('k'):
+            r = {p: g[g.protocol == p].rho.mean() for p in (HQ, 'VMGM-hist-soft', 'control-quar', 'control-soft')}
+            say('Results', f'k={k}: rho hard / soft quarantine; control hard / control soft',
+                f'{r[HQ]:.2f} / {r["VMGM-hist-soft"]:.2f}; {r["control-quar"]:.2f} / {r["control-soft"]:.2f}')
+        t = paired(att, PAIR + ['k', 'placement', 'attack'], 'VMGM-hist-soft', HQ, 'rho', ['k'])
+        for _, r in t.iterrows():
+            say('Results', f'k={int(r.k)}: soft minus hard quarantine, paired rho difference',
+                f'{r.mean_diff:+.3f} +/- {r.ci:.3f} (Holm p {r.p_holm:.1e})')
+        say('Result 8', 'soft quarantine: largest per-exam direct damage over the whole run, share finished, '
+            'false flags', f'{soft.dmg_exam_max.max():.2f} g_max, {pct(soft.finished.mean(), 1)}, '
+            f'{int(soft.false_flags.sum())}')
+        say('Result 8', 'soft quarantine: share of liars flagged (same detection as hard quarantine?)',
+            f'soft {pct(soft.det_rate.mean(), 1)} vs hard {pct(hq.det_rate.mean(), 1)}')
+        for k, g in att.groupby('k'):
+            sel = g[g.attack.isin(['hijack', 'exag_naive'])]
+            cap = sel[sel.protocol == 'VMGM-hist-cap'].rho.mean()
+            say('Results', f'k={k}: selfish attacks (T1a, T2a) rho cap-only / hard / soft quarantine',
+                f'{cap:.2f} / {sel[sel.protocol == HQ].rho.mean():.2f} / '
+                f'{sel[sel.protocol == "VMGM-hist-soft"].rho.mean():.2f}')
+        t = paired(att, PAIR + ['k', 'placement', 'attack'], 'VMGM-hist-soft', 'control-soft', 'honest_loss', ['k'])
+        for _, r in t.iterrows():
+            say('Results', f'k={int(r.k)}: honest loss, soft quarantine minus its control',
+                f'{r.mean_diff:.1f} +/- {r.ci:.1f}')
+
     head('Placement and record mode (RQ2, Result 2 footnote)')
     t = paired(hq[hq.k > 1].assign(protocol=hq[hq.k > 1].placement), PAIR + ['k', 'attack'], 'adjacent',
                'spread', 'rho', ['k'])
@@ -223,6 +250,26 @@ def numbers(d):
         mg, vq = g[g.protocol == 'MGM'].extra.mean(), g[g.protocol == HQ].extra.mean()
         say('RQ4', f'{a}, k=1: mean extra cost MGM / history + quarantine / reduction',
             f'{mg:.0f} / {vq:.0f} / {pct(1 - vq / mg)}')
+
+    e6_path = os.path.join(d, 'E6.csv')
+    if os.path.exists(e6_path):
+        head('H5 / E6: colluding liars (issue #8)')
+        e6 = pd.read_csv(e6_path)
+        say('H5', 'E6 rows; liars flagged; largest per-exam direct damage; history+quarantine runs finished',
+            f'{len(e6):,}; {int(e6.detected.sum())}; {e6.dmg_exam_max.max():.2f} g_max; '
+            f'{pct(e6[e6.protocol == HQ].finished.mean(), 1)}')
+        g6 = e6[e6.protocol == HQ]
+        for k, g in g6.groupby('k'):
+            say('H5', f'k={k}: mean honest loss sabotage_consistent / spite_consistent / collude',
+                ' / '.join(f'{g[g.attack == a].honest_loss.mean():.1f}'
+                           for a in ('sabotage_consistent', 'spite_consistent', 'collude')))
+        g6 = g6.assign(protocol=g6.attack)
+        for a, b, label in (('collude', 'spite_consistent', 'coordination (collude - spite)'),
+                            ('spite_consistent', 'sabotage_consistent', 'targeting (spite - sabotage)')):
+            t = paired(g6, PAIR + ['k', 'placement'], a, b, 'honest_loss', ['k'])
+            for _, r in t.iterrows():
+                say('H5', f'k={int(r.k)}: honest-loss effect of {label}',
+                    f'{r.mean_diff:+.1f} +/- {r.ci:.1f} (Holm p {r.p_holm:.1e})')
 
     head('CP-SAT reference: distance from the best timetable (Setup, Results RQ2, Limitations)')
     path = os.path.join(d, 'cpsat.csv')

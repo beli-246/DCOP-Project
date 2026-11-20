@@ -123,8 +123,10 @@ def h2(d):
     rows = []
     for k, g in e[e.k > 0].groupby('k'):
         r = {'k': k}
-        for p in ('MGM', 'VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar', 'RP-MGM'):
-            r[p] = fmt(*ci(g[g.protocol == p].rho)[:2])
+        for p in ('MGM', 'VMGM-hist-cap', 'VMGM-hist-quar', 'control-quar', 'VMGM-hist-soft', 'control-soft',
+                  'RP-MGM'):
+            if (g.protocol == p).any():
+                r[p] = fmt(*ci(g[g.protocol == p].rho)[:2])
         rows.append(r)
     s += ['### H2d: total damage, rho (all attacks pooled) and the quarantine control',
           '`control-quar`: everyone honest, the flagged liars\' departments quarantined at the same rounds. '
@@ -135,6 +137,13 @@ def h2(d):
     t['p (Holm)'] = t.p_holm.map(lambda v: f'{v:.1e}')
     s += ['Honest departments\' loss: lying + quarantine vs quarantine alone (positive = lying hurts honest '
           'departments beyond what quarantine costs):', md_table(t[['k', 'hist-quar − control (honest loss)', 'p (Holm)', 'n']]), '']
+    if (e.protocol == 'VMGM-hist-soft').any():
+        # soft vs hard quarantine (Result 8): paired difference of rho, and soft's own control
+        t = paired(e[e.k > 0], keys, 'VMGM-hist-soft', 'VMGM-hist-quar', 'rho', ['k'])
+        t['soft − hard quarantine (rho)'] = [fmt(m, h, 3) for m, h in zip(t.mean_diff, t.ci)]
+        t['p (Holm)'] = t.p_holm.map(lambda v: f'{v:.1e}')
+        s += ['### Soft vs hard quarantine (Result 8): paired difference in rho (negative = soft is cheaper)',
+              md_table(t[['k', 'soft − hard quarantine (rho)', 'p (Holm)', 'n']]), '']
     # per attack table at k = 3
     k3 = e[e.k == 3].groupby(['attack', 'protocol']).rho.mean().unstack().round(2).reset_index()
     s += ['### rho by attack and protocol, k = 3', md_table(k3), '']
@@ -220,9 +229,34 @@ def e5(d):
             md_table(t), '']
 
 
+def h5(d):
+    """E6: colluding vs independent consistent liars (never flagged), honest departments' loss."""
+    e = pd.read_csv(os.path.join(d, 'E6.csv'))
+    s = ['## H5 (E6): coordinated liars hurt honest departments more than independent ones',
+         'All three attacks keep every liar\'s history consistent, so none is ever flagged (Result 3) and '
+         'V-MGM behaves like MGM; the comparison isolates coordination. Honest loss is against everyone '
+         'honest under the same protocol.', '']
+    keys = PAIR + ['k', 'placement']
+    for p, g in e.groupby('protocol'):
+        g = g.assign(protocol=g.attack)
+        rows = []
+        for a, b, label in (('collude', 'spite_consistent', 'coordination: collude − spite'),
+                            ('spite_consistent', 'sabotage_consistent', 'targeting: spite − sabotage')):
+            t = paired(g, keys, a, b, 'honest_loss', ['k'])
+            for _, r in t.iterrows():
+                rows.append({'effect': label, 'k': int(r.k), 'honest loss diff': fmt(r.mean_diff, r.ci, 1),
+                             'p (Holm)': f'{r.p_holm:.1e}', 'n': int(r.n)})
+        s += [f'### {p}', md_table(pd.DataFrame(rows)), '']
+    t = e.groupby(['attack', 'k']).agg(rho=('rho', 'mean'), honest_loss=('honest_loss', 'mean'),
+                                       det=('det_rate', 'mean'), dmg_max=('dmg_exam_max', 'max'),
+                                       finished=('finished', 'mean')).round(3).reset_index()
+    s += ['### By attack and k (all protocols pooled)', md_table(t), '']
+    return s
+
+
 def main(d):
     out = ['# V-MGM experiments: summary', f'Source: `{d}`', '']
-    for f in (h1, h2, h3, h4, e5):
+    for f in (h1, h2, h3, h4, h5, e5):
         try:
             out += f(d)
         except FileNotFoundError as err:
