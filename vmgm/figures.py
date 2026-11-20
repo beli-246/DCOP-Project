@@ -166,7 +166,7 @@ def fig_quarantine(d, e2):
 # ------------------------------------------------------------------ figure 3: H1
 def fig_h1(d, e1):
     fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 2.3))
-    attacks = ['block', 'churn', 'hijack', 'maxbound']
+    attacks = ['block', 'churn', 'sabotage', 'hijack', 'maxbound']
     prots = ['MGM', 'RP-MGM', 'DSA', 'VMGM-hist-quar']
     off = dict(zip(prots, (-0.27, -0.09, 0.09, 0.27)))
     for p in prots:
