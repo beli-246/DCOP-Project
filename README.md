@@ -20,24 +20,30 @@ scale 0 to g_max. **V-MGM** (verified MGM) uses this:
   posted on the board, and flags a department whose claims contradict each other.
 * **Priority cap:** no claim can count for more than the public gain + g_max.
 * **Quarantine:** a flagged department may only make moves that lower the student cost.
+  (*Soft quarantine*, a proven variant, keeps the preferences its consistent history implied.)
 
 With the history check and quarantine we **prove** that a liar's own moves add less than g_max of
-student cost per exam, that every run finishes, and that the final cost is at most the starting cost
-plus 2·g_max per dishonest exam. No bound relative to honest MGM is possible, so that is **measured**.
+student cost per exam, that every run finishes (within F_start + |E_L|·g_max + 1 rounds), and that the
+final cost is at most the starting cost plus 2·g_max per dishonest exam. No bound relative to honest MGM
+is possible, so that is **measured**.
 
 ## Results
 
-183,400 simulated runs (experiments E1–E5). Every V-MGM run (123,720) was checked automatically
-against the proven results, with no violation.
+228,800 simulated runs (experiments E1–E6). Every V-MGM run (147,720) was checked automatically
+against the proven results, with no violation; 93 unit tests pass.
 
 | | Result |
 |---|---|
 | Detection, up to 6 of 12 departments dishonest | every blocker and 99.5–100% of churners flagged; **no honest department ever flagged** |
 | Termination | history check + quarantine: **100%** of runs finished; MGM 55%, cap-only and one-post check 75% |
-| Direct damage (proven < 1·g_max per exam) | largest **0.99·g_max** over 58,440 runs; cap-only reaches 144·g_max (458 in the 1000-round runs) |
+| Direct damage (proven < 1·g_max per exam) | largest **0.99·g_max** over 62,640 runs; cap-only reaches 144·g_max (458 in the 1000-round runs) |
 | Total cost vs honest MGM (measured) | ρ = 1.10 / 1.21 / 1.33 / 1.71 for k = 1 / 2 / 3 / 6, against 1.91–2.28 for MGM; about half of the excess is the cost of quarantine itself |
 | Blocking attack | MGM 4.6× worse than honest play, V-MGM 1.2× |
 | Undetectable lying | pays more as preferences grow relative to student costs (up to +114 at κ = 4.5) |
+| Colluding liars (E6) | coordination shifts harm onto honest departments (+27.8 burden units, 54% more, at 6 colluders; total cost is lower); every proven guarantee still holds |
+| Soft quarantine (Result 8) | keeps every guarantee, but against real liars costs slightly more than hard quarantine (their frozen preferences are lies) |
+| Distance from the best timetable (CP-SAT) | honest MGM ends 34% above the optimum on loose instances; V-MGM 59–196% with 1–6 liars |
+| Independent check (pyDCOP) | same cost on 2,000 / 2,000 timetables; pyDCOP's MGM (after fixing a bug in it) stops at a local optimum of our model on 20 / 20 instances |
 
 The three guarantees, kept apart (E2, k dishonest departments out of 12):
 
@@ -93,7 +99,7 @@ The result files are already in [vmgm_results/full/](vmgm_results/full/). To reg
 
 | Step | Command | Output | Time |
 |---|---|---|---|
-| 1. Run E1–E5 (every run checked against the proofs) | `python -m vmgm.experiments all --seeds 50 --workers 7 --out vmgm_results/full` | `E1.csv`–`E5.csv` | about 1 h on 7 cores |
+| 1. Run E1–E6 (every run checked against the proofs) | `python -m vmgm.experiments all --seeds 50 --workers 7 --out vmgm_results/full` | `E1.csv`–`E6.csv` | about 1 h on 7 cores |
 | 2. Statistics for every hypothesis | `python -m vmgm.analysis vmgm_results/full` | `vmgm_results/full/summary.md` | seconds |
 | 3. Every number quoted in the paper | `python -m vmgm.paper_numbers vmgm_results/full` | `vmgm_results/full/paper_numbers.md` | seconds |
 | 4. Figures 1–5, Tables 2 and 5 of the paper | `python -m vmgm.figures vmgm_results/full paper` | `paper/figures/`, `paper/tables/` | under a minute |
@@ -109,9 +115,9 @@ Where each part of the report comes from:
 | Figure 3 (lying vs algorithms) | `vmgm.figures` | E1 |
 | Figure 4 (undetectable lying) | `vmgm.figures` | E3 |
 | Figure 5 (damage vs neighbours) | `vmgm.figures` | E4 |
-| Table 2 (proven vs measured) | `vmgm.figures` | E1–E5 |
+| Table 2 (proven vs measured) | `vmgm.figures` | E1–E6 |
 | Table 5 (ρ by attack, k = 3) | `vmgm.figures` | E2 |
-| Table 4 (hypotheses) and all numbers in the text | `vmgm.paper_numbers`, `vmgm.analysis` | E1–E5 |
+| Table 4 (hypotheses) and all numbers in the text | `vmgm.paper_numbers`, `vmgm.analysis` | E1–E6, cpsat.csv |
 
 ## Repository layout
 
@@ -124,18 +130,19 @@ Where each part of the report comes from:
 │   └── archive/                   project-review version
 ├── vmgm/                          Python package (details: vmgm/README.md)
 │   ├── model.py                   instances, costs, public gain
-│   ├── attacks.py                 dishonest behaviours T1–T6
-│   ├── protocol.py                MGM, V-MGM variants, RP-MGM, DSA
+│   ├── attacks.py                 dishonest behaviours T1–T7 (incl. colluding liars)
+│   ├── protocol.py                MGM, V-MGM variants (incl. soft quarantine), RP-MGM, DSA
 │   ├── invariants.py              automatic checks of the proven results on every run
 │   ├── liars.py, metrics.py       liar placement; metrics
-│   ├── experiments.py             E1–E5 runner
+│   ├── experiments.py             E1–E6 runner
 │   ├── analysis.py                statistics -> summary.md
 │   ├── paper_numbers.py           every number in the paper -> paper_numbers.md
 │   ├── figures.py                 figures and LaTeX tables
 │   ├── cpsat.py                   CP-SAT reference: the best timetable, for context
 │   ├── demo.py                    one churner under MGM and V-MGM, round by round
 │   └── tests/                     unit tests
-├── vmgm_results/full/             E1–E5.csv, cpsat.csv, summary.md, paper_numbers.md, run logs
+├── vmgm_results/full/             E1–E6.csv, cpsat.csv, summary.md, paper_numbers.md, run logs
+├── validation/pydcop/             independent check against pyDCOP (see its README)
 ├── docs/screenshots/              screenshots used in this README
 └── PROJECT_CONTEXT.md             team handoff note: decisions and status
 ```

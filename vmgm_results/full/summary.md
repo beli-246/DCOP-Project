@@ -57,14 +57,14 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 | attack | 1 | 2 | 3 | 6 |
 |---|---|---|---|---|
 | block | 1.0 | 1.0 | 1.0 | 1.0 |
-| churn | 1.0 | 1.0 | 0.9992 | 0.9983 |
+| churn | 1.0 | 1.0 | 0.999 | 0.998 |
 | delayed | 0.805 | 0.81 | 0.81 | 0.865 |
 | exag_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
-| exag_naive | 0.875 | 0.8775 | 0.8725 | 0.8654 |
-| hijack | 0.98 | 0.9762 | 0.9683 | 0.9654 |
-| maxbound | 0.33 | 0.3288 | 0.3183 | 0.3113 |
-| mixed | 1.0 | 1.0 | 0.6667 | 0.6662 |
-| sabotage | 0.785 | 0.745 | 0.7508 | 0.7492 |
+| exag_naive | 0.875 | 0.878 | 0.872 | 0.865 |
+| hijack | 0.98 | 0.976 | 0.968 | 0.965 |
+| maxbound | 0.33 | 0.329 | 0.318 | 0.311 |
+| mixed | 1.0 | 1.0 | 0.667 | 0.666 |
+| sabotage | 0.785 | 0.745 | 0.751 | 0.749 |
 | sabotage_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
 
 ### H2b: fraction of runs that finished within 300 rounds
