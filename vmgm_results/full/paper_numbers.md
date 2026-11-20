@@ -154,13 +154,26 @@ Source: `vmgm_results/full`
 - **RQ4** | sabotage_consistent: reduction by history + quarantine, k=1 and N/4 pooled: 0%
 - **RQ4** | sabotage_consistent, k=1: mean extra cost MGM / history + quarantine / reduction: 94 / 94 / 0%
 
+## H5 / E6: colluding liars (issue #8)
+
+- **H5** | E6 rows; liars flagged; largest per-exam direct damage; history+quarantine runs finished: 10,800; 0; 0.96 g_max; 100.0%
+- **H5** | k=2: mean honest loss sabotage_consistent / spite_consistent / collude: 11.3 / 15.4 / 19.0
+- **H5** | k=3: mean honest loss sabotage_consistent / spite_consistent / collude: 26.8 / 28.7 / 37.8
+- **H5** | k=6: mean honest loss sabotage_consistent / spite_consistent / collude: 51.4 / 51.8 / 79.6
+- **H5** | k=2: honest-loss effect of coordination (collude - spite): +3.6 +/- 4.1 (Holm p 1.0e-01)
+- **H5** | k=3: honest-loss effect of coordination (collude - spite): +9.1 +/- 5.8 (Holm p 1.3e-03)
+- **H5** | k=6: honest-loss effect of coordination (collude - spite): +27.8 +/- 8.7 (Holm p 8.0e-11)
+- **H5** | k=2: honest-loss effect of targeting (spite - sabotage): +4.0 +/- 4.0 (Holm p 2.2e-02)
+- **H5** | k=3: honest-loss effect of targeting (spite - sabotage): +1.9 +/- 4.3 (Holm p 2.2e-02)
+- **H5** | k=6: honest-loss effect of targeting (spite - sabotage): +0.3 +/- 6.4 (Holm p 7.3e-01)
+
 ## CP-SAT reference: distance from the best timetable (Setup, Results RQ2, Limitations)
 
 - **Setup** | loose: instances solved to proven optimality: 50 of 50 (limit 60 s)
 - **Setup** | tight: instances solved to proven optimality: 4 of 50 (limit 300 s); gap of the others median 25.1%, largest 37.8%
 - **RQ2** | honest MGM above the best timetable, loose, greedy start: 33%
 - **RQ2** | honest MGM above the best timetable, loose, random start: 36%
-- **RQ2** | honest MGM above the best timetable, tight, greedy start: 48% to 92%
+- **RQ2** | honest MGM above the best timetable, tight, greedy start: 48% to 91%
 - **RQ2** | honest MGM above the best timetable, tight, random start: 58% to 106%
 - **RQ2** | honest MGM above the best timetable, loose, both starts: 34%
 - **RQ2** | MGM under attack above the best timetable, loose, by k: k=1: 214%, k=2: 222%, k=3: 234%, k=6: 292%
