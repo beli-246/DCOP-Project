@@ -3,14 +3,14 @@ Source: `vmgm_results/full`
 
 ## Run counts (Experimental setup, Table 2 caption, Table 3)
 
-- **setup** | E1 rows: 9,600
+- **setup** | E1 rows: 12,000
 - **setup** | E2 rows: 161,600
 - **setup** | E3 rows: 36,000
 - **setup** | E4 rows: 7,200
 - **setup** | E5 rows: 1,200
-- **setup** | total rows: 215,600
-- **Table 2** | V-MGM runs checked automatically: 139,920
-- **Table 2** | history + quarantine runs (all experiments): 58,440
+- **setup** | total rows: 218,000
+- **Table 2** | V-MGM runs checked automatically: 140,520
+- **Table 2** | history + quarantine runs (all experiments): 59,040
 - **setup** | instances per family (E1-E3): 50
 - **setup** | instances per family (E5): 10
 - **setup** | instances per (N, p) (E4): 50
@@ -47,7 +47,7 @@ Source: `vmgm_results/full`
 ## Direct damage (Result 4, Table 4 H2c, Figure 1a)
 
 - **RQ2** | largest per-exam direct damage, E2 history + quarantine: 0.96 g_max over 16,000 runs
-- **RQ2** | largest per-exam direct damage, all history + quarantine: 0.99 g_max over 58,440 runs
+- **RQ2** | largest per-exam direct damage, all history + quarantine: 0.99 g_max over 59,040 runs
 - **Figure 1a** | largest per-exam direct damage, cap only (E2): 144 g_max
 - **Table 2** | largest per-exam direct damage, cap only (E5, by round limit): 300 rounds: 132 g_max, 1000 rounds: 458 g_max
 
@@ -104,7 +104,7 @@ Source: `vmgm_results/full`
 
 ## Result 6 slack (Result 6, Table 2)
 
-- **Result 6** | runs with liars ending above the starting cost: 124 of 58,240; at most 20.5% of the bound
+- **Result 6** | runs with liars ending above the starting cost: 129 of 58,840; at most 20.5% of the bound
 
 ## Round bound (Result 5 with integer claims)
 
@@ -112,17 +112,21 @@ Source: `vmgm_results/full`
 
 ## H1 (RQ1, Table 4, Figure 3)
 
-- **RQ1** | MGM minus RP-MGM, block, k=1..3: +3.53 to +3.58 (largest Holm p 1.7e-33)
-- **RQ1** | MGM minus RP-MGM, churn, k=1..3: +0.93 to +1.10 (largest Holm p 3.8e-33)
-- **RQ1** | MGM minus RP-MGM, hijack, k=1..3: -0.02 to -0.01 (largest Holm p 6.2e-01)
-- **RQ1** | MGM minus RP-MGM, maxbound, k=1..3: -0.02 to -0.01 (largest Holm p 6.2e-01)
-- **RQ1** | MGM minus DSA, block, k=1..3: +3.52 to +3.58 (largest Holm p 1.7e-33)
-- **RQ1** | MGM minus DSA, churn, k=1..3: +1.23 to +1.30 (largest Holm p 3.6e-33)
-- **RQ1** | MGM minus DSA, hijack, k=1..3: -0.03 to -0.02 (largest Holm p 2.6e-01)
-- **RQ1** | MGM minus DSA, maxbound, k=1..3: -0.02 to -0.01 (largest Holm p 5.3e-01)
-- **RQ1** | RP-MGM mean rho by attack (E1): block: 1.01, churn: 1.26, hijack: 1.01, maxbound: 1.01
+- **RQ1** | MGM minus RP-MGM, block, k=1..3: +3.53 to +3.58 (largest Holm p 2.2e-33)
+- **RQ1** | MGM minus RP-MGM, churn, k=1..3: +0.93 to +1.10 (largest Holm p 5.5e-33)
+- **RQ1** | MGM minus RP-MGM, hijack, k=1..3: -0.02 to -0.01 (largest Holm p 9.4e-01)
+- **RQ1** | MGM minus RP-MGM, maxbound, k=1..3: -0.02 to -0.01 (largest Holm p 9.4e-01)
+- **RQ1** | MGM minus RP-MGM, sabotage, k=1..3: -0.11 to +0.04 (largest Holm p 9.4e-01)
+- **RQ1** | MGM minus DSA, block, k=1..3: +3.52 to +3.58 (largest Holm p 2.2e-33)
+- **RQ1** | MGM minus DSA, churn, k=1..3: +0.96 to +1.11 (largest Holm p 3.6e-33)
+- **RQ1** | MGM minus DSA, hijack, k=1..3: -0.03 to -0.02 (largest Holm p 3.1e-01)
+- **RQ1** | MGM minus DSA, maxbound, k=1..3: -0.02 to -0.01 (largest Holm p 1.0e+00)
+- **RQ1** | MGM minus DSA, sabotage, k=1..3: -0.23 to +0.04 (largest Holm p 1.0e+00)
+- **RQ1** | RP-MGM mean rho by attack (E1): block: 1.01, churn: 1.26, hijack: 1.01, maxbound: 1.01, sabotage: 1.48
 - **RQ1** | block: mean rho MGM / history + quarantine: 4.57 / 1.23
 - **RQ1** | churn: mean rho MGM / history + quarantine: 2.28 / 1.24
+- **RQ1** | churn: mean rho / share of runs finished, by protocol (E1): DSA: 1.25 / 0.3%, MGM: 2.28 / 0.2%, RP-MGM: 1.26 / 0.7%, VMGM-hist-quar: 1.24 / 100.0%
+- **RQ1** | sabotage: mean rho / share of runs finished, by protocol (E1): DSA: 1.52 / 48.7%, MGM: 1.45 / 31.5%, RP-MGM: 1.48 / 46.8%, VMGM-hist-quar: 1.35 / 100.0%
 
 ## H3 (RQ3, Table 4, Figure 4)
 

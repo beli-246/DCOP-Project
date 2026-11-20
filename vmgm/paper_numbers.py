@@ -202,6 +202,10 @@ def numbers(d):
         g = a1[a1.attack == a]
         say('RQ1', f'{a}: mean rho MGM / history + quarantine',
             f'{g[g.protocol == "MGM"].rho.mean():.2f} / {g[g.protocol == HQ].rho.mean():.2f}')
+    for a in ('churn', 'sabotage'):          # attacks that act through moves, so also on DSA (#12)
+        g = a1[a1.attack == a]
+        say('RQ1', f'{a}: mean rho / share of runs finished, by protocol (E1)',
+            ', '.join(f'{p}: {gg.rho.mean():.2f} / {pct(gg.finished.mean(), 1)}' for p, gg in g.groupby('protocol')))
 
     head('H3 (RQ3, Table 4, Figure 4)')
     say('RQ3', 'E3 liars flagged', int(e3.detected.sum()))

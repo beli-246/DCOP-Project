@@ -56,14 +56,8 @@ class TestDSAAttacks(unittest.TestCase):
                 worse += 1
         self.assertGreaterEqual(worse, 4)
 
-    def test_claim_only_attacks_identical_to_honest(self):
-        """block, hijack, maxbound: same final timetable, rounds and capped as honest DSA."""
-        for att in ('block', 'hijack', 'maxbound'):
-            for fam in ('loose', 'tight'):
-                for sd in SEEDS:
-                    _, honest, attacked = honest_and_attacked(sd, fam, att)
-                    self.assertEqual(attacked, honest, msg=f'{att} {fam} seed {sd}')
-
+    # That block, hijack and maxbound leave DSA identical to honest DSA is tested in
+    # test_baselines.py (test_dsa_ignores_claim_only_attacks, issue #3).
 
 if __name__ == '__main__':
     unittest.main()

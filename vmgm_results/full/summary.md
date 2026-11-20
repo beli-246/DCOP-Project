@@ -7,42 +7,49 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 ### MGM vs RP-MGM
 | attack | k | MGM − RP-MGM | includes 0 | p (Holm) | n |
 |---|---|---|---|---|---|
-| block | 1 | 3.58 ± 0.43 | False | 1.7e-33 | 200 |
-| block | 2 | 3.58 ± 0.42 | False | 1.7e-33 | 200 |
-| block | 3 | 3.53 ± 0.41 | False | 1.7e-33 | 200 |
-| churn | 1 | 1.10 ± 0.14 | False | 1.9e-33 | 200 |
-| churn | 2 | 1.03 ± 0.13 | False | 1.7e-33 | 200 |
-| churn | 3 | 0.93 ± 0.11 | False | 3.8e-33 | 200 |
-| hijack | 1 | -0.02 ± 0.01 | False | 1.1e-01 | 200 |
-| hijack | 2 | -0.02 ± 0.02 | False | 1.7e-01 | 200 |
-| hijack | 3 | -0.01 ± 0.02 | True | 6.2e-01 | 200 |
-| maxbound | 1 | -0.02 ± 0.01 | False | 1.6e-01 | 200 |
-| maxbound | 2 | -0.01 ± 0.01 | True | 3.6e-01 | 200 |
-| maxbound | 3 | -0.01 ± 0.01 | True | 6.2e-01 | 200 |
+| block | 1 | 3.58 ± 0.43 | False | 2.2e-33 | 200 |
+| block | 2 | 3.58 ± 0.42 | False | 2.2e-33 | 200 |
+| block | 3 | 3.53 ± 0.41 | False | 2.2e-33 | 200 |
+| churn | 1 | 1.10 ± 0.14 | False | 2.6e-33 | 200 |
+| churn | 2 | 1.03 ± 0.13 | False | 2.2e-33 | 200 |
+| churn | 3 | 0.93 ± 0.11 | False | 5.5e-33 | 200 |
+| hijack | 1 | -0.02 ± 0.01 | False | 1.4e-01 | 200 |
+| hijack | 2 | -0.02 ± 0.02 | False | 2.2e-01 | 200 |
+| hijack | 3 | -0.01 ± 0.02 | True | 9.4e-01 | 200 |
+| maxbound | 1 | -0.02 ± 0.01 | False | 2.2e-01 | 200 |
+| maxbound | 2 | -0.01 ± 0.01 | True | 4.8e-01 | 200 |
+| maxbound | 3 | -0.01 ± 0.01 | True | 9.4e-01 | 200 |
+| sabotage | 1 | 0.04 ± 0.03 | False | 2.2e-01 | 200 |
+| sabotage | 2 | -0.02 ± 0.03 | True | 9.4e-01 | 200 |
+| sabotage | 3 | -0.11 ± 0.06 | False | 1.9e-05 | 200 |
 
 ### MGM vs DSA
 | attack | k | MGM − DSA | includes 0 | p (Holm) | n |
 |---|---|---|---|---|---|
-| block | 1 | 3.58 ± 0.43 | False | 1.7e-33 | 200 |
-| block | 2 | 3.57 ± 0.42 | False | 1.7e-33 | 200 |
-| block | 3 | 3.52 ± 0.41 | False | 1.7e-33 | 200 |
-| churn | 1 | 1.23 ± 0.15 | False | 3.6e-33 | 200 |
-| churn | 2 | 1.27 ± 0.16 | False | 1.7e-33 | 200 |
-| churn | 3 | 1.30 ± 0.16 | False | 1.7e-33 | 200 |
-| hijack | 1 | -0.02 ± 0.01 | False | 2.6e-01 | 200 |
-| hijack | 2 | -0.03 ± 0.01 | False | 2.3e-02 | 200 |
-| hijack | 3 | -0.02 ± 0.02 | False | 2.6e-01 | 200 |
-| maxbound | 1 | -0.02 ± 0.01 | False | 2.6e-01 | 200 |
-| maxbound | 2 | -0.02 ± 0.02 | False | 2.6e-01 | 200 |
-| maxbound | 3 | -0.01 ± 0.02 | True | 5.3e-01 | 200 |
+| block | 1 | 3.58 ± 0.43 | False | 2.2e-33 | 200 |
+| block | 2 | 3.57 ± 0.42 | False | 2.2e-33 | 200 |
+| block | 3 | 3.52 ± 0.41 | False | 2.2e-33 | 200 |
+| churn | 1 | 1.11 ± 0.14 | False | 3.6e-33 | 200 |
+| churn | 2 | 1.04 ± 0.13 | False | 3.6e-33 | 200 |
+| churn | 3 | 0.96 ± 0.12 | False | 2.2e-33 | 200 |
+| hijack | 1 | -0.02 ± 0.01 | False | 3.1e-01 | 200 |
+| hijack | 2 | -0.03 ± 0.01 | False | 3.0e-02 | 200 |
+| hijack | 3 | -0.02 ± 0.02 | False | 3.1e-01 | 200 |
+| maxbound | 1 | -0.02 ± 0.01 | False | 3.1e-01 | 200 |
+| maxbound | 2 | -0.02 ± 0.02 | False | 3.1e-01 | 200 |
+| maxbound | 3 | -0.01 ± 0.02 | True | 1.0e+00 | 200 |
+| sabotage | 1 | 0.04 ± 0.03 | False | 3.4e-02 | 200 |
+| sabotage | 2 | -0.02 ± 0.05 | True | 1.0e+00 | 200 |
+| sabotage | 3 | -0.23 ± 0.07 | False | 1.1e-07 | 200 |
 
 ### Mean rho by attack (all k)
 | attack | DSA | MGM | RP-MGM | VMGM-hist-quar |
 |---|---|---|---|---|
 | block | 1.02 | 4.57 | 1.01 | 1.23 |
-| churn | 1.02 | 2.28 | 1.26 | 1.24 |
+| churn | 1.25 | 2.28 | 1.26 | 1.24 |
 | hijack | 1.02 | 0.99 | 1.01 | 1.23 |
 | maxbound | 1.02 | 1.0 | 1.01 | 1.02 |
+| sabotage | 1.52 | 1.45 | 1.48 | 1.35 |
 
 ## H2 (E2): k dishonest departments, history check + quarantine
 
@@ -55,7 +62,7 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 | exag_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
 | exag_naive | 0.875 | 0.8775 | 0.8725 | 0.8654 |
 | hijack | 0.98 | 0.9762 | 0.9683 | 0.9654 |
-| maxbound | 0.33 | 0.3288 | 0.3183 | 0.3112 |
+| maxbound | 0.33 | 0.3288 | 0.3183 | 0.3113 |
 | mixed | 1.0 | 1.0 | 0.6667 | 0.6662 |
 | sabotage | 0.785 | 0.745 | 0.7508 | 0.7492 |
 | sabotage_consistent | 0.0 | 0.0 | 0.0 | 0.0 |
@@ -76,7 +83,7 @@ Paired difference in rho. H1 is proven wrong for an attack if the MGM − RP-MGM
 
 ### H2c: direct damage (Result 4)
 Largest student cost added by one liar exam's own moves: **0.960 · g_max** over 16000 runs (bound: < 1). False flags in all V-MGM runs: **0**.
-Over all 58,440 history + quarantine runs in E1-E5: **0.990 · g_max** (worst run in E3). This is the number in the paper's Table 2.
+Over all 59,040 history + quarantine runs in E1-E5: **0.990 · g_max** (worst run in E3). This is the number in the paper's Table 2.
 
 ### H2d: total damage, rho (all attacks pooled) and the quarantine control
 `control-quar`: everyone honest, the flagged liars' departments quarantined at the same rounds. It measures what quarantine itself costs.
