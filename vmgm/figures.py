@@ -1,8 +1,8 @@
-"""Phase 4: paper figures (PDF + PNG) and LaTeX tables, generated from the E1-E5 CSVs.
+"""Phase 4: paper figures (PDF + PNG) and LaTeX tables, generated from the E1-E6 CSVs.
 
 Usage (from the repository root):
     python3 -m vmgm.figures vmgm_results/full paper
-Reads <csv_dir>/E1-E5.csv and writes <out_dir>/figures/*.pdf|png and <out_dir>/tables/*.tex.
+Reads <csv_dir>/E1-E6.csv (E6 optional) and writes <out_dir>/figures/*.pdf|png and <out_dir>/tables/*.tex.
 <out_dir> defaults to <csv_dir>; pass `paper` so LaTeX picks the files up directly.
 
 Every number in a figure or table comes from the CSVs, so re-running the experiments
@@ -148,7 +148,7 @@ def fig_guarantees(d, e2):
 # ------------------------------------------------------------------ figure 2: cost of quarantine
 def fig_quarantine(d, e2):
     """Who pays for quarantine. (The per-attack rho at k = 3 is in Table tab_e2_k3, so it is not repeated here.)"""
-    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 2.3))
+    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 1.95))
     att = e2[e2.k > 0]
     ks = sorted(att.k.unique())
     for p in ('VMGM-hist-quar', 'control-quar'):
@@ -165,7 +165,7 @@ def fig_quarantine(d, e2):
 
 # ------------------------------------------------------------------ figure 3: H1
 def fig_h1(d, e1):
-    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 2.3))
+    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 1.95))
     attacks = ['block', 'churn', 'sabotage', 'hijack', 'maxbound']
     prots = ['MGM', 'RP-MGM', 'DSA', 'VMGM-hist-quar']
     off = dict(zip(prots, (-0.27, -0.09, 0.09, 0.27)))
@@ -257,11 +257,12 @@ def tex_escape(s):
     return str(s).replace('&', r'\&').replace('%', r'\%').replace('_', r'\_')
 
 
-def write_table(d, name, header, rows, colspec, caption, label):
+def write_table(d, name, header, rows, colspec, caption, label, size=r'\footnotesize', colsep=None):
     os.makedirs(os.path.join(d, 'tables'), exist_ok=True)
     # a colspec with an X column becomes a full-width tabularx (needs \usepackage{tabularx} in the paper)
     env, width = ('tabularx', r'{\linewidth}') if 'X' in colspec else ('tabular', '')
-    lines = [r'\begin{table}[t]', r'\centering', r'\small', rf'\caption{{{caption}}}', rf'\label{{{label}}}',
+    sep = [rf'\setlength{{\tabcolsep}}{{{colsep}}}'] if colsep else []
+    lines = [r'\begin{table}[t]', r'\centering', size] + sep + [rf'\caption{{{caption}}}', rf'\label{{{label}}}',
              rf'\begin{{{env}}}{width}{{{colspec}}}', r'\toprule', ' & '.join(header) + r' \\', r'\midrule']
     lines += [' & '.join(r) + r' \\' for r in rows]
     lines += [r'\bottomrule', rf'\end{{{env}}}', r'\end{table}']
@@ -275,21 +276,22 @@ def pct(v):
     return f'{v:.0%}'
 
 
-def tables(d, e1, e2, e3, e4, e5):
+def tables(d, e1, e2, e3, e4, e5, e6=None):
+    allx = [e1, e2, e3, e4, e5] + ([e6] if e6 is not None else [])      # totals over E1-E6
     att = e2[e2.k > 0]
     hq = att[att.protocol == 'VMGM-hist-quar']
     vm = e2[e2.protocol.str.startswith('VMGM')]
-    hq_all = pd.concat([e[e.protocol == 'VMGM-hist-quar'] for e in (e1, e2, e3, e4, e5)])
+    hq_all = pd.concat([e[e.protocol == 'VMGM-hist-quar'] for e in allx])
     det = lambda a: hq[hq.attack == a].det_rate.mean()  # noqa: E731
     rho_k = {k: hq[hq.k == k].rho.mean() for k in sorted(hq.k.unique())}
     oth_fin = att[att.protocol.isin(['VMGM-hist-cap', 'VMGM-move-cap', 'VMGM-move-quar'])].finished.mean()
     cap_dmg = att[att.protocol == 'VMGM-hist-cap'].dmg_exam_max.max()
     cap_dmg_e5 = e5[e5.protocol == 'VMGM-hist-cap'].dmg_exam_max.max()
     oth_fin_e5 = e5[e5.protocol.isin(['VMGM-hist-cap', 'VMGM-move-cap'])].finished.mean()
-    n_checked = sum(int(e.protocol.str.startswith('VMGM').sum()) for e in (e1, e2, e3, e4, e5))
+    n_checked = sum(int(e.protocol.str.startswith('VMGM').sum()) for e in allx)
     # Result 6 slack: runs that ended above the start, and how much of the allowed 2*gmax*|E_L| they used
     liar_runs = pd.concat([e[(e.protocol == 'VMGM-hist-quar') & (e.k > 0)].assign(
-        gm=e['gmax'] if 'gmax' in e else 50) for e in (e1, e2, e3, e4, e5)])
+        gm=e['gmax'] if 'gmax' in e else 50) for e in allx])
     allowed = 2 * liar_runs.gm * 4 * liar_runs.k
     above = int((liar_runs.F > liar_runs.F0).sum())
     used = ((liar_runs.F - liar_runs.F0) / allowed).max()
@@ -301,14 +303,14 @@ def tables(d, e1, e2, e3, e4, e5):
         ['Consistent lies undetectable', 'any public check', 'Proven (R3)',
          f'consistent liars: {pct(max(det("exag_consistent"), det("sabotage_consistent")))} flagged'],
         ['Direct student cost $< g_{max}$ per exam', 'history + quarantine', 'Proven (R4)',
-         f'max {hq_all.dmg_exam_max.max():.2f}$\\,g_{{max}}$ (all {len(hq_all):,} runs, E1--E5)'],
+         f'max {hq_all.dmg_exam_max.max():.2f}$\\,g_{{max}}$ (all {len(hq_all):,} runs, E1--E6)'],
         ['', 'history + cap only', 'Not guaranteed',
          f'max {cap_dmg:.0f}$\\,g_{{max}}$ ({cap_dmg_e5:.0f} in E5, 1000 rounds)'],
         ['Run finishes', 'history + quarantine', 'Proven (R5, new)',
-         f'{pct(hq_all.finished.mean())} of all {len(hq_all):,} runs, E1--E5'],
+         f'{pct(hq_all.finished.mean())} of all {len(hq_all):,} runs, E1--E6'],
         ['', 'cap only / one-post', 'Not guaranteed', f'{pct(oth_fin)} finished (E5: {pct(oth_fin_e5)})'],
         ['$F_{final}\\le F_{start}+2g_{max}|E_L|$', 'history + quarantine', 'Proven (R6, new)',
-         f'held in all {len(liar_runs):,} runs with liars, E1--E5; above start in {above}, by '
+         f'held in all {len(liar_runs):,} runs with liars, E1--E6; above start in {above}, by '
          f'$\\le${100 * used:.1f}% of the bound'],
         ['Total cost vs honest MGM ($\\rho$)', 'any', 'Measured only (R7)',
          ', '.join(f'{v:.2f}' for v in rho_k.values()) + f' for $k={",".join(map(str, rho_k))}$'],
@@ -317,9 +319,8 @@ def tables(d, e1, e2, e3, e4, e5):
                 [[tex_escape(c) if '$' not in c else c.replace('%', r'\%') for c in r] for r in rows],
                 r'>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}'
                 r'>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X',
-                f'What is proven and what is only measured. All {n_checked:,} V-MGM runs were checked automatically, '
-                f'with no violation: no honest department flagged (R1, R2), the per-exam bound (R4), the potential of '
-                f'R5 falling every round, and the bound of R6, wherever they apply.', 'tab:guarantees')
+                f'What is proven and what is only measured. All {n_checked:,} V-MGM runs were checked automatically '
+                f'against R1, R2 and R4--R6 wherever they apply, with no violation.', 'tab:guarantees')
 
     # main E2 table at k = 3
     k3 = e2[e2.k == 3]
@@ -341,24 +342,22 @@ def tables(d, e1, e2, e3, e4, e5):
         rows.append(r)
     write_table(d, 'tab_e2_k3', heads + ['Flagged'],
                 rows, 'l' + 'r' * (len(heads)),
-                r'Final cost relative to honest MGM ($\rho$, mean) with $k=3$ dishonest departments '
-                r'(E2, 50 instances $\times$ 2 families $\times$ 2 starts $\times$ 2 placements). '
-                r"$\dagger$: fewer than 95\% of runs finished. ``Quar.\ only'': nobody lies, and the departments "
-                r'that were liars are quarantined from the rounds they were flagged. Flagged: share of liars caught '
-                r'by history + quarantine (mixed: the third liar is a consistent saboteur, which no check can '
-                r'catch).',
-                'tab:e2')
+                r'Mean $\rho$ with $k=3$ dishonest departments (E2; 400 runs per cell). $\dagger$: fewer than 95\% '
+                r"finished. ``Only'': nobody lies, the liars' departments quarantined from their flag rounds (control). "
+                r'Flagged: liars caught by history + quarantine (mixed: the third liar is a consistent saboteur).',
+                'tab:e2', colsep='4pt')
 
 
 def main(d, out=None):
     e1, e2, e3, e4, e5 = (pd.read_csv(os.path.join(d, f'E{i}.csv')) for i in range(1, 6))
+    e6 = pd.read_csv(os.path.join(d, 'E6.csv')) if os.path.exists(os.path.join(d, 'E6.csv')) else None
     d = out or d
     fig_guarantees(d, e2)
     fig_quarantine(d, e2)
     fig_h1(d, e1)
     fig_h3(d, e3)
     fig_h4(d, e4)
-    tables(d, e1, e2, e3, e4, e5)
+    tables(d, e1, e2, e3, e4, e5, e6)
     print('figures ->', os.path.join(d, 'figures'), ' tables ->', os.path.join(d, 'tables'))
 
 

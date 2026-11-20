@@ -8,9 +8,10 @@ Source: `vmgm_results/full`
 - **setup** | E3 rows: 36,000
 - **setup** | E4 rows: 7,200
 - **setup** | E5 rows: 1,200
-- **setup** | total rows: 218,000
-- **Table 2** | V-MGM runs checked automatically: 140,520
-- **Table 2** | history + quarantine runs (all experiments): 59,040
+- **setup** | E6 rows: 10,800
+- **setup** | total rows: 228,800
+- **Table 2** | V-MGM runs checked automatically: 147,720
+- **Table 2** | history + quarantine runs (all experiments): 62,640
 - **setup** | instances per family (E1-E3): 50
 - **setup** | instances per family (E5): 10
 - **setup** | instances per (N, p) (E4): 50
@@ -47,7 +48,7 @@ Source: `vmgm_results/full`
 ## Direct damage (Result 4, Table 4 H2c, Figure 1a)
 
 - **RQ2** | largest per-exam direct damage, E2 history + quarantine: 0.96 g_max over 16,000 runs
-- **RQ2** | largest per-exam direct damage, all history + quarantine: 0.99 g_max over 59,040 runs
+- **RQ2** | largest per-exam direct damage, all history + quarantine: 0.99 g_max over 62,640 runs
 - **Figure 1a** | largest per-exam direct damage, cap only (E2): 144 g_max
 - **Table 2** | largest per-exam direct damage, cap only (E5, by round limit): 300 rounds: 132 g_max, 1000 rounds: 458 g_max
 
@@ -104,7 +105,7 @@ Source: `vmgm_results/full`
 
 ## Result 6 slack (Result 6, Table 2)
 
-- **Result 6** | runs with liars ending above the starting cost: 129 of 58,840; at most 20.5% of the bound
+- **Result 6** | runs with liars ending above the starting cost: 236 of 62,440; at most 20.8% of the bound
 
 ## Round bound (Result 5 with integer claims)
 
@@ -161,6 +162,7 @@ Source: `vmgm_results/full`
 ## H5 / E6: colluding liars (issue #8)
 
 - **H5** | E6 rows; liars flagged; largest per-exam direct damage; history+quarantine runs finished: 10,800; 0; 0.96 g_max; 100.0%
+- **H5** | mean rho (total cost vs honest MGM), history + quarantine: sabotage_consistent / spite / collude: 1.79 / 1.73 / 1.54
 - **H5** | k=2: mean honest loss sabotage_consistent / spite_consistent / collude: 11.3 / 15.4 / 19.0
 - **H5** | k=3: mean honest loss sabotage_consistent / spite_consistent / collude: 26.8 / 28.7 / 37.8
 - **H5** | k=6: mean honest loss sabotage_consistent / spite_consistent / collude: 51.4 / 51.8 / 79.6

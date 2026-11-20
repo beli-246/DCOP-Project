@@ -33,6 +33,8 @@ def pct(v, nd=0):
 
 def numbers(d):
     e1, e2, e3, e4, e5 = load(d)
+    e6_file = os.path.join(d, 'E6.csv')
+    allx = [e1, e2, e3, e4, e5] + ([pd.read_csv(e6_file)] if os.path.exists(e6_file) else [])  # totals: E1-E6
     out = []
 
     def say(where, what, value):
@@ -45,12 +47,12 @@ def numbers(d):
     hq = att[att.protocol == HQ]
 
     head('Run counts (Experimental setup, Table 2 caption, Table 3)')
-    for i, e in enumerate((e1, e2, e3, e4, e5), 1):
+    for i, e in enumerate(allx, 1):
         say('setup', f'E{i} rows', f'{len(e):,}')
-    say('setup', 'total rows', f'{sum(map(len, (e1, e2, e3, e4, e5))):,}')
+    say('setup', 'total rows', f'{sum(map(len, allx)):,}')
     say('Table 2', 'V-MGM runs checked automatically',
-        f'{sum(int(e.protocol.str.startswith("VMGM").sum()) for e in (e1, e2, e3, e4, e5)):,}')
-    hq_all = pd.concat([e[e.protocol == HQ] for e in (e1, e2, e3, e4, e5)])
+        f'{sum(int(e.protocol.str.startswith("VMGM").sum()) for e in allx):,}')
+    hq_all = pd.concat([e[e.protocol == HQ] for e in allx])
     say('Table 2', 'history + quarantine runs (all experiments)', f'{len(hq_all):,}')
     say('setup', 'instances per family (E1-E3)', e2.seed.nunique())
     say('setup', 'instances per family (E5)', e5.seed.nunique())
@@ -177,14 +179,14 @@ def numbers(d):
 
     head('Result 6 slack (Result 6, Table 2)')
     lr = pd.concat([e[(e.protocol == HQ) & (e.k > 0)].assign(gm=e['gmax'] if 'gmax' in e else 50)
-                    for e in (e1, e2, e3, e4, e5)])
+                    for e in allx])
     allowed = 2 * lr.gm * 4 * lr.k
     say('Result 6', 'runs with liars ending above the starting cost',
         f'{int((lr.F > lr.F0).sum())} of {len(lr):,}; at most {pct(((lr.F - lr.F0) / allowed).max(), 1)} of the bound')
 
     head('Round bound (Result 5 with integer claims)')
     # rounds <= Phi_start + 1 <= F_start + |E_L| * g_max + 1 (the per-run Phi_start version is checked in every run)
-    rb = pd.concat([e[e.protocol == HQ].assign(gm=e['gmax'] if 'gmax' in e else 50) for e in (e1, e2, e3, e4, e5)])
+    rb = pd.concat([e[e.protocol == HQ].assign(gm=e['gmax'] if 'gmax' in e else 50) for e in allx])
     rb = rb.assign(bound=rb.F0 + 4 * rb.k * rb.gm + 1)
     say('Result 5', 'history + quarantine: largest number of rounds, and largest rounds / (F_start + |E_L| g_max + 1)',
         f'{int(rb.rounds.max())} rounds; {pct((rb.rounds / rb.bound).max(), 1)} of the bound')
@@ -263,6 +265,9 @@ def numbers(d):
             f'{len(e6):,}; {int(e6.detected.sum())}; {e6.dmg_exam_max.max():.2f} g_max; '
             f'{pct(e6[e6.protocol == HQ].finished.mean(), 1)}')
         g6 = e6[e6.protocol == HQ]
+        say('H5', 'mean rho (total cost vs honest MGM), history + quarantine: sabotage_consistent / spite / collude',
+            ' / '.join(f'{g6[g6.attack == a].rho.mean():.2f}'
+                       for a in ('sabotage_consistent', 'spite_consistent', 'collude')))
         for k, g in g6.groupby('k'):
             say('H5', f'k={k}: mean honest loss sabotage_consistent / spite_consistent / collude',
                 ' / '.join(f'{g[g.attack == a].honest_loss.mean():.1f}'

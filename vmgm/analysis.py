@@ -97,7 +97,7 @@ def h2(d):
     hq = e[e.protocol == 'VMGM-hist-quar']
     s = ['## H2 (E2): k dishonest departments, history check + quarantine', '']
     # H2a detection
-    det = hq[hq.k > 0].groupby(['attack', 'k']).det_rate.mean().unstack().round(4).reset_index()
+    det = hq[hq.k > 0].groupby(['attack', 'k']).det_rate.mean().unstack().round(3).reset_index()
     s += ['### H2a: fraction of liars flagged (H2a proven wrong if < 0.95 for block or churn)', md_table(det), '']
     # H2b finishing, all protocols
     fin = e[e.k > 0].groupby(['protocol', 'k']).finished.mean().unstack().round(3).reset_index()
