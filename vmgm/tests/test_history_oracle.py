@@ -1,9 +1,15 @@
 """Result 2 against an independent oracle: the history check flags exactly the inconsistent histories.
 
-`Board.check` is compared with a linear-programming oracle that shares no code with it: a list of
-claims (a, a', r), each meaning "g(a) - g(a') = r", is consistent iff some real g with values in
-[0, gmax] satisfies all of them. The two must agree after every single claim, on thousands of random
-claim sequences built the way `run()` builds them (posted recording, moves that may or may not run).
+`Board.check` is compared with oracles that share no code with it: a list of claims (a, a', r), each
+meaning "g(a) - g(a') = r", is consistent iff some real g with values in [0, gmax] satisfies all of them.
+The two must agree after every single claim, on thousands of random claim sequences built the way
+`run()` builds them (posted recording, moves that may or may not run).
+
+Two independent oracles decide that feasibility problem:
+  * `consistent_lp`: scipy.optimize.linprog (HiGHS), the obviously-correct statement of the problem;
+  * `consistent_bf`: Bellman-Ford on the difference-constraint graph (feasible iff no negative cycle),
+    pure Python and much faster. It does the bulk of the comparisons; every 10th random trial and
+    every edge case is also checked with linprog, and a separate test checks that the two oracles agree.
 
 Run from the repository root:  python -m unittest discover -s vmgm/tests -t . -v
 """
@@ -23,8 +29,8 @@ from vmgm.tests.test_vmgm import LAM, small
 MODES = ('truthful', 'noisy', 'adversarial', 'repeat')
 
 
-# ------------------------------------------------------------------ the oracle (independent of Board)
-def consistent(claims, gmax):
+# ------------------------------------------------------------------ the oracles (independent of Board)
+def consistent_lp(claims, gmax):
     """claims: list of (from_slot, to_slot, r). True iff some g in [0, gmax] explains all of them."""
     slots = sorted({s for a, b, _ in claims for s in (a, b)})
     if not slots:
@@ -38,6 +44,30 @@ def consistent(claims, gmax):
         b[row] = r
     res = linprog(np.zeros(len(slots)), A_eq=A, b_eq=b, bounds=[(0, gmax)] * len(slots), method='highs')
     return res.status == 0
+
+
+def consistent_bf(claims, gmax):
+    """Same question as consistent_lp, as difference constraints x_u - x_v <= w (edge v -> u, weight w):
+    g(a) - g(a') = r gives a' -> a (r) and a -> a' (-r); 0 <= g(s) <= gmax gives Z -> s (gmax) and
+    s -> Z (0) for a zero node Z. Feasible iff the graph has no negative cycle (Bellman-Ford)."""
+    Z = object()
+    nodes = {s for a, b, _ in claims for s in (a, b)} | {Z}
+    edges = [(Z, s, gmax) for s in nodes if s is not Z] + [(s, Z, 0) for s in nodes if s is not Z]
+    for a, a2, r in claims:
+        edges += [(a2, a, r), (a, a2, -r)]
+    dist = {v: 0 for v in nodes}                       # all-zero start = virtual source to every node
+    for _ in range(len(nodes)):
+        changed = False
+        for u, v, w in edges:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                changed = True
+        if not changed:
+            return True
+    return False                                       # still relaxing after |V| passes: negative cycle
+
+
+consistent = consistent_bf
 
 
 # ------------------------------------------------------------------ claim generator
@@ -95,8 +125,9 @@ def gen_trial(rng, modes, steps=40):
     return gmax, s0, claims
 
 
-def replay(test, gmax, s0, claims, stats=None):
-    """Feed claims one by one to a Board, asserting ok == oracle(prefix) at every step.
+def replay(test, gmax, s0, claims, stats=None, lp=False):
+    """Feed claims one by one to a Board, asserting ok == oracle(prefix) at every step
+    (with lp=True, also against the linprog oracle).
 
     Stops at the first flag, as run() does. Returns the index of the flagging claim or None.
     """
@@ -104,8 +135,11 @@ def replay(test, gmax, s0, claims, stats=None):
     for t, (cur, a, r) in enumerate(claims):
         ok, new = board.check(0, cur, a, r, gmax)
         expected = consistent(claims[:t + 1], gmax)
+        if lp:
+            test.assertEqual(consistent_lp(claims[:t + 1], gmax), expected, claims[:t + 1])
         if stats is not None:
             stats['claims'] += 1
+            stats['lp'] += lp
         if ok != expected:
             test.fail(f'board says {ok}, oracle says {expected}; gmax={gmax}, start={s0}, '
                       f'claims={claims[:t + 1]}')
@@ -127,17 +161,29 @@ def first_infeasible(claims, gmax):
 
 class TestHistoryOracle(unittest.TestCase):
     def test_board_matches_oracle_random(self):
-        stats = dict(trials=0, claims=0, contradictions=0)
-        per_mode = {m: 0 for m in MODES + ('mixed',)}
+        stats = dict(trials=0, claims=0, contradictions=0, lp=0)
         rng = random.Random(20261120)
-        for _ in range(5000):
+        for n in range(5000):
             gmax, s0, claims = gen_trial(rng, MODES)
-            replay(self, gmax, s0, claims, stats)
+            replay(self, gmax, s0, claims, stats, lp=n % 10 == 0)
             stats['trials'] += 1
         # the generator must produce many contradictions, of every kind, or the test is vacuous
         self.assertGreater(stats['contradictions'], 1000)
         print(f"\n[history oracle] {stats['trials']} trials, {stats['claims']} claims compared, "
-              f"{stats['contradictions']} contradictions, 0 mismatches", file=sys.stderr)
+              f"{stats['contradictions']} contradictions, 0 mismatches "
+              f"({stats['lp']} of the claims also checked with linprog)", file=sys.stderr)
+
+    def test_oracles_agree(self):
+        """Bellman-Ford and linprog give the same answer on every prefix of 1,000 mixed random trials."""
+        rng = random.Random(3)
+        infeasible = 0
+        for _ in range(1000):
+            gmax, _, claims = gen_trial(rng, MODES, steps=15)
+            for t in range(1, len(claims) + 1):
+                bf = consistent_bf(claims[:t], gmax)
+                self.assertEqual(bf, consistent_lp(claims[:t], gmax), claims[:t])
+                infeasible += not bf
+        self.assertGreater(infeasible, 1000)
 
     def test_truthful_never_flagged_oracle(self):
         rng = random.Random(7)
@@ -181,8 +227,9 @@ class TestHistoryOracle(unittest.TestCase):
         ]
         for claims, gmax, s0, expected in cases:
             with self.subTest(claims=claims, gmax=gmax):
-                self.assertEqual(consistent(claims, gmax), expected)
-                t = replay(self, gmax, s0, claims)
+                self.assertEqual(consistent_bf(claims, gmax), expected)
+                self.assertEqual(consistent_lp(claims, gmax), expected)
+                t = replay(self, gmax, s0, claims, lp=True)
                 self.assertEqual(t, None if expected else len(claims) - 1)
 
     def test_through_run(self):
