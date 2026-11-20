@@ -54,6 +54,7 @@ Instances use seeds 100–149, disjoint from the pilot's 0–29. Every run with 
 | E3 | H3 | g_max (kappa) × preference spread × lambda × exag_stretch / exag_consistent × k 1,3 |
 | E4 | H4 | N 12/24/48 × p 0.02/0.04/0.08 × 4 attacks × k = 1 and 25% of N |
 | E5 | round limit | 300 vs 1000 rounds |
+| E6 | H5 | colluding vs independent consistent liars (T5, T7a spite, T7 collude) × k 2,3,6 × adjacent/spread × MGM, hist-quar, hist-soft |
 
 Metrics (`metrics.py`): `rho`, `extra` (total, vs honest MGM), `extra_H`/`extra_G`, `direct_H`
 (student cost from liars' own moves: what Result 4 bounds), `dmg_exam_max`, `honest_loss`,

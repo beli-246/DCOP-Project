@@ -1,4 +1,4 @@
-"""Phase 3 experiments E1-E5. One CSV per experiment in vmgm_results/.
+"""Experiments E1-E6. One CSV per experiment in vmgm_results/
 
   E1  does lying hurt MGM more than claim-free baselines?             (H1)
   E2  k dishonest departments: detection, finishing, damage split,
@@ -6,6 +6,7 @@
   E3  does undetectable lying pay, and more as kappa grows?            (H3)
   E4  damage vs problem size N, overlap p and the liar's neighbours    (H4)
   E5  is "did not finish" caused by the 300-round limit? (300 vs 1000)
+  E6  do colluding liars hurt honest departments more than independent ones? (H5)
 
 Instances use seeds 100.. so they are disjoint from the pilot's seeds 0..29.
 Every run with an audit goes through invariants.check_all, so any violation of a proven
@@ -27,7 +28,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import pandas as pd
 
 from . import model as M
-from .attacks import ALL_ATTACKS
+from .attacks import ALL_ATTACKS, E6_ATTACKS
 from .invariants import check_all
 from .liars import liar_adjacency, make_types, place_liars
 from .metrics import dsa_metrics, run_metrics
@@ -212,7 +213,32 @@ def job_E5(family, sd):
     return rows
 
 
-JOBS = {'E1': job_E1, 'E2': job_E2, 'E3': job_E3, 'E4': job_E4, 'E5': job_E5}
+# ------------------------------------------------------------------ E6: collusion (H5)
+E6_PROTOCOLS = ['MGM', 'VMGM-hist-quar', 'VMGM-hist-soft']
+
+
+def job_E6(family, sd):
+    """Coordinated vs independent consistent liars (never flagged by Result 3), so the comparison isolates
+    coordination. honest_loss is measured against everyone honest under the same protocol."""
+    inst = M.add_fake_preferences(M.make_instance(sd, **M.FAMILIES[family]), LAM)
+    rows = []
+    for sname, x0 in starts(inst, sd):
+        ref = honest_refs(inst, x0, sd, E6_PROTOCOLS)
+        base = dict(family=family, seed=sd, start=sname)
+        for k in (2, 3, 6):
+            for pl in ('adjacent', 'spread'):
+                liars = place_liars(inst, k, pl, seed=sd)
+                lp = liar_adjacency(inst, liars)
+                inst['coalition'] = set(liars)
+                for att in E6_ATTACKS:
+                    types = make_types(inst, liars, att)
+                    for p in E6_PROTOCOLS:
+                        m, _ = one(inst, x0, sd, types, p, ref)
+                        rows.append(dict(base, k=k, placement=pl, liar_pairs=lp, attack=att, protocol=p, **m))
+    return rows
+
+
+JOBS = {'E1': job_E1, 'E2': job_E2, 'E3': job_E3, 'E4': job_E4, 'E5': job_E5, 'E6': job_E6}
 
 
 def job_list(exp, n_seeds):
