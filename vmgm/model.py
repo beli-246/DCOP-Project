@@ -1,6 +1,6 @@
 """Problem model: instances, costs and gains.
 
-Copied from the pilot (DCOP_prelim_code_results/prelim.py) without behavioural changes,
+Copied from the pilot (pilot/prelim.py) without behavioural changes,
 so that the regression test can reproduce the pilot numbers exactly.
 """
 import itertools

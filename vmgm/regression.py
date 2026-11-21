@@ -1,9 +1,11 @@
 """Regression: the new package must reproduce the pilot's saved results exactly.
 
 Usage (from the repository root):
-    python3 -m vmgm.regression DCOP_prelim_code_results 30
+    python3 -m vmgm.regression pilot 30
 The second argument is how many seeds per family to check (pilot has 30).
-CP-SAT fields are not compared (ortools is optional).
+CP-SAT fields are not compared (ortools is optional). Only the protocols the pilot
+ran are compared; responses added later (soft quarantine, VMGM-hist-soft) have no
+pilot rows.
 """
 import json
 import os
@@ -18,6 +20,9 @@ from .protocol import PROTOCOLS, run, run_dsa
 
 FIELDS = ['F', 'H', 'K', 'rounds', 'capped', 'det', 'fp', 'profit', 'hloss']
 LAM = 3.0
+# Protocols the pilot ran (soft quarantine was added later, in #14).
+PILOT_PROTOCOLS = {p: PROTOCOLS[p] for p in
+                   ('MGM', 'VMGM-move-cap', 'VMGM-move-quar', 'VMGM-hist-cap', 'VMGM-hist-quar', 'RP-MGM')}
 
 
 def recompute(family, sd, ks=(1, 2)):
@@ -26,9 +31,9 @@ def recompute(family, sd, ks=(1, 2)):
     rows = {}
     for sname, x0 in starts.items():
         honest = ['honest'] * inst['N']
-        ref = {p: run(inst, x0, honest, LAM, prot, seed=sd).as_pilot_tuple() for p, prot in PROTOCOLS.items()}
+        ref = {p: run(inst, x0, honest, LAM, prot, seed=sd).as_pilot_tuple() for p, prot in PILOT_PROTOCOLS.items()}
         ref['DSA'] = run_dsa(inst, x0, honest, LAM, seed=sd)
-        for p in list(PROTOCOLS) + ['DSA']:
+        for p in list(PILOT_PROTOCOLS) + ['DSA']:
             xs = ref[p][0]
             rows[(sd, sname, p, 'none', 0)] = dict(
                 F=M.F_cost(inst, xs), H=M.H_cost(inst, xs), K=M.clash_students(inst, xs), rounds=ref[p][1],
@@ -38,7 +43,7 @@ def recompute(family, sd, ks=(1, 2)):
             liars = pilot_liars(inst, k, sd)
             for att in PILOT_ATTACKS:
                 types = ['honest' if i not in liars else att for i in range(inst['N'])]
-                for p, prot in list(PROTOCOLS.items()) + [('DSA', None)]:
+                for p, prot in list(PILOT_PROTOCOLS.items()) + [('DSA', None)]:
                     if p == 'DSA' and att not in ('sabotage', 'exag_naive', 'exag_consistent'):
                         continue
                     if p == 'DSA':

@@ -142,10 +142,17 @@ Where each part of the report comes from:
 │   ├── demo.py                    one churner under MGM and V-MGM, round by round
 │   └── tests/                     unit tests
 ├── vmgm_results/full/             E1–E6.csv, cpsat.csv, summary.md, paper_numbers.md, run logs
+├── pilot/                         original pilot code and saved results (regression, see below)
 ├── validation/pydcop/             independent check against pyDCOP (see its README)
 ├── docs/screenshots/              screenshots used in this README
 └── PROJECT_CONTEXT.md             team handoff note: decisions and status
 ```
 
-`vmgm/regression.py` reproduces the numbers of the earlier pilot code, which is not part of this
-repository; it is not needed for any result in the report.
+The pilot (the first version of the simulator, behind Table 3 of the project review) is kept unchanged in
+`pilot/`. The package reproduces every pilot number exactly:
+
+```bash
+python -m vmgm.regression pilot 30
+```
+
+Result: 11,640 rows compared, 0 mismatches (`pilot/regression.log`, about 6 minutes).
