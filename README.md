@@ -92,7 +92,7 @@ All commands run from the repository root. Python 3.10+.
 
 ```bash
 pip install -r requirements.txt
-python -m unittest discover -s vmgm/tests -t . -v      # all unit tests, about 3-4 minutes
+python -m unittest discover -s vmgm/tests -t . -v      # all unit tests, about 5-15 minutes
 ```
 
 The result files are already in [vmgm_results/full/](vmgm_results/full/). To regenerate everything:
@@ -155,4 +155,12 @@ The pilot (the first version of the simulator, behind Table 3 of the project rev
 python -m vmgm.regression pilot 30
 ```
 
-Result: 11,640 rows compared, 0 mismatches (`pilot/regression.log`, about 6 minutes).
+Result: 11,640 rows compared, 0 mismatches (`pilot/regression.log`; 6-25 minutes depending on the machine).
+
+## AI disclosure
+
+We used **Claude** (Anthropic's AI assistant, through Claude Code) during this project: to help write
+and refactor code and unit tests, run and check the experiments, draft and proofread parts of the
+report and this README, and review pull requests. Commits made with its help carry a
+`Co-Authored-By: Claude` line. Every design decision, proof and result was reviewed by the team, and
+every number in the report comes from the code in this repository (`python -m vmgm.paper_numbers`).

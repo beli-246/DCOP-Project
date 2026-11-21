@@ -9,7 +9,6 @@
 % Every number in the text is printed, with the place it is used, by
 %   python -m vmgm.paper_numbers vmgm_results/full     (-> vmgm_results/full/paper_numbers.md)
 %
-% Lines marked  % TODO(team)  need a team decision before submission.
 % =====================================================================
 \documentclass{article}
 \usepackage{arxiv}
@@ -72,7 +71,7 @@
 \maketitle
 \vspace{-2.2em}
 \begin{abstract}
-In MGM, a standard distributed algorithm, the department that \emph{announces} the biggest improvement moves first, so a liar can grab turns or stop progress. In exam timetabling, the clash and back-to-back part of each improvement can be recomputed by anyone from public data; only the preference part is private, and it lies on a fixed scale $0$ to $\gmax$. Checking one announcement at a time misses repeated small lies; checking a department's history of claims catches every contradiction; consistent lies cannot be caught from public data. With the history check and quarantine of caught departments we prove three \emph{separate} guarantees: the student cost a liar's own moves add is below $\gmax$ per exam; the run always finishes; and the final cost exceeds the starting cost by at most $2\gmax$ per dishonest exam. No bound relative to honest MGM's result is possible, so that ratio is measured. In 228{,}800 simulated runs with up to 6 of 12 departments dishonest, the history check flagged every blocker, 99.5--100\% of churners and no honest department, every history + quarantine run finished, and the final cost was $1.10$--$1.71$ times honest MGM's, about half of the excess being the price of quarantine. Colluding liars hurt honest departments more, but every proven guarantee still holds.
+In MGM, a standard distributed algorithm, the department that \emph{announces} the biggest improvement moves first, so a liar can grab turns or stop progress. In exam timetabling, the clash and back-to-back part of each improvement can be recomputed by anyone from public data; only the preference part is private, and it lies on a fixed scale $0$ to $\gmax$. Checking one announcement at a time misses repeated small lies; checking a department's history of claims catches every contradiction; consistent lies cannot be caught from public data. With the history check and quarantine of caught departments we prove three \emph{separate} guarantees: the student cost a liar's own moves add is below $\gmax$ per exam; the run always finishes; and the final cost exceeds the starting cost by at most $2\gmax$ per dishonest exam. No bound relative to honest MGM's result is possible, so that ratio is measured. In 228{,}800 simulated runs with up to 6 of 12 departments dishonest, the history check flagged every blocker, 99.5--100\% of churners and no honest department, every history + quarantine run finished, and the final cost was $1.10$--$1.71$ times honest MGM's, about half of the excess being the price of quarantine. Colluding liars (three or more) hurt honest departments more, but every proven guarantee still holds.
 \end{abstract}
 
 %=====================================================================
@@ -86,9 +85,9 @@ In MGM, a standard distributed algorithm, the department that \emph{announces} t
 
 \textbf{Research question.} \emph{How much can dishonest departments harm MGM in distributed exam timetabling, and how much of that harm can be detected and limited by checking posted gains against public data only, without payments or repeating work on several agents?}
 
-\textbf{Example} ($W_h=10$ per student per clash, $W_s=2$ per back-to-back pair, $\gmax=50$). EE's exam $e_1$ clashes with CSE's $c_1$ (3 shared students: cost $30$) and is back-to-back with $m_1$ (2 students: cost $4$). Moving $e_1$ to slot~3 removes both: public gain $V=34$, which anyone can recompute. If EE also prefers slot~3 by $P=10$, the honest claim $44$ passes; a claim of $100$ implies $P=66>50$ and is flagged. But claiming that slot~4 beats slot~3 by $40$, and later that slot~3 beats slot~4 by $40$, passes each time although both cannot be true: only a check of the \emph{history} of claims catches it.
+\textbf{Example} ($W_h=10$ per student per clash, $W_s=2$ per student per back-to-back pair, $\gmax=50$). EE's exam $e_1$ clashes with CSE's $c_1$ (3 shared students: cost $30$) and is back-to-back with $m_1$ (2 students: cost $4$). Moving $e_1$ to slot~3 removes both: public gain $V=34$, which anyone can recompute. If EE also prefers slot~3 by $P=10$, the honest claim $44$ passes; a claim of $100$ implies $P=66>50$ and is flagged. But claiming that slot~4 beats slot~3 by $40$, and later that slot~3 beats slot~4 by $40$, passes each time although both cannot be true: only a check of the \emph{history} of claims catches it.
 
-\textbf{What is new.} Earlier work on untrustworthy DCOP agents uses payments or repeated computation, for other kinds of algorithms (\Cref{sec:prelim}). To our knowledge (based on our search), checking the announcements of local search has not been studied. From the public/private split we build two checks and show which lies they catch and which no check can catch. MGM and DSA are existing algorithms.
+\textbf{What is new.} Earlier work on untrustworthy DCOP agents uses payments or repeated computation, for other kinds of algorithms (\Cref{sec:prelim}). To our knowledge (based on our search), checking the announcements of local search has not been studied. From the public/private split we build two checks and show which lies they catch and which no check can catch.
 
 \textbf{Changes since the project review.} The review noted that our damage bound covered only the student cost a liar's own moves add \emph{directly}, and bounded neither the total cost nor termination. Result~\ref{res:bound} is now stated as a direct damage limit; new Results~\ref{res:term}--\ref{res:neg} prove that the run \emph{finishes} (within a stated number of rounds), bound the \emph{total} cost relative to the start, and show that no bound relative to honest MGM exists. \Cref{tab:guarantees} and \Cref{fig:guar} keep the three apart, and the experiments use up to 6 of 12 (and 12 of 48) dishonest departments, new stress attacks including colluding liars, a control for the cost of quarantine, CP-SAT reference values, and an independent check against pyDCOP.
 
@@ -146,7 +145,7 @@ The attacks in \Cref{tab:attacks} are a fixed threat model, as in security analy
 \begin{table}[!t]
 \caption{Attacks and whether each check flags them (``if incons.'': once its claims contradict each other). T1c and T5--T7 are new since the project review.}
 \label{tab:attacks}
-\centering\footnotesize
+\centering\scriptsize
 \setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.95cm}>{\raggedright\arraybackslash}p{3.6cm}X>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{1.9cm}@{}}
 \toprule
 ID & Attack (goal) & What it posts & One-post check & History check \\
@@ -169,7 +168,7 @@ V-MGM is MGM with three additions, run by every department on the public board (
 \begin{algorithm}[!t]
 \caption{One round of V-MGM. Every department runs it on the public board, so all reach the same result. The one-post variant skips \textsc{Inconsistent}; plain MGM has no checks and priority $\pi_i=\hat\Gamma_i$.}
 \label{alg:vmgm}
-\footnotesize
+\scriptsize
 \begin{algorithmic}[1]
 \Require timetable $\sigma$; posts $(\hat\mu_i,\hat\Gamma_i)$ of all departments; history scores $s_e$ of every exam (initially $s_e(\sigma_e)=0$); flagged set $Q$
 \For{each department $i$}
@@ -204,7 +203,7 @@ So flagging a post with $|r_i|>\gmax$ never flags an honest department, and capp
 
 \begin{result}[History check catches every contradiction]
 \label{res:hist}
-Each claim about exam $e$ says ``slot $a_t$ costs me $r_t$ more than slot $a'_t$''. The claims are \emph{consistent} if some preference $\tilde g$ with values in $[0,\gmax]$ satisfies $\tilde g(a_t)-\tilde g(a'_t)=r_t$ for all of them. Keep a running score per slot: start at $0$ for the starting slot, and after each post that passes the check set score$(a')=$ score$(a)-r$, whether or not its move runs.\footnote{Recording only the claims whose move runs gives the same final cost in all but 3 of 16{,}000 attacked runs.}
+Each claim about exam $e$ says ``slot $a_t$ costs me $r_t$ more than slot $a'_t$''. The claims are \emph{consistent} if some preference $\tilde g$ with values in $[0,\gmax]$ satisfies $\tilde g(a_t)-\tilde g(a'_t)=r_t$ for all of them. Keep a running score per slot: start at $0$ for the starting slot, and after each post that passes the check set score$(a')=$ score$(a)-r$, whether or not its move runs.
 Flag if a slot gets a second, different score, or if the highest and lowest scores differ by more than $\gmax$. This flags exactly the inconsistent histories, and never a truthful one. \emph{Why:} every claim links a slot that has a score to another slot, so the claims form a connected graph and the scores are forced; if they agree and fit within $\gmax$, then $\tilde g=$ score $-$ lowest score explains every claim, and otherwise no $\tilde g$ can. Since preferences are integers (A3), V-MGM also flags a claim whose private part is not a whole number; this never flags an honest department.
 \end{result}
 
@@ -236,9 +235,9 @@ Honest MGM satisfies $F_{\text{final}}\le F_{\text{start}}$, so liars can make t
 
 \begin{result}[No bound relative to honest MGM]
 \label{res:neg}
-No check on public data can guarantee $F_{\text{final}}\le c\cdot F_{\text{final}}(\text{honest MGM})$ for any constant $c$. \emph{Example:} one department with one exam, $g(1)=0$, $g(2)=\gmax$, starting in slot~2. Honest MGM moves it to slot~1 ($F=0$). A department that plays truthfully for $\tilde g(1)=\gmax$, $\tilde g(2)=0$ posts ``no move'' and stays ($F=\gmax$). By Result~\ref{res:undet} no check can tell the two apart.
+No check on public data can guarantee $F_{\text{final}}\le c\cdot F_{\text{final}}(\text{honest MGM})$ for any constant $c$. \emph{Example:} one department with one exam, $g(1)=0$, $g(2)=\gmax$, starting in slot~2. Honest MGM moves it to slot~1 ($F=0$). A department that plays truthfully for $\tilde g(1)=\gmax$, $\tilde g(2)=0$ posts ``no move'' and stays ($F=\gmax$). By Result~\ref{res:undet} no check can tell the two apart. With any other fixed cost $c_0>0$ in the instance, the ratio is $1+\gmax/c_0$, which no constant bounds as $\gmax$ grows.
 \end{result}
-Here the extra cost is the liar's own preference cost (we have no example with the gap in student cost), so the experiments report the honest departments' loss separately from $\rho$, which we can only \emph{measure}. \Cref{tab:guarantees} summarises what is proven and what is measured. % TODO(team, optional): a stronger example with the gap in H.
+Here the extra cost is the liar's own preference cost (we have no example with the gap in student cost), so the experiments report the honest departments' loss separately from $\rho$, which we can only \emph{measure}. \Cref{tab:guarantees} summarises what is proven and what is measured.
 
 \begin{result}[Soft quarantine]
 \label{res:soft}
@@ -253,10 +252,10 @@ Under \emph{soft quarantine} a flagged department keeps the preference $\tilde g
 
 \textbf{Metrics} (same instance, start and seed), kept apart as in \Cref{tab:guarantees}. \emph{Direct damage}: per liar exam, the sum of $-V$ over its executed moves (the quantity of Result~\ref{res:bound}), in units of $\gmax$, largest over exams. \emph{Total damage}: $\rho$ and the extra cost $F-F_{\text{honest MGM}}$. \emph{Honest loss} $L$ and \emph{liar profit}: the rise in the honest departments' total burden, and the drop in a liar's own $J_i$, against everyone honest under the same protocol. \emph{Finished}: no positive priority left within 300 rounds (a freeze of plain MGM counts as not finished). \emph{Detection}: share of liars flagged; \emph{false flags}: honest departments flagged. \textbf{Statistics:} paired runs, 95\% confidence intervals (t-based), Wilcoxon signed-rank tests with Holm correction over each set of tests reported together; Spearman correlations where runs cannot be paired.
 
-\textbf{Verification.} Every V-MGM run is checked automatically against the proven results (\Cref{tab:guarantees}), including that $\Phi$ falls every round and the round bound; none failed. Among 93 unit tests: Result~\ref{res:hist} against an independent oracle on 5{,}000 random claim sequences (42{,}776 claims, 4{,}348 contradictions, no mismatch), itself cross-checked by a second oracle; every automatic check fails on runs that break its property; every entry of \Cref{tab:attacks}. pyDCOP \citep{rust2019pydcop} computes exactly our cost on 2{,}000 random timetables, and its MGM, once a stale-cost bug in it is fixed, stops at a local optimum of our model on all 20 instances tried. The repository holds the code, the results, and a script printing every number in this paper (\texttt{python -m vmgm.paper\_numbers}).
+\textbf{Verification.} Every V-MGM run is checked automatically against the proven results (\Cref{tab:guarantees}), including that $\Phi$ falls every round and the round bound; none failed. The 93 unit tests check Result~\ref{res:hist} against an independent oracle on 5{,}000 random claim sequences (42{,}776 claims, 4{,}348 contradictions, no mismatch), that every automatic check fails on runs that break its property, and every entry of \Cref{tab:attacks}. pyDCOP \citep{rust2019pydcop} computes exactly our cost on 2{,}000 random timetables, and its MGM (with a stale-cost bug fixed) stops at a local optimum of our model on all 20 instances tried. The code reproduces the pilot of the project review exactly, and \texttt{python -m vmgm.paper\_numbers} prints every number in this paper.
 
 \begin{table}[!t]
-\caption{Experiment grid (228{,}800 runs): 50 instances of each family, random and greedy starts (E4, E5: random only). E2 also runs history + quarantine recording only executed claims.}
+\caption{Experiment grid (228{,}800 runs): 50 instances of each family, random and greedy starts (E4, E5: random only). E2 also runs history + quarantine recording only executed claims (same final cost in all but 3 of 16{,}000 attacked runs).}
 \label{tab:grid}
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}p{1.1cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X r@{}}
@@ -301,12 +300,12 @@ H5 & Colluders hurt honest departments more than independent liars & E6 & effect
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.6\textwidth]{figures/fig1_guarantees.pdf}
+\includegraphics[width=0.52\textwidth]{figures/fig1_guarantees.pdf}
 \caption{The three guarantees, kept apart (E2, $k$ dishonest departments out of 12). (a) Direct damage, proven: the student cost added by a liar exam's own moves under history check + quarantine never reaches the bound of Result~\ref{res:bound} (largest $0.96\,\gmax$ in E2, $0.99\,\gmax$ over all experiments); with cap only it reaches $144\,\gmax$. (b) Total damage, measured: final cost relative to honest MGM grows with $k$; quarantining the same departments when nobody lies (control) accounts for about half of the excess (61\% at $k=1$, 46\% at $k=6$). (c) Termination: history check + quarantine finishes every run (Result~\ref{res:term}); MGM, RP-MGM and cap only do not, and a 1000-round limit does not help (E5). Purple: soft quarantine and its control (Result~\ref{res:soft}). Error bars: 95\% CIs.}
 \label{fig:guar}
 \end{figure}
 
-\textbf{Several dishonest departments (RQ2, \Cref{fig:guar}, \Cref{tab:e2}).} With $k=1,2,3,6$ dishonest departments out of 12, the history check flagged every blocker and 99.8--100\% of churners, and never an honest department; the 5 unflagged churners (of 1{,}600 runs), and every delayed attacker (T6) that escaped, had their runs end before they contradicted themselves. With quarantine every run finished, against 55\% for MGM and 75\% for cap only and the one-post check, and a 1000-round limit changed none of them. The largest direct damage of any exam was $0.96\,\gmax$ (E2) and $0.99\,\gmax$ over all 62{,}640 history + quarantine runs. Total damage grows with $k$: $\rho=1.10, 1.21, 1.33, 1.71$ for $k=1,2,3,6$, against $1.91$--$2.28$ for MGM. Against the best timetable (CP-SAT, loose instances), honest MGM itself ends 34\% above it, V-MGM 59\%, 112\% and 196\% above with $k=1,3,6$, and plain MGM 214--292\%. The control shows that about half of the excess is the cost of quarantine itself ($\rho=1.06$--$1.33$): a quarantined department's preferences are ignored, and honest departments carry only 4--6\% of that cost; lying adds about 14 burden units to their loss at $k=6$ ($13.6\pm2.2$). Placing liars next to each other made no significant difference (Holm $p=1.0$).
+\textbf{Several dishonest departments (RQ2, \Cref{fig:guar}, \Cref{tab:e2}).} With $k=1,2,3,6$ dishonest departments out of 12, the history check flagged every blocker and 99.8--100\% of churners (E2; 99.5\% at least with E1), and never an honest department; the 5 unflagged churners (of 1{,}600 runs), and every delayed attacker (T6) that escaped, had their runs end before they contradicted themselves. With quarantine every run finished, against 55\% for MGM and 75\% for cap only and the one-post check, and a 1000-round limit changed none of them. The largest direct damage of any exam was $0.96\,\gmax$ (E2) and $0.99\,\gmax$ over all 62{,}640 history + quarantine runs. Total damage grows with $k$: $\rho=1.10, 1.21, 1.33, 1.71$ for $k=1,2,3,6$, against $1.91$--$2.28$ for MGM. Against the best timetable (CP-SAT, loose instances), honest MGM itself ends 34\% above it, V-MGM 59\%, 112\% and 196\% above with $k=1,3,6$, and plain MGM 214--292\%. The control shows that about half of the excess is the cost of quarantine itself ($\rho=1.06$--$1.33$): a quarantined department's preferences are ignored, and honest departments carry only 4--6\% of that cost; lying adds about 14 burden units to their loss at $k=6$ ($13.6\pm2.2$). Placing liars next to each other made no significant difference (Holm $p=1.0$).
 
 \input{tables/tab_e2_k3}
 
@@ -316,24 +315,24 @@ H5 & Colluders hurt honest departments more than independent liars & E6 & effect
 
 \begin{figure}[!t]
 \centering
-\begin{minipage}[t]{0.36\textwidth}\centering
+\begin{minipage}[t]{0.33\textwidth}\centering
 \includegraphics[width=\linewidth]{figures/fig2_quarantine_cost.pdf}
 \caption{Honest departments' extra burden (E2): quarantine alone vs lying + quarantine.}
 \label{fig:quar}
 \end{minipage}\hspace{0.06\textwidth}
-\begin{minipage}[t]{0.36\textwidth}\centering
+\begin{minipage}[t]{0.33\textwidth}\centering
 \includegraphics[width=\linewidth]{figures/fig3_h1_algorithms.pdf}
 \caption{Final cost by attack (E1, $k=1$--$3$ pooled; 95\% CIs).}
 \label{fig:h1}
 \end{minipage}
 
 \begin{minipage}[t]{0.49\textwidth}\centering
-\includegraphics[width=0.72\linewidth]{figures/fig4_h3_undetectable.pdf}
+\includegraphics[width=0.6\linewidth]{figures/fig4_h3_undetectable.pdf}
 \caption{Profit of the undetectable liar T1c against $\kappa$ (E3, $k=1$).}
 \label{fig:h3}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.49\textwidth}\centering
-\includegraphics[width=0.72\linewidth]{figures/fig5_h4_neighbours.pdf}
+\includegraphics[width=0.6\linewidth]{figures/fig5_h4_neighbours.pdf}
 \caption{Damage against the liar's number of neighbours, per $N$ (E4, $k=1$).}
 \label{fig:h4}
 \end{minipage}
@@ -341,35 +340,26 @@ H5 & Colluders hurt honest departments more than independent liars & E6 & effect
 
 \textbf{Lying vs algorithms (RQ1, \Cref{fig:h1}).} Blocking and churning raise MGM's $\rho$ above RP-MGM's by $3.5$--$3.6$ and $0.9$--$1.1$ (for $k=1$--$3$; Holm $p<10^{-32}$), and blocking makes MGM $4.6$ times worse than honest play, against $1.2$ under V-MGM. Selfish inflation (T2) does no measurable harm (differences $-0.03$ to $-0.01$), so H1 holds for the attacks that act through claims (T3) only. RP-MGM and DSA do not use claims to choose who moves, so blocking cannot freeze them ($\rho=1.01$); but churn raises their $\rho$ to $1.25$--$1.26$ and they almost never finish (DSA 0.3\%, RP-MGM 0.7\% of E1 runs), and neither can name the liar. Sabotage (T4) harms every algorithm, because the harm is in the move itself: MGM is slightly worse than RP-MGM and DSA at $k=1$ ($+0.04$) but better at $k=3$ ($-0.11$, $-0.23$), and only history + quarantine finishes every run ($\rho=1.35$, against $1.45$--$1.52$).
 
-\textbf{Undetectable lying (RQ3, \Cref{fig:h3}).} No E3 liar was flagged, as Result~\ref{res:undet} predicts. The stretched liar's profit is small or negative for $\kappa\le0.56$ ($-10$ to $+2$ at $k=1$; $-15$ to $+2.5$ at $k=3$) and rises with $\kappa$ in all 18 settings ($k=1$ and $3$; Spearman $+0.09$ to $+0.57$, Holm $p<0.05$), up to $+114$ at $\kappa=4.5$ ($+122$ at $k=3$). The review version's T1b liar ($\lambda g$ clipped at $\gmax$) rises in only 7 of 9 settings and loses when preferences fill the scale and $\lambda\ge3$.
-
+\textbf{Undetectable lying (RQ3, \Cref{fig:h3}).} No E3 liar was flagged, as Result~\ref{res:undet} predicts. The stretched liar's profit is small or negative for $\kappa\le0.56$ ($-10$ to $+2$ at $k=1$; $-15$ to $+2.5$ at $k=3$) and rises with $\kappa$ in all 18 settings ($k=1$ and $3$; Spearman $+0.09$ to $+0.57$, Holm $p<0.05$), up to $+114$ at $\kappa=4.5$ ($+122$ at $k=3$).
 \textbf{Problem size and neighbours (RQ4, \Cref{fig:h4}).} Comparing within each $N$ (a liar's degree grows with $N$): under MGM, blocking damage grows with the liar's neighbours (Spearman $+0.73$ to $+0.88$); churn has no consistent trend ($+0.29$ at $N=12$, negative at $N=24,48$), sabotage none. With one liar, V-MGM removes 99\% of the blocking and 94\% of the churn damage, but only 44\% of plain sabotage and none of consistent sabotage (T5), as Result~\ref{res:undet} predicts. With $N=48$ and 12 liars, all 600 runs finished.
 
 \textbf{Collusion (RQ5, E6).} In 10{,}800 runs no colluder was flagged and every check held. Coordination raises the honest departments' loss: T7 minus T7a is $+3.6\pm4.1$ burden units at $k=2$ (n.s.), $+9.1\pm5.8$ at $k=3$, $+27.8\pm8.7$ at $k=6$ (54\% more; Holm $p<0.002$); targeting alone (T7a vs T5) adds at most $4$. Colluders shift harm onto honest departments (total $\rho$ is lower: $1.54$ vs $1.73$), within every proven bound.
 
 %=====================================================================
-\section{Limitations}
+\section{Limitations and conclusion}
 \label{sec:limits}
 %=====================================================================
-Checking needs student counts and the timetable to be public. Consistent lies stay undetected and pay once preferences outweigh student costs. Quarantine makes termination and the global bound hold but ignores the quarantined departments' preferences, about half of the remaining cost. Total cost relative to honest MGM cannot be bounded (Result~\ref{res:neg}), and Result~\ref{res:global} is far from what we observe. \textbf{Collusion} raises the honest departments' loss (H5) although every proven guarantee still holds; larger or self-contradicting coalitions are untested. Rooms and exam length are not modelled; random instances support comparisons, not real-timetable predictions.
+Checking needs student counts and the timetable to be public. Quarantine makes termination and the global bound hold but ignores the quarantined departments' preferences, about half of the remaining cost, and Result~\ref{res:global} is far from what we observe. E1 and E2 fix $\lambda=3$, $\gmax=50$ and $p_{\text{DSA}}=0.6$ at $N=12$ (E3 and E4 vary them); rooms and exam length are not modelled; random instances support comparisons, not real-timetable predictions.
+
+\textbf{Loopholes that remain.} The cap lets an unflagged liar claim at most $\gmax$ above the public gain; quarantine, the only penalty, removes a caught department's say over its own preferences for the rest of the run. A department can still (i) lie \emph{consistently} (T1b, T1c, T5): undetectable (Result~\ref{res:undet}), direct damage below $\gmax$ per exam (Result~\ref{res:bound}), profit growing with $\kappa$ (E3), so a small $\gmax$ relative to back-to-back costs is the registrar's lever; (ii) \emph{withhold} improvements by posting ``no move'', the gap of Result~\ref{res:neg}, so $\rho$ is measured, not bounded; (iii) \emph{collude}, shifting cost onto honest departments within the proven bounds (H5; larger or self-contradicting coalitions untested); (iv) lie until a late contradiction (T6), bounded by Result~\ref{res:bound}; (v) start every run clean, as flags do not carry over (a reputation is future work). Fake identities, forged posts and data tampering are excluded by A2.
+
+\textbf{Conclusion.} Since most of an announced gain is public and the rest lies on a fixed scale, checking each department's claim history and quarantining contradictions catches every contradictory liar, never flags an honest one, and proves three separate guarantees without payments or replication. Consistent lies and the cost relative to honest MGM escape every public check; we measured them, and about half of the remaining excess is the price of quarantine.
 
 %=====================================================================
 \section{Contribution}
 %=====================================================================
-% TODO(team): each member confirms their own row (task and status) before submission.
-\begin{center}\footnotesize
-\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}@{}}
-\toprule
-Member & Task assigned in the project review & Fulfilled? \\
-\midrule
-Beli Dedhia & Problem model, attack model, proofs (Results 1--7); experiment design and statistics; report integration. & Fulfilled. \\
-Khushi Garg & Instance generator and starting timetables; CP-SAT references; visualisation and demo. & Partly: CP-SAT references and demo not fulfilled. \\
-Ananya Patel & MGM, RP-MGM and DSA implementations; pyDCOP validation; V-MGM checks and responses. & Partly: pyDCOP validation not fulfilled. \\
-Poojan Soni & Attack strategies, including the undetectable ones; experiment runner, verification checks and plots. & Fulfilled. \\
-All members & Literature review, writing and proofreading. & Fulfilled. \\
-\bottomrule
-\end{tabularx}
-\end{center}
+The work was divided equally, about a quarter each. Every assigned task was fulfilled; all members shared the literature review, writing and proofreading.
+\textbf{Beli Dedhia:} problem and attack model, proofs (Results 1--8), experiment design, statistics, report integration, soft quarantine; collusion (E6) with Poojan. \textbf{Khushi Garg:} instances and starting timetables; CP-SAT references and demo (with Beli); visualisation; tests of metrics and statistics; fair DSA comparison (E1); reproducibility check. \textbf{Ananya Patel:} MGM, RP-MGM, DSA; V-MGM checks and responses; pyDCOP validation; history-check oracle and baseline tests. \textbf{Poojan Soni:} attacks, including the undetectable ones; experiment runner, verification checks, plots; tests of every check and of \Cref{tab:attacks}; collusion (E6) with Beli; pilot regression.
 
 {\scriptsize\setlength{\bibsep}{0pt}\setlength{\columnsep}{12pt}
 \begin{multicols}{2}

@@ -99,8 +99,8 @@ def fig_guarantees(d, e2):
     ax.axvline(1.0, color=INK, ls='--', lw=1)
     ax.text(1.03, 0.62, 'bound (Result 4)', transform=ax.get_xaxis_transform(), ha='left', va='center',
             rotation=90, fontsize=7, color=INK)
-    ax.text(0.14, 0.97, f'max {hq.max():.2f} over {len(hq):,} runs\ncap only: max {cap_max:.0f}',
-            transform=ax.transAxes, va='top', fontsize=7, color=INK2)
+    ax.text(0.80, 0.97, f'max {hq.max():.2f} over\n{len(hq):,} runs;\ncap only: max {cap_max:.0f}',
+            transform=ax.transAxes, ha='right', va='top', fontsize=7, color=INK2)   # left of the bound line
     ax.set_xlim(0, 1.2)
     ax.set_xticks([0, 0.5, 1])
     ax.set_xlabel('Cost added by a liar exam\'s own moves\n(× g$_{max}$, history + quarantine)')
@@ -235,8 +235,9 @@ def fig_h4(d, e4):
                 r = [ci(v.extra) for _, v in gp]
                 line(ax, gp.liar_deg.median().values, [m for m, _ in r], [h for _, h in r], p)
             rs = stats.spearmanr(g[g.protocol == 'MGM'].liar_deg, g[g.protocol == 'MGM'].extra)[0]
-            ax.text(0.97, 0.32, f'MGM: Spearman {rs:+.2f}', transform=ax.transAxes, ha='right', va='center',
-                    fontsize=7, color=INK2)
+            # blocking: MGM's line rises from the left, so place the label low on the right, above V-MGM
+            ax.text(0.97, 0.2 if att == 'block' else 0.32, f'MGM: Spearman {rs:+.2f}', transform=ax.transAxes,
+                    ha='right', va='center', fontsize=7, color=INK2)
             ax.axhline(0, color=MUTED, lw=0.8)
             ax.set_title(f'{ATTACK_LABEL[att]}, N = {N}')
             ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
