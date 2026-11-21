@@ -107,9 +107,9 @@ need doing and checking** (Phase 1, owner Beli).
 
 ## 5. Code (`vmgm/`)
 
-The original pilot is in `DCOP_prelim_code_results/` (untouched). The new package reproduces it exactly
-(regression: **11,640 pilot rows, 0 mismatches**; the pilot code is not in this repository, so this claim is
-not in the report) and adds automatic checks. It needs only Python 3 +
+The original pilot is in `pilot/` (copied unchanged from `DCOP_prelim_code_results/`, #9). The new package
+reproduces it exactly (regression: **11,640 pilot rows, 0 mismatches**, `pilot/regression.log`; only the
+pilot's protocols are compared, soft quarantine has no pilot rows) and adds automatic checks. It needs only Python 3 +
 numpy, plus scipy/pandas for the analysis. See `vmgm/README.md` for details.
 
 | File | Purpose |
@@ -150,7 +150,7 @@ python3 -m unittest discover -s vmgm/tests -t .
 ```
 
 ```bash
-python3 -m vmgm.regression DCOP_prelim_code_results 30
+python3 -m vmgm.regression pilot 30
 ```
 
 ```bash
@@ -207,7 +207,8 @@ Other findings:
 2. **#17, Contribution section:** the team decides the wording. The current text still says the CP-SAT
    references, demo and pyDCOP validation were "not fulfilled", although all three are now done.
 3. **#13, fresh-clone check** (Khushi): one final pass on the final `main`.
-4. **#9, pilot code** (Poojan): blocked; only on his machine. Nothing in the report depends on it.
+4. **#9, pilot code** (Poojan): pilot in `pilot/`, regression 11,640 rows, 0 mismatches. The report pass
+   may add the regression clause back to Verification.
 5. **Submit** the form with the PDF and the repository link (deadline Sun 22 Nov).
 
 ## 9. Things that are easy to get wrong
@@ -234,6 +235,7 @@ DCOP-Project/
 ├── README.md                          overview, results with figures, how to reproduce each one
 ├── PROJECT_CONTEXT.md                 this file
 ├── requirements.txt
+├── pilot/                             original pilot code + saved results, regression.log (#9)
 ├── docs/screenshots/                  test run and number check, shown in the README
 ├── vmgm/                              Python package (README.md inside)
 │   ├── paper_numbers.py               prints every number quoted in the report
@@ -251,5 +253,4 @@ DCOP-Project/
         └── DCOP_Idea_Review_v3final4pg.pdf   proposal the reviewer commented on
 ```
 
-Not in this repository (only on Poojan's machine): the pilot `DCOP_prelim_code_results/` (needed by
-`vmgm.regression`), the v3 LaTeX source and the `smoke/` outputs.
+Not in this repository (only on Poojan's machine): the v3 LaTeX source and the `smoke/` outputs.
