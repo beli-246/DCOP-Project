@@ -145,75 +145,87 @@ def fig_guarantees(d, e2):
     save(fig, d, 'fig1_guarantees')
 
 
+# ------------------------------------------------------------------ figures 2-5: half text width
+# Figures 2-5 sit in a 2 x 2 grid in the paper, each in half the text width. They are drawn at that
+# size (HALF_W) with these font sizes, so the PDF is included at 100% and every label stays readable.
+HALF_W = 3.15     # inches, a bit under half the text width (0.49 x 6.5 in)
+SMALL = {'font.size': 6.5, 'axes.titlesize': 6.5, 'axes.labelsize': 6.5, 'xtick.labelsize': 6,
+         'ytick.labelsize': 6, 'legend.fontsize': 6, 'lines.linewidth': 1.2, 'lines.markersize': 3.5,
+         'axes.titlepad': 3, 'xtick.major.pad': 1.5, 'ytick.major.pad': 1.5, 'axes.labelpad': 2}
+
+
 # ------------------------------------------------------------------ figure 2: cost of quarantine
 def fig_quarantine(d, e2):
     """Who pays for quarantine. (The per-attack rho at k = 3 is in Table tab_e2_k3, so it is not repeated here.)"""
-    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 1.95))
     att = e2[e2.k > 0]
     ks = sorted(att.k.unique())
-    for p in ('VMGM-hist-quar', 'control-quar'):
-        r = [ci(att[(att.protocol == p) & (att.k == k)].honest_loss) for k in ks]
-        line(ax, ks, [m for m, _ in r], [h for _, h in r], p)
-    ax.axhline(0, color=MUTED, lw=0.8)
-    ax.set_xticks(ks)
-    ax.set_xlabel('Dishonest departments k')
-    ax.set_ylabel('Honest departments\' extra burden')
-    ax.set_title('Who pays: honest departments')
-    ax.legend(loc='upper left', fontsize=7)
-    save(fig, d, 'fig2_quarantine_cost')
+    with plt.rc_context(SMALL):
+        fig, ax = plt.subplots(figsize=(HALF_W, 1.05))
+        for p in ('VMGM-hist-quar', 'control-quar'):
+            r = [ci(att[(att.protocol == p) & (att.k == k)].honest_loss) for k in ks]
+            line(ax, ks, [m for m, _ in r], [h for _, h in r], p)
+        ax.axhline(0, color=MUTED, lw=0.7)
+        ax.set_xticks(ks)
+        ax.set_xlabel('Dishonest departments k')
+        ax.set_ylabel('Honest departments\'\nextra burden')
+        lo, hi = ax.get_ylim()
+        ax.set_ylim(lo, hi + 0.5 * (hi - lo))      # headroom so the legend sits above the lines
+        ax.legend(loc='upper left')
+        save(fig, d, 'fig2_quarantine_cost')
 
 
 # ------------------------------------------------------------------ figure 3: H1
 def fig_h1(d, e1):
-    fig, ax = plt.subplots(figsize=(FULL_W * 0.48, 1.95))
     attacks = ['block', 'churn', 'sabotage', 'hijack', 'maxbound']
     prots = ['MGM', 'RP-MGM', 'DSA', 'VMGM-hist-quar']
     off = dict(zip(prots, (-0.27, -0.09, 0.09, 0.27)))
-    for p in prots:
-        r = [ci(e1[(e1.protocol == p) & (e1.attack == a)].rho) for a in attacks]
-        st = STYLE[p]
-        y = np.arange(len(attacks)) + off[p]
-        ax.errorbar([m for m, _ in r], y, xerr=[h for _, h in r], fmt=st['marker'], color=st['color'],
-                    markeredgecolor=SURFACE, markeredgewidth=0.6, capsize=1.5, elinewidth=1, label=st['label'])
-    ax.set_yticks(range(len(attacks)))
-    ax.set_yticklabels([ATTACK_LABEL[a] for a in attacks])
-    ax.invert_yaxis()
-    ax.axvline(1, color=MUTED, lw=0.8)
-    ax.set_xlabel('Final cost / honest MGM (ρ), k = 1–3 pooled')
-    ax.set_title('Final cost by attack (E1)')
-    ax.grid(axis='y', visible=False)
-    ax.legend(loc='lower right', fontsize=7)
-    save(fig, d, 'fig3_h1_algorithms')
+    with plt.rc_context(SMALL):
+        fig, ax = plt.subplots(figsize=(HALF_W, 1.05))
+        for p in prots:
+            r = [ci(e1[(e1.protocol == p) & (e1.attack == a)].rho) for a in attacks]
+            st = STYLE[p]
+            y = np.arange(len(attacks)) + off[p]
+            ax.errorbar([m for m, _ in r], y, xerr=[h for _, h in r], fmt=st['marker'], color=st['color'],
+                        markeredgecolor=SURFACE, markeredgewidth=0.5, capsize=1.5, elinewidth=0.8,
+                        label=st['label'])
+        ax.set_yticks(range(len(attacks)))
+        ax.set_yticklabels([ATTACK_LABEL[a] for a in attacks])
+        ax.invert_yaxis()
+        ax.axvline(1, color=MUTED, lw=0.7)
+        ax.set_xlabel('Final cost / honest MGM (ρ), k = 1–3 pooled')
+        ax.grid(axis='y', visible=False)
+        ax.legend(loc='lower right', handletextpad=0.3, borderaxespad=0.2)
+        save(fig, d, 'fig3_h1_algorithms')
 
 
 # ------------------------------------------------------------------ figure 4: H3
 def fig_h3(d, e3):
     s = e3[(e3.attack == 'exag_stretch') & (e3.k == 1)]
     lams = sorted(s.lam.unique())
-    fig, axs = plt.subplots(1, len(lams), figsize=(FULL_W, 2.2), sharey=True, gridspec_kw=dict(wspace=0.12))
-    for ax, lam in zip(axs, lams):
-        g = s[s.lam == lam]
-        for col, (sp, gg) in zip(SEQ, g.groupby('spread')):
-            kap = sorted(gg.kappa.round(2).unique())
-            r = [ci(gg[gg.gmax == gm].liar_profit) for gm in sorted(gg.gmax.unique())]
-            xs = [gg[gg.gmax == gm].kappa.mean() for gm in sorted(gg.gmax.unique())]
-            ax.errorbar(xs, [m for m, _ in r], yerr=[h for _, h in r], color=col, marker='o', capsize=2,
-                        elinewidth=1, markeredgecolor=SURFACE, markeredgewidth=0.8,
-                        label=f'{sp:.0%} of the scale')
-        ax.axhline(0, color=MUTED, lw=0.8)
-        ax.set_xscale('log')
-        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-        ax.set_xticks([0.25, 0.5, 1, 2, 4])
-        ax.set_xticklabels(['0.25', '0.5', '1', '2', '4'])
-        ax.set_xlabel('κ = g$_{max}$ / back-to-back cost')
-        ax.set_title(f'λ = {lam:g}')
-    axs[0].set_ylabel('Undetectable liar\'s profit')
-    h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=3, bbox_to_anchor=(0.5, -0.04),
-               title='True preferences span', title_fontsize=7.5)
-    fig.suptitle('Undetectable exaggeration pays once preferences outweigh student costs', x=0.06, ha='left',
-                 y=1.04, fontsize=8.5, fontweight='bold')
-    save(fig, d, 'fig4_h3_undetectable')
+    with plt.rc_context(SMALL):
+        fig, axs = plt.subplots(1, len(lams), figsize=(HALF_W, 1.3), sharey=True,
+                                gridspec_kw=dict(wspace=0.1))
+        for ax, lam in zip(axs, lams):
+            g = s[s.lam == lam]
+            for col, (sp, gg) in zip(SEQ, g.groupby('spread')):
+                r = [ci(gg[gg.gmax == gm].liar_profit) for gm in sorted(gg.gmax.unique())]
+                xs = [gg[gg.gmax == gm].kappa.mean() for gm in sorted(gg.gmax.unique())]
+                ax.errorbar(xs, [m for m, _ in r], yerr=[h for _, h in r], color=col, marker='o', capsize=1.5,
+                            elinewidth=0.8, markeredgecolor=SURFACE, markeredgewidth=0.5,
+                            label=f'{sp:.0%}')
+            ax.axhline(0, color=MUTED, lw=0.7)
+            ax.set_xscale('log')
+            ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+            ax.set_xticks([0.25, 1, 4])
+            ax.set_xticklabels(['0.25', '1', '4'])
+            ax.set_title(f'λ = {lam:g}')
+        axs[1].set_xlabel('κ = g$_{max}$ / back-to-back cost (log scale)')
+        axs[0].set_ylabel('Undetectable liar\'s profit')
+        h, l = axs[0].get_legend_handles_labels()
+        # the first panel is nearly flat at 0, so its upper part holds the legend
+        axs[0].legend(h, l, loc='upper left', handlelength=1.4, borderaxespad=0.2, labelspacing=0.2,
+                      title='True preferences\nspan', title_fontsize=5.5, fontsize=5.5)
+        save(fig, d, 'fig4_h3_undetectable')
 
 
 # ------------------------------------------------------------------ figure 5: H4
@@ -222,35 +234,35 @@ def fig_h4(d, e4):
     s = e4[e4.k == 1]
     Ns = sorted(s.N.unique())
     attacks = ('block', 'churn')
-    fig, axs = plt.subplots(len(attacks), len(Ns), figsize=(FULL_W, 3.9),
-                            gridspec_kw=dict(wspace=0.32, hspace=0.6))
-    for i, att in enumerate(attacks):
-        for j, N in enumerate(Ns):
-            ax = axs[i, j]
-            g = s[(s.attack == att) & (s.N == N)]
-            edges = np.unique(np.quantile(g.liar_deg, np.linspace(0, 1, 6)))
-            g = g.assign(bin=pd.cut(g.liar_deg, edges, include_lowest=True))
-            for p in ('MGM', 'VMGM-hist-quar'):
-                gp = g[g.protocol == p].groupby('bin', observed=True)
-                r = [ci(v.extra) for _, v in gp]
-                line(ax, gp.liar_deg.median().values, [m for m, _ in r], [h for _, h in r], p)
-            rs = stats.spearmanr(g[g.protocol == 'MGM'].liar_deg, g[g.protocol == 'MGM'].extra)[0]
-            # blocking: MGM's line rises from the left, so place the label low on the right, above V-MGM
-            ax.text(0.97, 0.2 if att == 'block' else 0.32, f'MGM: Spearman {rs:+.2f}', transform=ax.transAxes,
-                    ha='right', va='center', fontsize=7, color=INK2)
-            ax.axhline(0, color=MUTED, lw=0.8)
-            ax.set_title(f'{ATTACK_LABEL[att]}, N = {N}')
-            ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
-                lambda v, _: f'{v / 1000:g}k' if abs(v) >= 1000 else f'{v:g}'))
-            if i == len(attacks) - 1:
-                ax.set_xlabel('Liar\'s neighbouring depts.')
-            if j == 0:
-                ax.set_ylabel('Extra cost over\nhonest MGM')
-    h, l = axs[0, 0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 0.0))
-    fig.suptitle('Within each N, blocking damage grows with the liar\'s neighbours under MGM; churn has no consistent trend',
-                 x=0.06, ha='left', y=0.99, fontsize=8.5, fontweight='bold')
-    save(fig, d, 'fig5_h4_neighbours')
+    with plt.rc_context(SMALL):
+        fig, axs = plt.subplots(len(attacks), len(Ns), figsize=(HALF_W, 1.3),
+                                gridspec_kw=dict(wspace=0.45, hspace=0.32))
+        for i, att in enumerate(attacks):
+            for j, N in enumerate(Ns):
+                ax = axs[i, j]
+                g = s[(s.attack == att) & (s.N == N)]
+                edges = np.unique(np.quantile(g.liar_deg, np.linspace(0, 1, 6)))
+                g = g.assign(bin=pd.cut(g.liar_deg, edges, include_lowest=True))
+                for p in ('MGM', 'VMGM-hist-quar'):
+                    gp = g[g.protocol == p].groupby('bin', observed=True)
+                    r = [ci(v.extra) for _, v in gp]
+                    st = STYLE[p]
+                    ax.errorbar(gp.liar_deg.median().values, [m for m, _ in r], yerr=[h for _, h in r],
+                                color=st['color'], marker=st['marker'], ls=st['ls'], capsize=1.5,
+                                elinewidth=0.8, markeredgecolor=SURFACE, markeredgewidth=0.5, label=st['label'])
+                ax.axhline(0, color=MUTED, lw=0.7)
+                ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(3))
+                ax.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4, integer=True))
+                ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
+                    lambda v, _: f'{v / 1000:g}k' if abs(v) >= 1000 else f'{v:g}'))
+                if i == 0:
+                    ax.set_title(f'N = {N}', loc='center')
+                if j == 0:
+                    ax.set_ylabel(f'{ATTACK_LABEL[att]}\nextra cost')
+        axs[-1, 1].set_xlabel('Liar\'s neighbouring departments')
+        h, l = axs[0, 0].get_legend_handles_labels()
+        fig.legend(h, l, loc='lower center', ncol=2, bbox_to_anchor=(0.5, 0.97), handlelength=2.2)
+        save(fig, d, 'fig5_h4_neighbours')
 
 
 # ------------------------------------------------------------------ tables
