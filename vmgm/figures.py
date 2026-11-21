@@ -168,6 +168,8 @@ def fig_quarantine(d, e2):
         ax.set_xticks(ks)
         ax.set_xlabel('Dishonest departments k')
         ax.set_ylabel('Honest departments\'\nextra burden')
+        lo, hi = ax.get_ylim()
+        ax.set_ylim(lo, hi + 0.5 * (hi - lo))      # headroom so the legend sits above the lines
         ax.legend(loc='upper left')
         save(fig, d, 'fig2_quarantine_cost')
 
